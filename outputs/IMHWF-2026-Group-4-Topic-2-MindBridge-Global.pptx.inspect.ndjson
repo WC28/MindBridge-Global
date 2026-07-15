@@ -1,0 +1,125 @@
+{"kind":"deck","id":"pr/eui8rd","name":"Deck"}
+{"kind":"layout","layoutId":"e4d8ee76-007f-4af0-9191-69fbb1236955","name":"Master","type":"master"}
+{"kind":"layout","layoutId":"8386c91a-8e9e-45e0-ad03-f42359713c40","name":"Title Slide","type":"title"}
+{"kind":"slide","id":"sl/a7rqca","slide":1,"title":"OPENING","textShapes":12}
+{"kind":"textbox","id":"sh/hk3q5o7q","slide":1,"name":"section-1","text":"OPENING","textPreview":"OPENING","textChars":7,"textLines":1,"bbox":[60,34,320,20]}
+{"kind":"textbox","id":"sh/6xkf6dcb","slide":1,"name":"page-1","text":"01","textPreview":"01","textChars":2,"textLines":1,"bbox":[1140,34,80,20]}
+{"kind":"shape","id":"sh/zed8v6ps","slide":1,"name":"rule-60-60","bbox":[60,60,1160,1]}
+{"kind":"textbox","id":"sh/obm58z25","slide":1,"name":"cover-kicker","text":"IMHWF 2026 Group 4 | Topic 2","textPreview":"IMHWF 2026 Group 4 | Topic 2","textChars":28,"textLines":1,"bbox":[72,86,520,24]}
+{"kind":"textbox","id":"sh/hwfyxobm","slide":1,"name":"cover-title","text":"Elevating Mental Health Care Through a Human-Centered Digital Ecosystem","textPreview":"Elevating Mental Health Care Through a Human-Centered Digital Ecosystem","textChars":71,"textLines":1,"bbox":[72,126,730,236]}
+{"kind":"textbox","id":"sh/65wjudg7","slide":1,"name":"cover-subtitle","text":"MindBridge Global is a practical continuity-of-care model that keeps safety, privacy, and human oversight at the center.","textPreview":"MindBridge Global is a practical continuity-of-care model that keeps safety, privacy, and human oversight at the center.","textChars":120,"textLines":1,"bbox":[72,390,690,72]}
+{"kind":"textbox","id":"sh/zqtcj6to","slide":1,"name":"cover-topic","text":"Innovations in Mental Health Care and Treatment","textPreview":"Innovations in Mental Health Care and Treatment","textChars":47,"textLines":1,"bbox":[72,474,690,34]}
+{"kind":"shape","id":"sh/h0fepkzu","slide":1,"name":"tag-1","bbox":[878,348,290,42]}
+{"kind":"textbox","id":"sh/5wjudg7a","slide":1,"name":"tag-text-1","text":"WHO aligned","textPreview":"WHO aligned","textChars":11,"textLines":1,"bbox":[898,358,250,22]}
+{"kind":"shape","id":"sh/gbq1oryt","slide":1,"name":"tag-2","bbox":[878,406,290,42]}
+{"kind":"textbox","id":"sh/nuxc3ylc","slide":1,"name":"tag-text-2","text":"Privacy by design","textPreview":"Privacy by design","textChars":17,"textLines":1,"bbox":[898,416,250,22]}
+{"kind":"shape","id":"sh/y90je9cv","slide":1,"name":"tag-3","bbox":[878,464,290,42]}
+{"kind":"textbox","id":"sh/58z25kb6","slide":1,"name":"tag-text-3","text":"Human oversight","textPreview":"Human oversight","textChars":15,"textLines":1,"bbox":[898,474,250,22]}
+{"kind":"shape","id":"sh/gn29gr2p","slide":1,"name":"team-band","bbox":[60,532,1160,136]}
+{"kind":"textbox","id":"sh/n29gr2p8","slide":1,"name":"team-label","text":"Faculty and team","textPreview":"Faculty and team","textChars":16,"textLines":1,"bbox":[88,552,280,24]}
+{"kind":"textbox","id":"sh/yhgn29gr","slide":1,"name":"team-left","text":"Ms. Sadia Hashmi | Psychotherapist / Counselor, PACT, Pakistan\nMiss Witthirasa Chaemphichanyotin | Psychiatric Social Worker, Nakhon Ratchasima Rajanagarindra Psychiatric Hospital, Thailand\nYuanruo Xu | China","textPreview":"Ms. Sadia Hashmi | Psychotherapist / Counselor, PACT, Pakistan | Miss Witthirasa Chaemphichanyotin | Psychiatric Social Worker, Nakhon Ra...","textChars":208,"textLines":3,"bbox":[88,584,520,78]}
+{"kind":"textbox","id":"sh/5kb6xkf6","slide":1,"name":"team-right","text":"Dr. Madhu Vamsi Ganduri | Psychiatrist, MV Health India\nAssoc. Prof. Yuchen Li | Mental Health Center, West China Hospital, Sichuan University, China","textPreview":"Dr. Madhu Vamsi Ganduri | Psychiatrist, MV Health India | Assoc. Prof. Yuchen Li | Mental Health Center, West China Hospital, Sichuan Uni...","textChars":149,"textLines":2,"bbox":[642,584,520,78]}
+{"kind":"image","id":"im/tgfmlkjm","slide":1,"name":"","alt":"Department of Mental Health seal","bbox":[930,92,220,220]}
+{"kind":"notes","id":"nt/a7rqca","slide":1,"text":""}
+{"kind":"slide","id":"sl/intf55","slide":2,"title":"WHY NOW","textShapes":13}
+{"kind":"textbox","id":"sh/zed8v6ps","slide":2,"name":"section-2","text":"WHY NOW","textPreview":"WHY NOW","textChars":7,"textLines":1,"bbox":[60,34,320,20]}
+{"kind":"textbox","id":"sh/oza1gvy9","slide":2,"name":"page-2","text":"02","textPreview":"02","textChars":2,"textLines":1,"bbox":[1140,34,80,20]}
+{"kind":"shape","id":"sh/hk3q5o7q","slide":2,"name":"rule-60-60","bbox":[60,60,1160,1]}
+{"kind":"textbox","id":"sh/65wjudg7","slide":2,"name":"why-title","text":"Continuity gaps are hurting patients and exhausting mental health teams","textPreview":"Continuity gaps are hurting patients and exhausting mental health teams","textChars":71,"textLines":1,"bbox":[60,88,1160,52]}
+{"kind":"textbox","id":"sh/zqtcj6to","slide":2,"name":"why-intro","text":"The pressure is not only rising demand. It is the combination of fragmented information, delayed triage, and weak follow-up across the care journey.","textPreview":"The pressure is not only rising demand. It is the combination of fragmented information, delayed triage, and weak follow-up across the ca...","textChars":148,"textLines":1,"bbox":[60,146,1080,54]}
+{"kind":"shape","id":"sh/obm58z25","slide":2,"name":"why-card-1","bbox":[60,220,570,192]}
+{"kind":"textbox","id":"sh/hwfyxobm","slide":2,"name":"why-card-title-1","text":"Rising demand and staff burnout","textPreview":"Rising demand and staff burnout","textChars":31,"textLines":1,"bbox":[84,244,520,54]}
+{"kind":"textbox","id":"sh/a9w3m94f","slide":2,"name":"why-card-copy-1","text":"Specialist teams are stretched, leaving less time for direct patient and family care when complexity keeps increasing.","textPreview":"Specialist teams are stretched, leaving less time for direct patient and family care when complexity keeps increasing.","textChars":118,"textLines":1,"bbox":[84,308,520,78]}
+{"kind":"shape","id":"sh/zupwb2hw","slide":2,"name":"why-card-2","bbox":[650,220,570,192]}
+{"kind":"textbox","id":"sh/7y1kre1w","slide":2,"name":"why-card-title-2","text":"Long waiting lists hide urgent need","textPreview":"Long waiting lists hide urgent need","textChars":35,"textLines":1,"bbox":[674,244,520,54]}
+{"kind":"textbox","id":"sh/ed8v6psf","slide":2,"name":"why-card-copy-2","text":"Frontline teams often cannot see early warning signs quickly enough, so wait time can conceal high-risk situations.","textPreview":"Frontline teams often cannot see early warning signs quickly enough, so wait time can conceal high-risk situations.","textChars":115,"textLines":1,"bbox":[674,308,520,78]}
+{"kind":"shape","id":"sh/p4r65wju","slide":2,"name":"why-card-3","bbox":[60,452,570,192]}
+{"kind":"textbox","id":"sh/wjudg7ad","slide":2,"name":"why-card-title-3","text":"Fragmented communication","textPreview":"Fragmented communication","textChars":24,"textLines":1,"bbox":[84,476,520,54]}
+{"kind":"textbox","id":"sh/7qpg3ex0","slide":2,"name":"why-card-copy-3","text":"Clinical, psychosocial, and community actions are often documented in separate places with limited shared visibility.","textPreview":"Clinical, psychosocial, and community actions are often documented in separate places with limited shared visibility.","textChars":117,"textLines":1,"bbox":[84,540,520,78]}
+{"kind":"shape","id":"sh/i5sneloj","slide":2,"name":"why-card-4","bbox":[650,452,570,192]}
+{"kind":"textbox","id":"sh/pwb2hwfy","slide":2,"name":"why-card-title-4","text":"Weak post-discharge follow-up","textPreview":"Weak post-discharge follow-up","textChars":29,"textLines":1,"bbox":[674,476,520,54]}
+{"kind":"textbox","id":"sh/0bi9s36h","slide":2,"name":"why-card-copy-4","text":"Transitions to community care remain vulnerable when responsibilities, consent boundaries, and referral closure are unclear.","textPreview":"Transitions to community care remain vulnerable when responsibilities, consent boundaries, and referral closure are unclear.","textChars":124,"textLines":1,"bbox":[674,540,520,78]}
+{"kind":"textbox","id":"sh/7ed8bat4","slide":2,"name":"why-footer","text":"Repeated assessments and limited psychosocial data make these gaps harder to solve at scale.","textPreview":"Repeated assessments and limited psychosocial data make these gaps harder to solve at scale.","textChars":92,"textLines":1,"bbox":[60,660,1160,20]}
+{"kind":"notes","id":"nt/intf55","slide":2,"text":""}
+{"kind":"slide","id":"sl/9bbvp6","slide":3,"title":"MODEL","textShapes":16}
+{"kind":"textbox","id":"sh/hoza1gvy","slide":3,"name":"section-3","text":"MODEL","textPreview":"MODEL","textChars":5,"textLines":1,"bbox":[60,34,320,20]}
+{"kind":"textbox","id":"sh/a1gvy90j","slide":3,"name":"page-3","text":"03","textPreview":"03","textChars":2,"textLines":1,"bbox":[1140,34,80,20]}
+{"kind":"shape","id":"sh/zidonyd0","slide":3,"name":"rule-60-60","bbox":[60,60,1160,1]}
+{"kind":"textbox","id":"sh/svu9knih","slide":3,"name":"model-title","text":"Four connected components turn fragmented services into one shared pathway","textPreview":"Four connected components turn fragmented services into one shared pathway","textChars":74,"textLines":1,"bbox":[60,88,1160,52]}
+{"kind":"textbox","id":"sh/hgn29gr2","slide":3,"name":"model-intro","text":"The design starts with affordable workflow tools, then grows into a stronger governance and interoperability model over time.","textPreview":"The design starts with affordable workflow tools, then grows into a stronger governance and interoperability model over time.","textChars":125,"textLines":1,"bbox":[60,146,1120,54]}
+{"kind":"shape","id":"sh/ap4r65wj","slide":3,"name":"component-card-1","bbox":[60,220,570,192]}
+{"kind":"shape","id":"sh/za1gvy90","slide":3,"name":"component-badge-1","bbox":[84,244,54,54]}
+{"kind":"textbox","id":"sh/sji5snel","slide":3,"name":"component-badge-text-1","text":"01","textPreview":"01","textChars":2,"textLines":1,"bbox":[84,258,54,22]}
+{"kind":"textbox","id":"sh/h4byhgn2","slide":3,"name":"component-title-1","text":"Automated pre-session check-ins","textPreview":"Automated pre-session check-ins","textChars":31,"textLines":1,"bbox":[158,248,438,54]}
+{"kind":"textbox","id":"sh/p4r65wju","slide":3,"name":"component-copy-1","text":"Structured intake captures concerns, symptoms, barriers, and support context before or at contact with services.","textPreview":"Structured intake captures concerns, symptoms, barriers, and support context before or at contact with services.","textChars":112,"textLines":1,"bbox":[84,316,520,72]}
+{"kind":"shape","id":"sh/wjudg7ad","slide":3,"name":"component-card-2","bbox":[650,220,570,192]}
+{"kind":"shape","id":"sh/7y1kre1w","slide":3,"name":"component-badge-2","bbox":[674,244,54,54]}
+{"kind":"textbox","id":"sh/ed8v6psf","slide":3,"name":"component-badge-text-2","text":"02","textPreview":"02","textChars":2,"textLines":1,"bbox":[674,258,54,22]}
+{"kind":"textbox","id":"sh/pwb2hwfy","slide":3,"name":"component-title-2","text":"AI-assisted risk screening","textPreview":"AI-assisted risk screening","textChars":26,"textLines":1,"bbox":[748,248,438,54]}
+{"kind":"textbox","id":"sh/0bi9s36h","slide":3,"name":"component-copy-2","text":"Decision support helps surface safety and psychosocial risk patterns under clinician review, not instead of it.","textPreview":"Decision support helps surface safety and psychosocial risk patterns under clinician review, not instead of it.","textChars":111,"textLines":1,"bbox":[674,316,520,72]}
+{"kind":"shape","id":"sh/7qpg3ex0","slide":3,"name":"component-card-3","bbox":[60,452,570,192]}
+{"kind":"shape","id":"sh/i5sneloj","slide":3,"name":"component-badge-3","bbox":[84,476,54,54]}
+{"kind":"textbox","id":"sh/pkzupwb2","slide":3,"name":"component-badge-text-3","text":"03","textPreview":"03","textChars":2,"textLines":1,"bbox":[84,490,54,22]}
+{"kind":"textbox","id":"sh/0z61032l","slide":3,"name":"component-title-3","text":"Shared MDT and community hub","textPreview":"Shared MDT and community hub","textChars":28,"textLines":1,"bbox":[158,480,438,54]}
+{"kind":"textbox","id":"sh/w7mp0bi9","slide":3,"name":"component-copy-3","text":"Psychiatrists, nurses, psychologists, social workers, and community teams coordinate through one care pathway.","textPreview":"Psychiatrists, nurses, psychologists, social workers, and community teams coordinate through one care pathway.","textChars":110,"textLines":1,"bbox":[84,548,520,72]}
+{"kind":"shape","id":"sh/psfil0rq","slide":3,"name":"component-card-4","bbox":[650,452,570,192]}
+{"kind":"shape","id":"sh/e1w7mp0b","slide":3,"name":"component-badge-4","bbox":[674,476,54,54]}
+{"kind":"textbox","id":"sh/7mp0bi9s","slide":3,"name":"component-badge-text-4","text":"04","textPreview":"04","textChars":2,"textLines":1,"bbox":[674,490,54,22]}
+{"kind":"textbox","id":"sh/wval87ed","slide":3,"name":"component-title-4","text":"Privacy-preserving evaluation layer","textPreview":"Privacy-preserving evaluation layer","textChars":35,"textLines":1,"bbox":[748,480,438,54]}
+{"kind":"textbox","id":"sh/pg3ex0nu","slide":3,"name":"component-copy-4","text":"De-identified data supports dashboards, quality improvement, workforce planning, and future cross-site learning.","textPreview":"De-identified data supports dashboards, quality improvement, workforce planning, and future cross-site learning.","textChars":112,"textLines":1,"bbox":[674,548,520,72]}
+{"kind":"notes","id":"nt/9bbvp6","slide":3,"text":""}
+{"kind":"slide","id":"sl/arqm53","slide":4,"title":"ROADMAP","textShapes":20}
+{"kind":"textbox","id":"sh/5kb6xkf6","slide":4,"name":"section-4","text":"ROADMAP","textPreview":"ROADMAP","textChars":7,"textLines":1,"bbox":[60,34,320,20]}
+{"kind":"textbox","id":"sh/ytsvu9kn","slide":4,"name":"page-4","text":"04","textPreview":"04","textChars":2,"textLines":1,"bbox":[1140,34,80,20]}
+{"kind":"shape","id":"sh/neloj2t8","slide":4,"name":"rule-60-60","bbox":[60,60,1160,1]}
+{"kind":"textbox","id":"sh/cbulwval","slide":4,"name":"roadmap-title","text":"A five-phase roadmap makes the concept feasible and governable","textPreview":"A five-phase roadmap makes the concept feasible and governable","textChars":62,"textLines":1,"bbox":[60,88,1160,52]}
+{"kind":"textbox","id":"sh/5sneloj2","slide":4,"name":"roadmap-intro","text":"The proposal does not assume a single technology launch. It moves from a pilot workflow to a safer shared platform step by step.","textPreview":"The proposal does not assume a single technology launch. It moves from a pilot workflow to a safer shared platform step by step.","textChars":128,"textLines":1,"bbox":[60,146,1120,54]}
+{"kind":"shape","id":"sh/u54zidon","slide":4,"name":"phase-card-1","bbox":[60,228,220,330]}
+{"kind":"textbox","id":"sh/nqxs72x4","slide":4,"name":"phase-label-1","text":"PHASE 1","textPreview":"PHASE 1","textChars":7,"textLines":1,"bbox":[80,250,180,20]}
+{"kind":"textbox","id":"sh/gbq1oryt","slide":4,"name":"phase-title-1","text":"Low-cost prototype","textPreview":"Low-cost prototype","textChars":18,"textLines":1,"bbox":[80,286,180,74]}
+{"kind":"textbox","id":"sh/5wjudg7a","slide":4,"name":"phase-copy-1","text":"Pilot the core workflow with Forms, Sheets, Drive, and Apps Script inside real service operations.","textPreview":"Pilot the core workflow with Forms, Sheets, Drive, and Apps Script inside real service operations.","textChars":98,"textLines":1,"bbox":[80,378,180,132]}
+{"kind":"shape","id":"sh/54zidony","slide":4,"name":"phase-card-2","bbox":[294,228,220,330]}
+{"kind":"textbox","id":"sh/cj6tovah","slide":4,"name":"phase-label-2","text":"PHASE 2","textPreview":"PHASE 2","textChars":7,"textLines":1,"bbox":[314,250,180,20]}
+{"kind":"textbox","id":"sh/nyd0z610","slide":4,"name":"phase-title-2","text":"Shared data dictionary","textPreview":"Shared data dictionary","textChars":22,"textLines":1,"bbox":[314,286,180,74]}
+{"kind":"textbox","id":"sh/udg7adsj","slide":4,"name":"phase-copy-2","text":"Define common fields for symptoms, psychosocial risk, follow-up status, and referral outcomes.","textPreview":"Define common fields for symptoms, psychosocial risk, follow-up status, and referral outcomes.","textChars":94,"textLines":1,"bbox":[314,378,180,132]}
+{"kind":"shape","id":"sh/5gbq1ory","slide":4,"name":"phase-card-3","bbox":[528,228,220,330]}
+{"kind":"textbox","id":"sh/cvixczed","slide":4,"name":"phase-label-3","text":"PHASE 3","textPreview":"PHASE 3","textChars":7,"textLines":1,"bbox":[548,250,180,20]}
+{"kind":"textbox","id":"sh/nap4r65w","slide":4,"name":"phase-title-3","text":"Secure MDT hub","textPreview":"Secure MDT hub","textChars":14,"textLines":1,"bbox":[548,286,180,74]}
+{"kind":"textbox","id":"sh/upwb2hwf","slide":4,"name":"phase-copy-3","text":"Add role-based access, consent visibility, minimum-necessary sharing, and audit trails.","textPreview":"Add role-based access, consent visibility, minimum-necessary sharing, and audit trails.","textChars":87,"textLines":1,"bbox":[548,378,180,132]}
+{"kind":"shape","id":"sh/1orytsvu","slide":4,"name":"phase-card-4","bbox":[762,228,220,330]}
+{"kind":"textbox","id":"sh/c7u54zid","slide":4,"name":"phase-label-4","text":"PHASE 4","textPreview":"PHASE 4","textChars":7,"textLines":1,"bbox":[782,250,180,20]}
+{"kind":"textbox","id":"sh/oza1gvy9","slide":4,"name":"phase-title-4","text":"Validated AI support","textPreview":"Validated AI support","textChars":20,"textLines":1,"bbox":[782,286,180,74]}
+{"kind":"textbox","id":"sh/hk3q5o7q","slide":4,"name":"phase-copy-4","text":"Introduce screening support only after ethics review, local validation, and clinician escalation pathways.","textPreview":"Introduce screening support only after ethics review, local validation, and clinician escalation pathways.","textChars":106,"textLines":1,"bbox":[782,378,180,132]}
+{"kind":"shape","id":"sh/6xkf6dcb","slide":4,"name":"phase-card-5","bbox":[996,228,220,330]}
+{"kind":"textbox","id":"sh/zed8v6ps","slide":4,"name":"phase-label-5","text":"PHASE 5","textPreview":"PHASE 5","textChars":7,"textLines":1,"bbox":[1016,250,180,20]}
+{"kind":"textbox","id":"sh/obm58z25","slide":4,"name":"phase-title-5","text":"Research database","textPreview":"Research database","textChars":17,"textLines":1,"bbox":[1016,286,180,74]}
+{"kind":"textbox","id":"sh/hwfyxobm","slide":4,"name":"phase-copy-5","text":"Expand to de-identified analytics for quality improvement, evaluation, and cross-site learning.","textPreview":"Expand to de-identified analytics for quality improvement, evaluation, and cross-site learning.","textChars":95,"textLines":1,"bbox":[1016,378,180,132]}
+{"kind":"shape","id":"sh/65wjudg7","slide":4,"name":"roadmap-callout","bbox":[60,590,1160,84]}
+{"kind":"textbox","id":"sh/zqtcj6to","slide":4,"name":"roadmap-callout-text","text":"Human safeguards travel with every phase: clinician review of high-risk flags, role-based access, visible consent, and traceable audit trails.","textPreview":"Human safeguards travel with every phase: clinician review of high-risk flags, role-based access, visible consent, and traceable audit tr...","textChars":142,"textLines":1,"bbox":[92,614,1096,34]}
+{"kind":"notes","id":"nt/arqm53","slide":4,"text":""}
+{"kind":"slide","id":"sl/89ziqb","slide":5,"title":"IMPACT","textShapes":17}
+{"kind":"textbox","id":"sh/twra5gbq","slide":5,"name":"section-5","text":"IMPACT","textPreview":"IMPACT","textChars":6,"textLines":1,"bbox":[60,34,320,20]}
+{"kind":"textbox","id":"sh/m58z25kb","slide":5,"name":"page-5","text":"05","textPreview":"05","textChars":2,"textLines":1,"bbox":[1140,34,80,20]}
+{"kind":"shape","id":"sh/bq1oryts","slide":5,"name":"rule-60-60","bbox":[60,60,1160,1]}
+{"kind":"textbox","id":"sh/4nap4r65","slide":5,"name":"impact-title","text":"The model is practical, measurable, and globally relevant","textPreview":"The model is practical, measurable, and globally relevant","textChars":57,"textLines":1,"bbox":[60,88,1160,52]}
+{"kind":"textbox","id":"sh/t83itgfm","slide":5,"name":"impact-intro","text":"It begins with a low-cost pilot, but its structure already aligns with WHO priorities for governance, community care, and learning health systems.","textPreview":"It begins with a low-cost pilot, but its structure already aligns with WHO priorities for governance, community care, and learning health...","textChars":146,"textLines":1,"bbox":[60,146,1130,52]}
+{"kind":"shape","id":"sh/mhk3q5o7","slide":5,"name":"metric-1","bbox":[60,220,280,154]}
+{"kind":"textbox","id":"sh/b2hwfyxo","slide":5,"name":"metric-1-value","text":"4","textPreview":"4","textChars":1,"textLines":1,"bbox":[84,242,232,74]}
+{"kind":"textbox","id":"sh/4vmtwra5","slide":5,"name":"metric-1-label","text":"core components","textPreview":"core components","textChars":15,"textLines":1,"bbox":[84,330,232,56]}
+{"kind":"shape","id":"sh/tgfmlkjm","slide":5,"name":"metric-2","bbox":[356,220,280,154]}
+{"kind":"textbox","id":"sh/xc3ylc7u","slide":5,"name":"metric-2-value","text":"6","textPreview":"6","textChars":1,"textLines":1,"bbox":[380,242,232,74]}
+{"kind":"textbox","id":"sh/4r65wjud","slide":5,"name":"metric-2-label","text":"patient journey stages","textPreview":"patient journey stages","textChars":22,"textLines":1,"bbox":[380,330,232,56]}
+{"kind":"shape","id":"sh/f6dcbulw","slide":5,"name":"metric-3","bbox":[652,220,280,154]}
+{"kind":"textbox","id":"sh/mlkjm1cf","slide":5,"name":"metric-3-value","text":"5","textPreview":"5","textChars":1,"textLines":1,"bbox":[676,242,232,74]}
+{"kind":"textbox","id":"sh/xkf6dcbu","slide":5,"name":"metric-3-label","text":"roadmap phases","textPreview":"roadmap phases","textChars":14,"textLines":1,"bbox":[676,330,232,56]}
+{"kind":"shape","id":"sh/4zidonyd","slide":5,"name":"metric-4","bbox":[948,220,280,154]}
+{"kind":"textbox","id":"sh/fepkzupw","slide":5,"name":"metric-4-value","text":"4","textPreview":"4","textChars":1,"textLines":1,"bbox":[972,242,232,74]}
+{"kind":"textbox","id":"sh/mtwra5gb","slide":5,"name":"metric-4-label","text":"WHO objectives aligned","textPreview":"WHO objectives aligned","textChars":22,"textLines":1,"bbox":[972,330,232,56]}
+{"kind":"shape","id":"sh/xobm58z2","slide":5,"name":"impact-outcomes","bbox":[60,406,560,226]}
+{"kind":"textbox","id":"sh/83itgfml","slide":5,"name":"impact-outcomes-title","text":"Expected outcomes","textPreview":"Expected outcomes","textChars":17,"textLines":1,"bbox":[84,432,260,26]}
+{"kind":"textbox","id":"sh/4byhgn29","slide":5,"name":"impact-outcomes-bullets","text":"Fewer repeated assessments and earlier recognition of urgent need.\nClearer prioritization and less repetitive documentation for multidisciplinary teams.\nBetter follow-up completion, referral closure, and service learning from routine data.","textPreview":"Fewer repeated assessments and earlier recognition of urgent need. | Clearer prioritization and less repetitive documentation for multidi...","textChars":239,"textLines":3,"bbox":[84,474,500,132]}
+{"kind":"shape","id":"sh/twra5gbq","slide":5,"name":"impact-scale","bbox":[660,406,560,226]}
+{"kind":"textbox","id":"sh/m58z25kb","slide":5,"name":"impact-scale-title","text":"Why it can scale","textPreview":"Why it can scale","textChars":16,"textLines":1,"bbox":[684,432,280,26]}
+{"kind":"textbox","id":"sh/bq1oryts","slide":5,"name":"impact-scale-bullets","text":"Prototype starts with Google Apps Script, Forms, Sheets, and Drive in resource-limited settings.\nLater phases add RBAC, consent, audit trails, and validated AI support under professional accountability.\nDe-identified analytics enable cross-site learning without unnecessary exposure of sensitive records.","textPreview":"Prototype starts with Google Apps Script, Forms, Sheets, and Drive in resource-limited settings. | Later phases add RBAC, consent, audit ...","textChars":304,"textLines":3,"bbox":[684,474,500,132]}
+{"kind":"textbox","id":"sh/4nap4r65","slide":5,"name":"impact-footer","text":"Start local. Scale responsibly. Keep the human touch.","textPreview":"Start local. Scale responsibly. Keep the human touch.","textChars":53,"textLines":1,"bbox":[60,664,1160,24]}
+{"kind":"notes","id":"nt/89ziqb","slide":5,"text":""}

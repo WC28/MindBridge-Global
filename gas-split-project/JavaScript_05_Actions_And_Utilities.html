@@ -1,0 +1,427 @@
+<script>
+  function isStaffPortalSession() {
+    return !!(state.bootstrap &&
+      state.bootstrap.currentUser &&
+      state.bootstrap.currentUser.portalType === 'staff');
+  }
+
+  function applyStaffPortalPayload(payload) {
+    state.bootstrap.dashboard = payload.dashboard || state.bootstrap.dashboard;
+    state.bootstrap.ecosystemHub = payload.ecosystemHub || state.bootstrap.ecosystemHub;
+    state.bootstrap.caseWorkspace = payload.caseWorkspace || state.bootstrap.caseWorkspace;
+    state.bootstrap.referralNetwork = payload.referralNetwork || state.bootstrap.referralNetwork;
+    state.bootstrap.caseOptions = payload.caseOptions || state.bootstrap.caseOptions;
+    state.bootstrap.staffOptions = payload.staffOptions || state.bootstrap.staffOptions;
+    state.bootstrap.spreadsheetName = payload.spreadsheetName || state.bootstrap.spreadsheetName;
+    state.bootstrap.spreadsheetUrl = payload.spreadsheetUrl || state.bootstrap.spreadsheetUrl;
+    state.bootstrap.needsStaffHydration = false;
+  }
+
+  function maybeHydrateStaffPortalData(force) {
+    if (!isStaffPortalSession() || !state.bootstrap.sessionToken) {
+      return;
+    }
+    if (!force && !state.bootstrap.needsStaffHydration) {
+      return;
+    }
+    if (state.staffHydrationInFlight) {
+      return;
+    }
+
+    state.staffHydrationInFlight = true;
+    showBanner(force ? 'Refreshing live dashboard...' : 'Loading live triage data...');
+    runServer('refreshDashboardData', [state.bootstrap.sessionToken], function(payload) {
+      state.staffHydrationInFlight = false;
+      applyStaffPortalPayload(payload);
+      renderSpreadsheetLink();
+      renderDashboard();
+      renderFormPages();
+      refreshCaseSelectors();
+      refreshPageVisibility();
+      showBanner(force ? 'Dashboard refreshed.' : 'Live dashboard ready.');
+      window.setTimeout(hideBanner, 1600);
+    }, function(error) {
+      state.staffHydrationInFlight = false;
+      showBanner(error.message || 'Unable to load live dashboard data.', true);
+    });
+  }
+
+  function bindGlobalActions() {
+    document.getElementById('refresh-button').onclick = function() {
+      maybeHydrateStaffPortalData(true);
+    };
+
+    document.getElementById('seed-button').onclick = function() {
+      showBanner('Seeding demo data...');
+      runServer('seedDemoData', [state.bootstrap.sessionToken], function(payload) {
+        applyStaffPortalPayload(payload);
+        renderSpreadsheetLink();
+        renderDashboard();
+        renderFormPages();
+        refreshCaseSelectors();
+        showBanner(payload.message || 'Prototype data ready.');
+        window.setTimeout(hideBanner, 2200);
+      }, function(error) {
+        showBanner(error.message || 'Unable to seed demo data.', true);
+      });
+    };
+
+    document.getElementById('logout-button').onclick = function() {
+      const token = state.bootstrap.sessionToken;
+      clearStoredSessionToken();
+      runServer('logoutPortal', [token], function() {
+        resetToSignedOutState();
+      }, function() {
+        resetToSignedOutState();
+      });
+    };
+  }
+
+  function resetToSignedOutState() {
+    state.bootstrap = {
+      appTitle: state.bootstrap.appTitle,
+      subtitle: state.bootstrap.subtitle,
+      portalOptions: state.bootstrap.portalOptions,
+      proposalNote: state.bootstrap.proposalNote,
+      authenticated: false
+    };
+    state.selectedPortal = window.__INITIAL_PORTAL__ || 'register';
+    hydrateApp();
+  }
+
+  function submitForm(form) {
+    const formKey = form.getAttribute('data-form-key');
+    const payload = serializeForm(form);
+    const status = document.getElementById('status-' + formKey);
+    status.textContent = 'Saving...';
+    clearResultBox(formKey);
+    showBanner('Saving ' + FORM_DEFINITIONS[formKey].description.toLowerCase() + '...');
+
+    runServer('saveForm', [formKey, payload, state.bootstrap.sessionToken], function(result) {
+      state.bootstrap.dashboard = result.dashboard || state.bootstrap.dashboard;
+      state.bootstrap.ecosystemHub = result.ecosystemHub || state.bootstrap.ecosystemHub;
+      state.bootstrap.caseWorkspace = result.caseWorkspace || state.bootstrap.caseWorkspace;
+      state.bootstrap.referralNetwork = result.referralNetwork || state.bootstrap.referralNetwork;
+      state.bootstrap.caseOptions = result.caseOptions || state.bootstrap.caseOptions;
+      state.bootstrap.staffOptions = result.staffOptions || state.bootstrap.staffOptions;
+      state.bootstrap.formContext = result.formContext || state.bootstrap.formContext;
+      state.bootstrap.needsStaffHydration = false;
+      renderDashboard();
+      refreshCaseSelectors();
+
+      if (state.bootstrap.currentUser && state.bootstrap.currentUser.portalType === 'staff' && result.riskFlag) {
+        status.innerHTML = renderInlineFlag(result.riskFlag, result.riskReasons);
+      } else {
+        status.textContent = 'Saved';
+      }
+
+      renderResultBox(formKey, result);
+      showBanner(result.message || 'Saved successfully.');
+      form.reset();
+      applyFormContext(form);
+      window.setTimeout(hideBanner, 2200);
+
+      if (formKey === 'Patient_Checkin' &&
+        state.bootstrap.currentUser &&
+        state.bootstrap.currentUser.portalType === 'staff' &&
+        result.caseId) {
+        state.activePage = 'Clinical_Review';
+        renderNavigation();
+        refreshPageVisibility();
+        const clinicalForm = document.querySelector('form[data-form-key="Clinical_Review"]');
+        if (clinicalForm) {
+          const selector = clinicalForm.querySelector('.case-selector');
+          if (selector) {
+            selector.value = result.caseId;
+          }
+        }
+      }
+    }, function(error) {
+      status.textContent = 'Save failed';
+      if (String(error.message || '').indexOf('session has expired') !== -1) {
+        clearStoredSessionToken();
+      }
+      showBanner(error.message || 'Unable to save form.', true);
+    });
+  }
+
+  function renderResultBox(formKey, result) {
+    const box = document.getElementById('result-' + formKey);
+    if (!box || !result) {
+      return;
+    }
+
+    const chunks = [];
+    if (result.generatedCodes) {
+      chunks.push([
+        '<div class="result-title">Generated portal codes</div>',
+        '<div class="code-grid">',
+        '<div class="code-chip"><span>Patient code</span><strong>',
+        escapeHtml(result.generatedCodes.patientCode || ''),
+        '</strong></div>',
+        '<div class="code-chip"><span>Patient portal</span><strong>',
+        escapeHtml(result.generatedCodes.patientPortalCode || ''),
+        '</strong></div>',
+        '<div class="code-chip"><span>Family portal</span><strong>',
+        escapeHtml(result.generatedCodes.familyPortalCode || ''),
+        '</strong></div>',
+        '</div>'
+      ].join(''));
+    }
+
+    if (result.aiScreening) {
+      chunks.push([
+        '<div class="result-title">AI-assisted screening</div>',
+        '<div class="result-meta">',
+        renderUrgencySign(result.aiScreening.priorityForReview, result.aiScreening.triageUrgency),
+        renderFlag(result.aiScreening.priorityForReview || 'Green'),
+        '</div>',
+        '<div class="code-grid">',
+        '<div class="code-chip"><span>Priority for review</span><strong>',
+        escapeHtml(result.aiScreening.priorityForReview || ''),
+        '</strong></div>',
+        '<div class="code-chip"><span>AI confidence</span><strong>',
+        escapeHtml(result.aiScreening.aiConfidence || ''),
+        '</strong></div>',
+        '<div class="code-chip"><span>Agreement</span><strong>',
+        escapeHtml(result.aiScreening.agreementStatus || ''),
+        '</strong></div>',
+        '</div>',
+        '<div class="code-grid">',
+        '<div class="code-chip"><span>Matched service</span><strong>',
+        escapeHtml(result.aiScreening.triageDestination || 'Not set'),
+        '</strong></div>',
+        '<div class="code-chip"><span>Triage urgency</span><strong>',
+        escapeHtml(result.aiScreening.triageUrgency || 'Routine'),
+        '</strong></div>',
+        '<div class="code-chip"><span>Follow-up window</span><strong>',
+        escapeHtml(result.aiScreening.followUpWindow || 'Routine'),
+        '</strong></div>',
+        '</div>',
+        '<div class="result-text">',
+        escapeHtml(result.aiScreening.validationStatus || ''),
+        '</div>',
+        result.aiScreening.recommendedService
+          ? '<div class="result-text"><strong>Recommended service:</strong> ' + escapeHtml(result.aiScreening.recommendedService) + '</div>'
+          : '',
+        result.aiScreening.mdtFocus
+          ? '<div class="result-text"><strong>MDT focus:</strong> ' + escapeHtml(result.aiScreening.mdtFocus) + '</div>'
+          : '',
+        result.aiScreening.selfHelpGuidance
+          ? '<div class="result-text"><strong>Self-help / psychoeducation:</strong> ' + escapeHtml(result.aiScreening.selfHelpGuidance) + '</div>'
+          : '',
+        result.aiScreening.emergencyAction
+          ? '<div class="result-text"><strong>Emergency action:</strong> ' + escapeHtml(result.aiScreening.emergencyAction) + '</div>'
+          : '',
+        result.aiScreening.aiReasons && result.aiScreening.aiReasons.length
+          ? '<div class="result-meta">' + result.aiScreening.aiReasons.map(function(reason) {
+              return '<span class="mini-chip">' + escapeHtml(reason) + '</span>';
+            }).join('') + '</div>'
+          : '',
+        result.aiScreening.aiSummary
+          ? '<div class="result-text">' + escapeHtml(result.aiScreening.aiSummary) + '</div>'
+          : ''
+      ].join(''));
+    }
+
+    if (result.bprsScore || result.bprsInterpretation) {
+      chunks.push([
+        '<div class="result-title">BPRS 18-item severity</div>',
+        '<div class="code-grid">',
+        '<div class="code-chip"><span>Total score</span><strong>',
+        escapeHtml(result.bprsScore || 'Not recorded'),
+        '</strong></div>',
+        '<div class="code-chip"><span>Interpretation</span><strong>',
+        escapeHtml(result.bprsInterpretation || 'Not recorded'),
+        '</strong></div>',
+        '<div class="code-chip"><span>Use</span><strong>Clinical severity</strong></div>',
+        '</div>',
+        '<div class="result-text">BPRS interpretation is shown as a clinical severity aid and does not automatically change the triage decision.</div>'
+      ].join(''));
+    }
+
+    const meta = [];
+    if (result.caseId) {
+      meta.push('<span class="mini-chip">Case: ' + escapeHtml(result.caseId) + '</span>');
+    }
+    if (result.queuePriority) {
+      meta.push('<span class="mini-chip">Queue: ' + escapeHtml(result.queuePriority) + '</span>');
+    }
+    if (result.patientCode) {
+      meta.push('<span class="mini-chip">Patient: ' + escapeHtml(result.patientCode) + '</span>');
+    }
+    if (meta.length) {
+      chunks.push('<div class="result-meta">' + meta.join('') + '</div>');
+    }
+
+    if (result.message) {
+      chunks.push('<div class="result-text">' + escapeHtml(result.message) + '</div>');
+    }
+
+    if (!chunks.length) {
+      box.classList.add('hidden');
+      box.innerHTML = '';
+      return;
+    }
+
+    box.innerHTML = chunks.join('');
+    box.classList.remove('hidden');
+  }
+
+  function clearResultBox(formKey) {
+    const box = document.getElementById('result-' + formKey);
+    if (!box) {
+      return;
+    }
+    box.classList.add('hidden');
+    box.innerHTML = '';
+  }
+
+  function animateCountersIn(root) {
+    if (!root) {
+      return;
+    }
+    root.querySelectorAll('[data-counter-value]').forEach(function(element) {
+      const rawValue = element.getAttribute('data-counter-value');
+      if (!/^\d+$/.test(rawValue || '')) {
+        element.textContent = rawValue || '';
+        return;
+      }
+      const target = parseInt(rawValue, 10);
+      const duration = 650;
+      const start = performance.now();
+
+      function frame(now) {
+        const progress = Math.min(1, (now - start) / duration);
+        const eased = 1 - Math.pow(1 - progress, 3);
+        element.textContent = String(Math.round(target * eased));
+        if (progress < 1) {
+          window.requestAnimationFrame(frame);
+        } else {
+          element.textContent = String(target);
+        }
+      }
+
+      window.requestAnimationFrame(frame);
+    });
+  }
+
+  function serializeForm(form) {
+    const data = {};
+    Array.prototype.slice.call(form.elements).forEach(function(field) {
+      if (!field.name) {
+        return;
+      }
+      data[field.name] = field.value;
+    });
+    return data;
+  }
+
+  function renderFlag(flag) {
+    const className = 'flag flag-' + String(flag || 'Green').toLowerCase();
+    return '<span class="' + className + '">' + escapeHtml(flag || 'Green') + '</span>';
+  }
+
+  function renderPriority(priority) {
+    const normalized = String(priority || 'Routine').toLowerCase();
+    return '<span class="priority-pill priority-' + escapeHtml(normalized) + '">' + escapeHtml(priority || 'Routine') + '</span>';
+  }
+
+  function getUrgencySignModel(flag, priority) {
+    const normalizedFlag = String(flag || '').toLowerCase();
+    const normalizedPriority = String(priority || '').toLowerCase();
+    if (normalizedFlag === 'red' || normalizedPriority === 'immediate' || normalizedPriority === 'urgent') {
+      return { label: 'Critical', tone: 'critical' };
+    }
+    if (normalizedFlag === 'orange' || normalizedPriority === 'priority' || normalizedPriority === 'within 24 hours') {
+      return { label: 'Urgent', tone: 'urgent' };
+    }
+    if (normalizedFlag === 'yellow') {
+      return { label: 'Watch', tone: 'watch' };
+    }
+    return { label: 'Stable', tone: 'stable' };
+  }
+
+  function renderUrgencySign(flag, priority) {
+    const urgency = getUrgencySignModel(flag, priority);
+    return '<span class="urgency-sign urgency-' + urgency.tone + '"><span class="urgency-dot"></span>' + escapeHtml(urgency.label) + '</span>';
+  }
+
+  function getTriageRowClass(item) {
+    const urgency = getUrgencySignModel(item.riskFlag, item.queuePriority);
+    return 'triage-row triage-row-' + urgency.tone;
+  }
+
+  function renderInlineFlag(flag, reasons) {
+    const reasonText = reasons && reasons.length ? ' - ' + reasons.join(', ') : '';
+    return renderFlag(flag) + '<span class="inline-flag-text">' + escapeHtml(reasonText) + '</span>';
+  }
+
+  function showBanner(message, isError) {
+    const target = state.bootstrap && state.bootstrap.authenticated
+      ? document.getElementById('message-banner')
+      : document.getElementById('auth-banner');
+    const other = state.bootstrap && state.bootstrap.authenticated
+      ? document.getElementById('auth-banner')
+      : document.getElementById('message-banner');
+
+    if (other) {
+      other.classList.add('hidden');
+      other.classList.remove('error');
+      other.textContent = '';
+    }
+
+    target.classList.remove('hidden');
+    target.classList.toggle('error', !!isError);
+    target.textContent = message;
+  }
+
+  function hideBanner() {
+    ['auth-banner', 'message-banner'].forEach(function(id) {
+      const element = document.getElementById(id);
+      element.classList.add('hidden');
+      element.classList.remove('error');
+      element.textContent = '';
+    });
+  }
+
+  function runServer(functionName, args, onSuccess, onFailure) {
+    const runner = google.script.run
+      .withSuccessHandler(onSuccess)
+      .withFailureHandler(function(error) {
+        onFailure(error || new Error('Unknown error'));
+      });
+    runner[functionName](...(args || []));
+  }
+
+  function getStoredSessionToken() {
+    try {
+      return window.localStorage.getItem(SESSION_STORAGE_KEY) || '';
+    } catch (error) {
+      return '';
+    }
+  }
+
+  function storeSessionToken(token) {
+    try {
+      window.localStorage.setItem(SESSION_STORAGE_KEY, token || '');
+    } catch (error) {}
+  }
+
+  function clearStoredSessionToken() {
+    try {
+      window.localStorage.removeItem(SESSION_STORAGE_KEY);
+    } catch (error) {}
+  }
+
+  function escapeHtml(value) {
+    return String(value || '')
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
+  }
+
+  document.addEventListener('DOMContentLoaded', initializeApp);
+</script>

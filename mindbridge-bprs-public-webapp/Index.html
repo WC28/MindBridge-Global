@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <base target="_top">
+    <meta charset="utf-8">
+    <meta name="color-scheme" content="light only">
+    <title>MindBridge BPRS Access</title>
+    <?!= include('Stylesheet'); ?>
+  </head>
+  <body>
+    <div class="ambient-orb ambient-orb-a"></div>
+    <div class="ambient-orb ambient-orb-b"></div>
+
+    <header class="hero-shell">
+      <div class="hero-copy hero-rainbow">
+        <div class="eyebrow">AI Workflow Public Access</div>
+        <h1 id="app-title">MindBridge BPRS Access</h1>
+        <p id="app-subtitle">A separate public-facing BPRS 18-item check-in for patients, families, caregivers, and staff.</p>
+        <div class="hero-note">
+          <strong>Presentation framing:</strong>
+          This page is intentionally separate from the staff portal so the audience sees one simple AI-assisted workflow: access, AI intake, BPRS scoring, AI screening, AI triage, right-care routing, and psychiatrist warning when a new submission scores above 40.
+        </div>
+      </div>
+
+      <aside class="hero-panel hero-lilac">
+        <div class="hero-panel-label">Live Score Preview</div>
+        <div id="hero-score" class="hero-score">18</div>
+        <div id="hero-band" class="hero-band urgency-stable">Minimal to mild symptoms</div>
+        <div id="hero-next-step" class="hero-next-step">
+          Complete all 18 items to generate a shareable summary for clinical discussion.
+        </div>
+      </aside>
+    </header>
+
+    <main class="layout-shell">
+      <section class="form-column">
+        <div id="banner" class="banner hidden" role="status" aria-live="polite"></div>
+
+        <section class="panel panel-intro panel-tone-sunset">
+          <div class="panel-header">
+            <h2>Workflow entry</h2>
+            <p>Start the front-door workflow by identifying who is completing the check-in, where the patient is right now, and which language should guide the AI-assisted conversation and triage flow.</p>
+          </div>
+
+          <div id="workflow-strip" class="workflow-strip"></div>
+
+          <div class="selector-block">
+            <label class="selector-label">Role</label>
+            <div id="role-selector" class="selector-grid"></div>
+          </div>
+
+          <div class="selector-block">
+            <label class="selector-label">Care setting</label>
+            <div id="context-selector" class="selector-grid"></div>
+          </div>
+
+          <div class="selector-block">
+            <label class="selector-label">Language</label>
+            <div id="language-selector" class="selector-row"></div>
+          </div>
+        </section>
+
+        <form id="bprs-form" class="form-stack">
+          <section class="panel panel-tone-rose">
+            <div class="panel-header">
+              <h2>Step 2: AI intake, safety, and basic details</h2>
+              <p>Use minimal information for privacy, flag immediate risk first, and capture the short story that the AI screening flow uses for triage context.</p>
+            </div>
+
+            <div class="form-grid">
+              <div class="field">
+                <label for="respondent-name">Respondent name or alias</label>
+                <input id="respondent-name" name="respondentName" type="text" placeholder="Patient, caregiver, or staff alias">
+              </div>
+              <div class="field">
+                <label for="patient-code">Patient code (optional)</label>
+                <input id="patient-code" name="patientCode" type="text" placeholder="e.g. MB-001">
+              </div>
+              <div class="field">
+                <label for="caregiver-name">Caregiver / family name (optional)</label>
+                <input id="caregiver-name" name="caregiverName" type="text" placeholder="Optional support person">
+              </div>
+              <div class="field field-checkbox">
+                <label class="checkbox-card">
+                  <input id="immediate-safety" name="immediateSafety" type="checkbox">
+                  <span>
+                    <strong>Immediate safety concern now</strong>
+                    <small>Check this if there is immediate concern about self-harm, violence, or inability to stay safe.</small>
+                  </span>
+                </label>
+              </div>
+              <div class="field span-2">
+                <label for="notes">Free-text story or notes</label>
+                <textarea id="notes" name="notes" placeholder="Describe what is happening right now, what changed recently, and what kind of help is needed."></textarea>
+              </div>
+            </div>
+          </section>
+
+          <section class="panel panel-tone-sky">
+            <div class="panel-header">
+              <h2>Step 3: BPRS 18-item AI screening input</h2>
+              <p>Complete all 18 symptom domains in order. The workflow then turns the ratings into AI-assisted screening, severity interpretation, urgency, and the routed next step.</p>
+            </div>
+
+            <div class="scale-legend" id="scale-legend"></div>
+            <div id="groups-container" class="groups-stack"></div>
+          </section>
+        </form>
+      </section>
+
+      <aside class="summary-column">
+        <section class="panel summary-panel panel-tone-mint">
+          <div class="panel-header">
+            <h2>Workflow outcome</h2>
+            <p>Focus only on workflow: AI screening, AI triage, symptom burden, urgency, route destination, and the next care action.</p>
+          </div>
+
+          <div class="summary-metric-grid">
+            <div class="summary-metric">
+              <span>Completed items</span>
+              <strong id="completed-items">0 / 18</strong>
+            </div>
+            <div class="summary-metric">
+              <span>Total score</span>
+              <strong id="total-score">18</strong>
+            </div>
+          </div>
+
+          <div id="urgency-badge" class="urgency-chip urgency-stable">Stable support pathway</div>
+          <div id="interpretation-text" class="interpretation-copy">Minimal to mild symptoms</div>
+          <div id="next-step-text" class="next-step-copy">Complete all 18 items and review the generated next step with the care team.</div>
+
+          <div class="route-grid">
+            <div class="route-card">
+              <span>Route to</span>
+              <strong id="route-destination">Community support or routine clinic</strong>
+            </div>
+            <div class="route-card">
+              <span>Timing</span>
+              <strong id="route-timing">Routine follow-up</strong>
+            </div>
+            <div class="route-card route-card-wide">
+              <span>Suggested team</span>
+              <strong id="route-team">Patient, family, caregiver, or community support link</strong>
+            </div>
+            <div class="route-card route-card-wide">
+              <span>Current workflow stage</span>
+              <strong id="workflow-stage-label">Community monitoring</strong>
+              <small id="workflow-stage-copy">Low-risk cases stay visible for community or family follow-up and self-help support.</small>
+            </div>
+          </div>
+
+          <div id="psychiatrist-alert-card" class="alert-status-card alert-state-idle">
+            <div class="alert-status-label">Psychiatrist alert</div>
+            <strong id="psychiatrist-alert-title">Not triggered</strong>
+            <div id="psychiatrist-alert-copy" class="alert-status-copy">A psychiatrist warning is prepared only when the total score is above 40 or immediate safety is marked.</div>
+          </div>
+
+          <div class="subsection">
+            <div class="subsection-label">AI screening summary</div>
+            <div id="ai-screening-summary" class="workflow-summary-copy">Finish the rating flow to generate the AI screening interpretation.</div>
+          </div>
+
+          <div class="subsection">
+            <div class="subsection-label">AI triage recommendation</div>
+            <div id="ai-triage-summary" class="workflow-summary-copy">Finish the rating flow to generate the AI triage recommendation.</div>
+          </div>
+
+          <div class="subsection">
+            <div class="subsection-label">Workflow summary</div>
+            <div id="workflow-summary" class="workflow-summary-copy">Finish the rating flow to generate the route summary.</div>
+          </div>
+
+          <div id="staff-dashboard-card" class="staff-link-card hidden">
+            <div class="subsection-label">Staff dashboard</div>
+            <a id="staff-dashboard-link" class="dashboard-link-button" href="#" target="_blank" rel="noopener">Open psychiatrist / MDT status board</a>
+            <div class="staff-link-copy">Track new alerts, psychiatrist review, MDT coordination, and community follow-up in one board.</div>
+          </div>
+
+          <div class="subsection">
+            <div class="subsection-label">Strongest current signals</div>
+            <div id="top-signals" class="signal-stack">
+              <div class="empty-line">No high-signal items yet.</div>
+            </div>
+          </div>
+
+          <div class="subsection">
+            <div class="subsection-label">Severity bands</div>
+            <div id="interpretation-bands" class="bands-stack"></div>
+          </div>
+
+          <div class="summary-actions">
+            <button id="submit-button" class="primary-button" type="button">Save / Generate summary</button>
+            <button id="copy-button" class="ghost-button" type="button">Copy summary</button>
+            <button id="print-button" class="ghost-button" type="button">Print</button>
+            <button id="reset-button" class="ghost-button" type="button">Reset</button>
+          </div>
+
+          <div id="result-box" class="result-box hidden"></div>
+        </section>
+
+        <section class="panel safety-panel panel-tone-lemon">
+          <div class="panel-header">
+            <h2>Important note</h2>
+            <p>The official BPRS is a clinician-rated psychiatric symptom scale. In this public-facing prototype, the same 18 symptom domains are used as a guided pre-assessment inside an AI-assisted workflow to support conversation and triage discussion. It does not replace clinical judgment, diagnosis, or emergency assessment.</p>
+          </div>
+          <ul class="note-list">
+            <li>Use this separately from the staff portal to show a simple access point for the audience.</li>
+            <li>If immediate safety risk is present, use local emergency services or the nearest emergency department.</li>
+            <li>The AI workflow in this prototype uses structured triage logic and scoring summaries for presentation.</li>
+            <li>If the score is above 40, the saved workflow can warn the psychiatrist team through Telegram.</li>
+          </ul>
+        </section>
+      </aside>
+    </main>
+
+    <?!= include('JavaScript'); ?>
+  </body>
+</html>

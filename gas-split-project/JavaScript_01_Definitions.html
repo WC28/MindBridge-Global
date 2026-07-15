@@ -1,0 +1,255 @@
+<script>
+  const SESSION_STORAGE_KEY = 'imhcc-session-token';
+
+  const PAGE_DEFINITIONS = [
+    { id: 'ecosystem_hub', title: 'MindBridge Global Ecosystem', subtitle: 'Phase 1 MVP proving the 8-layer mental health ecosystem' },
+    { id: 'dashboard', title: 'Operational Dashboard', subtitle: 'Live triage, workflow, and coordination command view' },
+    { id: 'triage_hub', title: 'Triage Command', subtitle: 'Arrival routing, priority queue, and first-response signals' },
+    { id: 'Patient_Registration', title: 'Front Door Registration', subtitle: 'Create a privacy-preserving identity and portal access' },
+    { id: 'Patient_Checkin', title: 'Unified Intake', subtitle: 'Structured intake for patient, family, or staff entry' },
+    { id: 'Service_Followup', title: 'Same-Day Service', subtitle: 'Medication, appointment, or urgent support requests' },
+    { id: 'Community_Referral', title: 'Community Entry', subtitle: 'Community concern reporting and referral initiation' },
+    { id: 'case_workspace', title: 'Shared Case Workspace', subtitle: 'Shared timeline, lenses, plan, and next actions for one case' },
+    { id: 'Clinical_Review', title: 'Clinical Lens', subtitle: 'Doctor and nurse risk and treatment review' },
+    { id: 'Psychological_Review', title: 'Psychological Lens', subtitle: 'Stress, coping, therapy, and sleep review' },
+    { id: 'Psychosocial_Review', title: 'Psychosocial Lens', subtitle: 'Family, welfare, housing, stigma, and support review' },
+    { id: 'MDT_Care_Plan', title: 'Shared Care Plan', subtitle: 'Integrated multidisciplinary planning and readiness review' },
+    { id: 'Minimum_Necessary_Handoff', title: 'Safe Handoff Summary', subtitle: 'Minimum necessary summary for external coordination and follow-up' },
+    { id: 'referral_network', title: 'Referral Network', subtitle: 'Closed-loop public, partner, and continuity coordination' },
+    { id: 'Public_Coordination', title: 'Public Sector Loop', subtitle: 'Interagency coordination with public sector partners' },
+    { id: 'Private_Coordination', title: 'Partner / NGO Loop', subtitle: 'External coordination with NGO and private support partners' },
+    { id: 'Follow_Up', title: 'Continuity Tracker', subtitle: 'Discharge, outreach, and community follow-up continuity' }
+  ];
+
+  const NAVIGATION_SECTIONS = [
+    { title: 'Overview', pages: ['ecosystem_hub', 'dashboard', 'triage_hub'] },
+    { title: 'Front Door', pages: ['Patient_Registration', 'Patient_Checkin', 'Service_Followup', 'Community_Referral'] },
+    { title: 'Shared Case', pages: ['case_workspace', 'Clinical_Review', 'Psychological_Review', 'Psychosocial_Review', 'MDT_Care_Plan', 'Minimum_Necessary_Handoff'] },
+    { title: 'Network & Continuity', pages: ['referral_network', 'Public_Coordination', 'Private_Coordination', 'Follow_Up'] }
+  ];
+
+  const FORM_DEFINITIONS = {
+    Patient_Registration: {
+      description: 'Register a new patient using a patient code and minimal identifying data for Phase 1 workflow access.',
+      fields: [
+        { name: 'patient_label', label: 'Patient label / alias', type: 'text', placeholder: 'e.g. Patient A', help: 'Use a label or alias instead of full identifying information.' },
+        { name: 'contact_phone', label: 'Contact phone', type: 'text', placeholder: 'Phone number' },
+        { name: 'emergency_contact', label: 'Emergency contact', type: 'text', placeholder: 'Name or role' },
+        { name: 'caregiver_name', label: 'Caregiver name', type: 'text', placeholder: 'Family member or caregiver' },
+        { name: 'health_coverage', label: 'Health coverage', type: 'select', optionsKey: 'paymentCoverage' },
+        { name: 'consent_acknowledged', label: 'Consent acknowledged', type: 'select', optionsKey: 'consentOptions' },
+        { name: 'registration_source', label: 'Registration source', type: 'select', optionsKey: 'registrationSource' },
+        { name: 'reason_for_first_visit', label: 'Reason for first visit', type: 'textarea', span: 2 }
+      ]
+    },
+    Patient_Checkin: {
+      description: 'Structured intake before review, including visit purpose, symptom burden, support context, and safety concerns.',
+      fields: [
+        { name: 'patient_code', label: 'Patient code', type: 'text', placeholder: 'e.g. MH-001' },
+        { name: 'respondent_name', label: 'Name or alias', type: 'text', placeholder: 'Patient, caregiver, or attendee name' },
+        { name: 'informant_type', label: 'Submitted by', type: 'select', optionsKey: 'informantType' },
+        { name: 'preferred_language', label: 'Preferred language', type: 'select', optionsKey: 'preferredLanguage' },
+        { name: 'visit_date', label: 'Visit date', type: 'date' },
+        { name: 'visit_purpose', label: 'Purpose of visit', type: 'select', optionsKey: 'visitPurpose' },
+        { name: 'reason_for_visit', label: 'Reason for visit', type: 'select', optionsKey: 'reasonForVisit' },
+        { name: 'appointment_code', label: 'Appointment / queue code', type: 'text', placeholder: 'Optional' },
+        { name: 'accompanying_person', label: 'Accompanying person', type: 'text', placeholder: 'Optional' },
+        { name: 'payment_coverage', label: 'Payment coverage', type: 'select', optionsKey: 'paymentCoverage' },
+        { name: 'distress_level', label: 'Distress level', type: 'select', optionsKey: 'distressLevel' },
+        {
+          name: 'bprs_total_score',
+          label: 'BPRS 18-item total score',
+          type: 'number',
+          placeholder: '18-126',
+          min: 18,
+          max: 126,
+          step: 1,
+          help: 'Enter the total BPRS score if available. The app will interpret severity automatically and include it in the triage result.'
+        },
+        { name: 'safety_concern', label: 'Safety concern', type: 'select', optionsKey: 'safetyConcern' },
+        { name: 'family_caregiver_support', label: 'Family / caregiver support', type: 'select', optionsKey: 'familySupport' },
+        { name: 'barrier_to_care', label: 'Barrier to care', type: 'select', optionsKey: 'barrierToCare' },
+        { name: 'chatbot_transcript', label: 'AI chatbot conversation / story in own words', type: 'textarea', span: 2, help: 'Patients or caregivers can describe symptoms, risks, relapse, social needs, and what is happening right now in their own words.' },
+        { name: 'main_concern', label: 'Main concern', type: 'textarea', span: 2 },
+        { name: 'current_symptoms', label: 'Current symptoms', type: 'textarea', span: 2 },
+        { name: 'additional_notes', label: 'Additional notes', type: 'textarea', span: 2 }
+      ]
+    },
+    Service_Followup: {
+      description: 'Structured follow-up request for appointment review, medication refill, or same-day support needs.',
+      caseSelector: true,
+      fields: [
+        { name: 'patient_code', label: 'Patient code', type: 'text', placeholder: 'e.g. MH-001' },
+        { name: 'requester_type', label: 'Requested by', type: 'select', optionsKey: 'requesterType' },
+        { name: 'service_type', label: 'Service type', type: 'select', optionsKey: 'serviceType' },
+        { name: 'appointment_code', label: 'Appointment code', type: 'text', placeholder: 'Optional' },
+        { name: 'medication_need', label: 'Medication need', type: 'select', optionsKey: 'medicationNeed' },
+        { name: 'payment_coverage', label: 'Payment coverage', type: 'select', optionsKey: 'paymentCoverage' },
+        { name: 'today_support_needed', label: 'Today support needed', type: 'select', optionsKey: 'supportNeed' },
+        { name: 'urgency_level', label: 'Urgency level', type: 'select', optionsKey: 'urgencyLevel' },
+        { name: 'main_concern', label: 'Main concern', type: 'textarea', span: 2 },
+        { name: 'current_symptoms', label: 'Current symptoms', type: 'textarea', span: 2 },
+        { name: 'caregiver_concern', label: 'Caregiver concern', type: 'textarea', span: 2 },
+        { name: 'social_problem', label: 'Social problem', type: 'textarea', span: 2 }
+      ]
+    },
+    Community_Referral: {
+      description: 'Community-assisted referral for patients who may need check-in, outreach, or urgent professional review.',
+      fields: [
+        { name: 'patient_code', label: 'Patient code (if known)', type: 'text', placeholder: 'Optional' },
+        { name: 'informant_name', label: 'Informant name', type: 'text', placeholder: 'Community contact' },
+        { name: 'relationship_to_patient', label: 'Relationship to patient', type: 'select', optionsKey: 'relationshipType' },
+        { name: 'contact_phone', label: 'Contact phone', type: 'text', placeholder: 'Phone number' },
+        { name: 'visit_purpose', label: 'Referral pathway', type: 'select', optionsKey: 'visitPurpose' },
+        { name: 'safety_concern', label: 'Safety concern', type: 'select', optionsKey: 'safetyConcern' },
+        { name: 'family_caregiver_support', label: 'Family / caregiver support', type: 'select', optionsKey: 'familySupport' },
+        { name: 'barrier_to_care', label: 'Barrier to care', type: 'select', optionsKey: 'barrierToCare' },
+        { name: 'reason_for_referral', label: 'Reason for referral', type: 'textarea', span: 2 },
+        { name: 'observed_behavior', label: 'Observed behavior', type: 'textarea', span: 2 },
+        { name: 'main_concern', label: 'Main concern', type: 'textarea', span: 2 },
+        { name: 'current_symptoms', label: 'Current symptoms', type: 'textarea', span: 2 },
+        { name: 'additional_notes', label: 'Additional notes', type: 'textarea', span: 2 }
+      ]
+    },
+    Clinical_Review: {
+      description: 'Clinical review for diagnosis, adherence, relapse warning, suicide risk, violence, and substance concerns.',
+      caseSelector: true,
+      fields: [
+        { name: 'reviewer_name', label: 'Reviewer name', type: 'text', placeholder: 'Doctor or nurse' },
+        { name: 'diagnosis_group', label: 'Diagnosis group', type: 'select', optionsKey: 'diagnosisGroup' },
+        {
+          name: 'bprs_total_score',
+          label: 'BPRS 18-item total score',
+          type: 'number',
+          placeholder: '18-126',
+          min: 18,
+          max: 126,
+          step: 1,
+          help: 'Optional severity tracker. Total 18-126: 18-30 minimal to mild, 31-40 mild to moderate, above 40 moderate to severe, above 60 very severe. Use for clinical severity tracking, not automatic triage.'
+        },
+        { name: 'medication_adherence', label: 'Medication adherence', type: 'select', optionsKey: 'medicationAdherence' },
+        { name: 'relapse_warning_signs', label: 'Relapse warning signs', type: 'select', optionsKey: 'relapseWarning' },
+        { name: 'suicide_self_harm_concern', label: 'Suicide / self-harm concern', type: 'select', optionsKey: 'suicideConcern' },
+        { name: 'violence_risk', label: 'Violence risk', type: 'select', optionsKey: 'violenceRisk' },
+        { name: 'substance_use_concern', label: 'Substance use concern', type: 'select', optionsKey: 'substanceConcern' },
+        { name: 'clinical_notes', label: 'Clinical notes', type: 'textarea', span: 2 }
+      ]
+    },
+    Psychological_Review: {
+      description: 'Psychological review for stress burden, coping, trauma, sleep, and therapy urgency.',
+      caseSelector: true,
+      fields: [
+        { name: 'reviewer_name', label: 'Reviewer name', type: 'text', placeholder: 'Psychologist' },
+        { name: 'stress_level', label: 'Stress level', type: 'select', optionsKey: 'stressLevel' },
+        { name: 'coping_ability', label: 'Coping ability', type: 'select', optionsKey: 'copingAbility' },
+        { name: 'trauma_grief_concern', label: 'Trauma / grief concern', type: 'select', optionsKey: 'traumaConcern' },
+        { name: 'therapy_need', label: 'Therapy need', type: 'select', optionsKey: 'therapyNeed' },
+        { name: 'sleep_problem', label: 'Sleep problem', type: 'select', optionsKey: 'sleepProblem' },
+        { name: 'emotional_regulation', label: 'Emotional regulation', type: 'select', optionsKey: 'emotionalRegulation' },
+        { name: 'psychological_notes', label: 'Psychological notes', type: 'textarea', span: 2 }
+      ]
+    },
+    Psychosocial_Review: {
+      description: 'Psychosocial review for family conflict, debt, housing, stigma, welfare, violence, and community supports.',
+      caseSelector: true,
+      fields: [
+        { name: 'reviewer_name', label: 'Reviewer name', type: 'text', placeholder: 'Social worker' },
+        { name: 'family_conflict', label: 'Family conflict', type: 'select', optionsKey: 'familyConflict' },
+        { name: 'debt_financial_stress', label: 'Debt / financial stress', type: 'select', optionsKey: 'debtStress' },
+        { name: 'housing_problem', label: 'Housing problem', type: 'select', optionsKey: 'housingProblem' },
+        { name: 'caregiver_support', label: 'Caregiver support', type: 'select', optionsKey: 'caregiverSupport' },
+        { name: 'welfare_need', label: 'Welfare need', type: 'select', optionsKey: 'welfareNeed' },
+        { name: 'stigma', label: 'Stigma', type: 'select', optionsKey: 'stigma' },
+        { name: 'violence_abuse', label: 'Violence / abuse', type: 'select', optionsKey: 'violenceAbuse' },
+        { name: 'community_support', label: 'Community support', type: 'select', optionsKey: 'communitySupport' },
+        { name: 'psychosocial_notes', label: 'Psychosocial notes', type: 'textarea', span: 2 }
+      ]
+    },
+    MDT_Care_Plan: {
+      description: 'Shared team planning for clinical, psychological, social, rehabilitation, referral, and discharge actions.',
+      caseSelector: true,
+      fields: [
+        { name: 'meeting_date', label: 'Meeting date', type: 'date' },
+        { name: 'discharge_readiness', label: 'Discharge readiness', type: 'select', optionsKey: 'dischargeReadiness' },
+        { name: 'team_members', label: 'Team members', type: 'text', placeholder: 'Doctor, Nurse, Psychologist, Social Worker, OT' },
+        { name: 'main_care_goal', label: 'Main care goal', type: 'textarea', span: 2 },
+        { name: 'clinical_plan', label: 'Clinical plan', type: 'textarea', span: 2 },
+        { name: 'psychological_plan', label: 'Psychological plan', type: 'textarea', span: 2 },
+        { name: 'social_intervention_plan', label: 'Social intervention plan', type: 'textarea', span: 2 },
+        { name: 'rehabilitation_plan', label: 'Rehabilitation plan', type: 'textarea', span: 2 },
+        { name: 'referral_plan', label: 'Referral plan', type: 'textarea', span: 2 }
+      ]
+    },
+    Minimum_Necessary_Handoff: {
+      description: 'Prepare a safe continuity summary for external coordination. This page is for minimum necessary sharing only, not a full hospital record.',
+      caseSelector: true,
+      fields: [
+        { name: 'reviewed_by', label: 'Reviewed by', type: 'text', placeholder: 'Staff member preparing the handoff' },
+        { name: 'consent_status', label: 'Consent status', type: 'select', optionsKey: 'consentStatus' },
+        { name: 'caregiver_involvement', label: 'Caregiver involvement', type: 'select', optionsKey: 'caregiverInvolvement' },
+        { name: 'handoff_ready', label: 'Handoff readiness', type: 'select', optionsKey: 'handoffReady' },
+        { name: 'next_step_owner', label: 'Next step owner', type: 'text', placeholder: 'Who accepts the next action' },
+        { name: 'next_contact_window', label: 'Next contact window', type: 'select', optionsKey: 'nextContactWindow' },
+        { name: 'public_sector_share', label: 'Public sector sharing', type: 'select', optionsKey: 'shareBoundary' },
+        { name: 'private_partner_share', label: 'Private / NGO sharing', type: 'select', optionsKey: 'shareBoundary' },
+        { name: 'community_follow_up_share', label: 'Community follow-up sharing', type: 'select', optionsKey: 'shareBoundary' },
+        { name: 'minimum_necessary_summary', label: 'Minimum necessary summary', type: 'textarea', span: 2, help: 'Write only the information needed for continuity, follow-up, and safe coordination.' },
+        { name: 'crisis_safety_summary', label: 'Crisis / safety summary', type: 'textarea', span: 2, help: 'Add only actionable safety information relevant to the receiving team.' },
+        { name: 'do_not_share', label: 'Do not share / keep in hospital record', type: 'textarea', span: 2, help: 'List sensitive details that should remain inside the hospital record.' }
+      ]
+    },
+    Public_Coordination: {
+      description: 'Interagency coordination for public sector partners such as community hospitals, district offices, welfare, legal, or school systems.',
+      caseSelector: true,
+      fields: [
+        { name: 'agency_name', label: 'Agency name', type: 'text', placeholder: 'Agency or department' },
+        { name: 'coordination_type', label: 'Coordination type', type: 'select', optionsKey: 'coordinationType' },
+        { name: 'urgency_level', label: 'Urgency level', type: 'select', optionsKey: 'urgencyLevel' },
+        { name: 'meeting_date', label: 'Meeting date', type: 'date' },
+        { name: 'coordination_status', label: 'Coordination status', type: 'select', optionsKey: 'coordinationStatus' },
+        { name: 'referral_reason', label: 'Referral reason', type: 'textarea', span: 2 },
+        { name: 'shared_information', label: 'Shared information', type: 'textarea', span: 2 },
+        { name: 'requested_action', label: 'Requested action', type: 'textarea', span: 2 },
+        { name: 'notes', label: 'Notes', type: 'textarea', span: 2 }
+      ]
+    },
+    Private_Coordination: {
+      description: 'External coordination for private hospitals, clinics, employers, foundations, NGOs, and rehabilitation partners.',
+      caseSelector: true,
+      fields: [
+        { name: 'organization_name', label: 'Organization name', type: 'text', placeholder: 'Partner organization' },
+        { name: 'support_domain', label: 'Support domain', type: 'select', optionsKey: 'supportDomain' },
+        { name: 'urgency_level', label: 'Urgency level', type: 'select', optionsKey: 'urgencyLevel' },
+        { name: 'meeting_date', label: 'Meeting date', type: 'date' },
+        { name: 'coordination_status', label: 'Coordination status', type: 'select', optionsKey: 'coordinationStatus' },
+        { name: 'referral_reason', label: 'Referral reason', type: 'textarea', span: 2 },
+        { name: 'support_needs', label: 'Support needs', type: 'textarea', span: 2 },
+        { name: 'requested_action', label: 'Requested action', type: 'textarea', span: 2 },
+        { name: 'notes', label: 'Notes', type: 'textarea', span: 2 }
+      ]
+    },
+    Follow_Up: {
+      description: 'Track discharge and community follow-up responsibilities, barriers, outcomes, and escalation.',
+      caseSelector: true,
+      fields: [
+        { name: 'follow_up_due_date', label: 'Follow-up due date', type: 'date' },
+        { name: 'responsible_staff', label: 'Responsible staff', type: 'text', placeholder: 'Case manager or team' },
+        { name: 'referral_destination', label: 'Referral destination', type: 'text', placeholder: 'Clinic, welfare office, community team' },
+        { name: 'follow_up_status', label: 'Follow-up status', type: 'select', optionsKey: 'followUpStatus' },
+        { name: 'barrier_after_discharge', label: 'Barrier after discharge', type: 'select', optionsKey: 'barrierAfterDischarge' },
+        { name: 'escalation_needed', label: 'Escalation needed', type: 'select', optionsKey: 'escalationNeeded' },
+        { name: 'outcome', label: 'Outcome', type: 'textarea', span: 2 },
+        { name: 'follow_up_notes', label: 'Follow-up notes', type: 'textarea', span: 2 }
+      ]
+    }
+  };
+
+  const state = {
+    bootstrap: null,
+    activePage: 'dashboard',
+    selectedPortal: window.__INITIAL_PORTAL__ || 'register',
+    selectedWorkspaceCaseId: '',
+    screeningAutoLaunchTried: false,
+    staffHydrationInFlight: false
+  };
+</script>

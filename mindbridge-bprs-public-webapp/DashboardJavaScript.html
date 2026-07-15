@@ -1,0 +1,446 @@
+<script>
+  const DASHBOARD_STATE = {
+    bootstrap: null,
+    data: null,
+    stageMap: {}
+  };
+
+  function initializeDashboard() {
+    if (!isAppsScriptRuntime()) {
+      DASHBOARD_STATE.bootstrap = {
+        title: 'MindBridge Case Dashboard',
+        publicUrl: 'index.html',
+        spreadsheetUrl: '#',
+        stages: buildPreviewStageList_()
+      };
+      DASHBOARD_STATE.stageMap = (DASHBOARD_STATE.bootstrap.stages || []).reduce(function(map, stage) {
+        map[stage.key] = stage;
+        return map;
+      }, {});
+      syncDashboardHeader();
+      renderDashboard(buildDashboardPreviewData_());
+      showDashboardBanner('Static preview mode: deploy Apps Script to use live data and update stages for real.');
+      return;
+    }
+
+    showDashboardBanner('Loading case dashboard...');
+    google.script.run
+      .withSuccessHandler(function(bootstrap) {
+        DASHBOARD_STATE.bootstrap = bootstrap;
+        DASHBOARD_STATE.stageMap = (bootstrap.stages || []).reduce(function(map, stage) {
+          map[stage.key] = stage;
+          return map;
+        }, {});
+        syncDashboardHeader();
+        refreshDashboard();
+      })
+      .withFailureHandler(function(error) {
+        showDashboardBanner((error && error.message) || 'Unable to load dashboard bootstrap.', true);
+      })
+      .getDashboardBootstrap();
+  }
+
+  function buildPreviewStageList_() {
+    return [
+      {
+        key: 'emergency',
+        label: 'Emergency now',
+        tone: 'critical',
+        description: 'Immediate safety escalation, psychiatrist alert, and emergency routing.'
+      },
+      {
+        key: 'psychiatrist',
+        label: 'Psychiatrist review',
+        tone: 'urgent',
+        description: 'New high-risk case waiting for psychiatrist review and appointment planning.'
+      },
+      {
+        key: 'mdt',
+        label: 'MDT coordination',
+        tone: 'watch',
+        description: 'Psychiatrist, psychologist, nurse, and MDT coordination with possible community support.'
+      },
+      {
+        key: 'community',
+        label: 'Community monitoring',
+        tone: 'stable',
+        description: 'Routine follow-up, community resources, and close family or local monitoring.'
+      },
+      {
+        key: 'closed',
+        label: 'Closed / followed up',
+        tone: 'stable',
+        description: 'Case reviewed, action completed, and follow-up documented.'
+      }
+    ];
+  }
+
+  function buildDashboardPreviewData_() {
+    const columns = [
+      {
+        key: 'emergency',
+        title: 'Emergency now',
+        tone: 'critical',
+        description: 'Immediate safety escalation, psychiatrist alert, and emergency routing.',
+        cases: [
+          {
+            referenceCode: 'BPRS-20260715-001',
+            totalScore: 68,
+            urgencyLabel: 'Emergency attention now',
+            urgencyTone: 'critical',
+            workflowStageKey: 'emergency',
+            workflowStageLabel: 'Emergency now',
+            routeDestination: 'Emergency services',
+            routeTiming: 'Now',
+            notificationStatus: 'Sent',
+            mdtRecommended: true,
+            communityRecommended: false,
+            appointmentRecommended: true,
+            emergencyFlag: true,
+            topSignals: 'Hallucinatory Behavior (6/7), Disorientation (6/7)',
+            caseSummary: 'Immediate safety concern triggered emergency routing and psychiatrist alert.',
+            createdAtLabel: '15 Jul 2026 16:48'
+          }
+        ]
+      },
+      {
+        key: 'psychiatrist',
+        title: 'Psychiatrist review',
+        tone: 'urgent',
+        description: 'New high-risk case waiting for psychiatrist review and appointment planning.',
+        cases: [
+          {
+            referenceCode: 'BPRS-20260715-004',
+            totalScore: 52,
+            urgencyLabel: 'Priority same-day review',
+            urgencyTone: 'urgent',
+            workflowStageKey: 'psychiatrist',
+            workflowStageLabel: 'Psychiatrist review',
+            routeDestination: 'Psychiatrist',
+            routeTiming: 'Priority review today',
+            notificationStatus: 'Sent',
+            mdtRecommended: true,
+            communityRecommended: true,
+            appointmentRecommended: true,
+            emergencyFlag: false,
+            topSignals: 'Suspiciousness (5/7), Anxiety (5/7)',
+            caseSummary: 'High-priority case waiting for psychiatrist review and same-day appointment planning.',
+            createdAtLabel: '15 Jul 2026 16:53'
+          }
+        ]
+      },
+      {
+        key: 'mdt',
+        title: 'MDT coordination',
+        tone: 'watch',
+        description: 'Psychiatrist, psychologist, nurse, and MDT coordination with possible community support.',
+        cases: [
+          {
+            referenceCode: 'BPRS-20260715-007',
+            totalScore: 36,
+            urgencyLabel: 'Watch closely and follow up',
+            urgencyTone: 'watch',
+            workflowStageKey: 'mdt',
+            workflowStageLabel: 'MDT coordination',
+            routeDestination: 'Psychologist / primary mental health clinic',
+            routeTiming: 'Within 24 to 72 hours',
+            notificationStatus: 'Not triggered',
+            mdtRecommended: true,
+            communityRecommended: true,
+            appointmentRecommended: true,
+            emergencyFlag: false,
+            topSignals: 'Depressive Mood (5/7), Anxiety (4/7)',
+            caseSummary: 'Moderate-risk case prepared for MDT and structured follow-up.',
+            createdAtLabel: '15 Jul 2026 15:59'
+          }
+        ]
+      },
+      {
+        key: 'community',
+        title: 'Community monitoring',
+        tone: 'stable',
+        description: 'Routine follow-up, community resources, and close family or local monitoring.',
+        cases: [
+          {
+            referenceCode: 'BPRS-20260715-010',
+            totalScore: 24,
+            urgencyLabel: 'Stable support pathway',
+            urgencyTone: 'stable',
+            workflowStageKey: 'community',
+            workflowStageLabel: 'Community monitoring',
+            routeDestination: 'Community support or routine clinic',
+            routeTiming: 'Routine follow-up',
+            notificationStatus: 'Not triggered',
+            mdtRecommended: false,
+            communityRecommended: true,
+            appointmentRecommended: false,
+            emergencyFlag: false,
+            topSignals: 'Anxiety (4/7)',
+            caseSummary: 'Low-risk case for self-help resources and community monitoring.',
+            createdAtLabel: '15 Jul 2026 14:21'
+          }
+        ]
+      },
+      {
+        key: 'closed',
+        title: 'Closed / followed up',
+        tone: 'stable',
+        description: 'Case reviewed, action completed, and follow-up documented.',
+        cases: []
+      }
+    ];
+
+    return {
+      generatedAt: 'Preview mode',
+      summary: {
+        totalCases: 4,
+        openCases: 4,
+        todayCases: 4,
+        emergencyCases: 1,
+        psychiatristCases: 1,
+        mdtCases: 1,
+        communityCases: 1,
+        alertsSent: 2
+      },
+      columns: columns,
+      recentCases: columns.reduce(function(list, column) {
+        return list.concat(column.cases);
+      }, [])
+    };
+  }
+
+  function syncDashboardHeader() {
+    if (!DASHBOARD_STATE.bootstrap) {
+      return;
+    }
+    document.getElementById('dashboard-title').textContent = DASHBOARD_STATE.bootstrap.title || 'MindBridge Case Dashboard';
+    document.getElementById('dashboard-public-link').href = DASHBOARD_STATE.bootstrap.publicUrl || '#';
+    document.getElementById('dashboard-sheet-link').href = DASHBOARD_STATE.bootstrap.spreadsheetUrl || '#';
+  }
+
+  function refreshDashboard() {
+    google.script.run
+      .withSuccessHandler(function(data) {
+        DASHBOARD_STATE.data = data;
+        renderDashboard(data);
+        showDashboardBanner('Dashboard updated.');
+      })
+      .withFailureHandler(function(error) {
+        showDashboardBanner((error && error.message) || 'Unable to refresh dashboard.', true);
+      })
+      .getDashboardData();
+  }
+
+  function renderDashboard(data) {
+    document.getElementById('dashboard-generated-at').textContent = 'Updated ' + (data.generatedAt || '');
+    renderDashboardStats(data.summary || {});
+    renderDashboardBoard(data.columns || []);
+    renderRecentCases(data.recentCases || []);
+  }
+
+  function renderDashboardStats(summary) {
+    const cards = [
+      { label: 'Total cases', value: summary.totalCases || 0, tone: 'mint' },
+      { label: 'Open now', value: summary.openCases || 0, tone: 'sky' },
+      { label: 'Today', value: summary.todayCases || 0, tone: 'sunset' },
+      { label: 'Emergency', value: summary.emergencyCases || 0, tone: 'rose' },
+      { label: 'Psychiatrist queue', value: summary.psychiatristCases || 0, tone: 'urgent' },
+      { label: 'MDT queue', value: summary.mdtCases || 0, tone: 'watch' },
+      { label: 'Community', value: summary.communityCases || 0, tone: 'stable' },
+      { label: 'Alerts sent', value: summary.alertsSent || 0, tone: 'info' }
+    ];
+
+    document.getElementById('dashboard-stats').innerHTML = cards.map(function(card) {
+      return [
+        '<article class="dashboard-stat-card dashboard-stat-',
+        escapeHtml(card.tone),
+        '">',
+        '<span>',
+        escapeHtml(card.label),
+        '</span>',
+        '<strong>',
+        escapeHtml(String(card.value)),
+        '</strong>',
+        '</article>'
+      ].join('');
+    }).join('');
+  }
+
+  function renderDashboardBoard(columns) {
+    document.getElementById('dashboard-board').innerHTML = columns.map(function(column) {
+      return [
+        '<section class="dashboard-column dashboard-column-',
+        escapeHtml(column.tone || 'stable'),
+        '">',
+        '<div class="dashboard-column-head">',
+        '<div><strong>',
+        escapeHtml(column.title),
+        '</strong><p>',
+        escapeHtml(column.description || ''),
+        '</p></div>',
+        '<span class="dashboard-column-count">',
+        escapeHtml(String((column.cases || []).length)),
+        '</span>',
+        '</div>',
+        '<div class="dashboard-case-stack">',
+        (column.cases || []).length
+          ? column.cases.map(function(item) {
+              return renderDashboardCase(item);
+            }).join('')
+          : '<div class="dashboard-empty">No cases in this stage.</div>',
+        '</div>',
+        '</section>'
+      ].join('');
+    }).join('');
+
+    bindDashboardActions();
+  }
+
+  function renderDashboardCase(item) {
+    const actions = buildStageActions(item.workflowStageKey);
+    return [
+      '<article class="dashboard-case-card">',
+      '<div class="dashboard-case-top">',
+      '<strong>',
+      escapeHtml(item.referenceCode),
+      '</strong>',
+      '<span class="urgency-chip urgency-',
+      escapeHtml(item.urgencyTone || 'stable'),
+      '">',
+      escapeHtml(item.urgencyLabel || 'Case'),
+      '</span>',
+      '</div>',
+      '<div class="dashboard-case-meta">',
+      '<span class="mini-chip">Score: ',
+      escapeHtml(String(item.totalScore || 0)),
+      '</span>',
+      '<span class="mini-chip">Alert: ',
+      escapeHtml(item.notificationStatus || 'Not triggered'),
+      '</span>',
+      '</div>',
+      '<div class="dashboard-case-copy">',
+      escapeHtml(item.caseSummary || ''),
+      '</div>',
+      '<div class="dashboard-case-flags">',
+      item.mdtRecommended ? '<span class="mini-chip">MDT</span>' : '',
+      item.communityRecommended ? '<span class="mini-chip">Community</span>' : '',
+      item.appointmentRecommended ? '<span class="mini-chip">Appointment</span>' : '',
+      item.emergencyFlag ? '<span class="mini-chip">Emergency</span>' : '',
+      '</div>',
+      item.topSignals ? '<div class="dashboard-case-note"><strong>Top signals:</strong> ' + escapeHtml(item.topSignals) + '</div>' : '',
+      item.routeDestination ? '<div class="dashboard-case-note"><strong>Route:</strong> ' + escapeHtml(item.routeDestination) + ' / ' + escapeHtml(item.routeTiming || '') + '</div>' : '',
+      item.createdAtLabel ? '<div class="dashboard-case-time">Created ' + escapeHtml(item.createdAtLabel) + '</div>' : '',
+      '<div class="dashboard-action-row">',
+      actions.map(function(action) {
+        return [
+          '<button class="stage-button" type="button" data-reference-code="',
+          escapeHtml(item.referenceCode),
+          '" data-stage-key="',
+          escapeHtml(action.key),
+          '">',
+          escapeHtml(action.label),
+          '</button>'
+        ].join('');
+      }).join(''),
+      '</div>',
+      '</article>'
+    ].join('');
+  }
+
+  function renderRecentCases(items) {
+    document.getElementById('dashboard-recent').innerHTML = items.length
+      ? items.map(function(item) {
+          return [
+            '<article class="dashboard-recent-card">',
+            '<div class="dashboard-recent-top">',
+            '<strong>',
+            escapeHtml(item.referenceCode),
+            '</strong>',
+            '<span class="mini-chip">',
+            escapeHtml(item.workflowStageLabel || ''),
+            '</span>',
+            '</div>',
+            '<div class="dashboard-recent-line">Score ' + escapeHtml(String(item.totalScore || 0)) + ' / ' + escapeHtml(item.urgencyLabel || '') + '</div>',
+            '<div class="dashboard-recent-line">' + escapeHtml(item.routeDestination || '') + '</div>',
+            '<div class="dashboard-recent-line">' + escapeHtml(item.updatedAtLabel || '') + '</div>',
+            '</article>'
+          ].join('');
+        }).join('')
+      : '<div class="dashboard-empty">No recent cases yet.</div>';
+  }
+
+  function buildStageActions(currentStageKey) {
+    const all = [
+      { key: 'psychiatrist', label: 'Send psychiatrist' },
+      { key: 'mdt', label: 'Send MDT' },
+      { key: 'community', label: 'Send community' },
+      { key: 'closed', label: 'Close case' }
+    ];
+
+    if (currentStageKey === 'emergency') {
+      return [
+        { key: 'psychiatrist', label: 'Move psychiatrist' },
+        { key: 'mdt', label: 'Move MDT' },
+        { key: 'closed', label: 'Close case' }
+      ];
+    }
+
+    return all.filter(function(item) {
+      return item.key !== currentStageKey;
+    });
+  }
+
+  function bindDashboardActions() {
+    document.querySelectorAll('.stage-button').forEach(function(button) {
+      button.addEventListener('click', function() {
+        const referenceCode = button.getAttribute('data-reference-code');
+        const stageKey = button.getAttribute('data-stage-key');
+        const note = window.prompt('Optional note for this workflow update', '') || '';
+
+        showDashboardBanner('Updating ' + referenceCode + '...');
+        google.script.run
+          .withSuccessHandler(function(result) {
+            if (result && result.dashboard) {
+              DASHBOARD_STATE.data = result.dashboard;
+              renderDashboard(result.dashboard);
+            } else {
+              refreshDashboard();
+            }
+            showDashboardBanner('Updated ' + referenceCode + ' to ' + (result.stageLabel || stageKey) + '.');
+          })
+          .withFailureHandler(function(error) {
+            showDashboardBanner((error && error.message) || 'Unable to update workflow stage.', true);
+          })
+          .updateCaseStage({
+            referenceCode: referenceCode,
+            stageKey: stageKey,
+            clinicianNote: note
+          });
+      });
+    });
+  }
+
+  function showDashboardBanner(message, isError) {
+    const banner = document.getElementById('dashboard-banner');
+    banner.textContent = message;
+    banner.classList.remove('hidden');
+    banner.classList.toggle('error', !!isError);
+  }
+
+  function isAppsScriptRuntime() {
+    return typeof google !== 'undefined' &&
+      google.script &&
+      google.script.run;
+  }
+
+  function escapeHtml(value) {
+    return String(value === undefined || value === null ? '' : value)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
+  }
+
+  document.addEventListener('DOMContentLoaded', initializeDashboard);
+</script>

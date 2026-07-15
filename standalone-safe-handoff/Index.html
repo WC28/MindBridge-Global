@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <base target="_top">
+    <meta charset="utf-8">
+    <style>
+      :root {
+        --bg: #eef3f8;
+        --panel: #ffffff;
+        --panel-soft: #f7fbff;
+        --text: #132736;
+        --muted: #5d7285;
+        --border: #cfdbe6;
+        --accent: #0da58b;
+        --accent-strong: #0a7f6b;
+        --blue: #2f6dff;
+        --danger: #b93352;
+        --warning: #a66908;
+        --shadow: 0 18px 40px rgba(22, 38, 55, 0.08);
+        --radius: 12px;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        font-family: Arial, Helvetica, sans-serif;
+        background:
+          linear-gradient(180deg, #0e1f2d 0, #14324a 240px, var(--bg) 240px, var(--bg) 100%);
+        color: var(--text);
+      }
+
+      .app {
+        width: min(1200px, calc(100% - 32px));
+        margin: 0 auto;
+        padding: 28px 0 40px;
+      }
+
+      .hero,
+      .panel {
+        background: rgba(255, 255, 255, 0.92);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        box-shadow: var(--shadow);
+        backdrop-filter: blur(16px);
+      }
+
+      .hero {
+        padding: 24px;
+        margin-bottom: 18px;
+      }
+
+      .eyebrow {
+        font-size: 12px;
+        text-transform: uppercase;
+        color: #d4edf1;
+        letter-spacing: 0.08em;
+      }
+
+      .hero h1 {
+        margin: 8px 0 10px;
+        color: white;
+        font-size: 34px;
+        line-height: 1.1;
+      }
+
+      .hero p {
+        margin: 0;
+        color: #dce8f4;
+        max-width: 760px;
+        line-height: 1.6;
+      }
+
+      .notice {
+        margin-top: 14px;
+        padding: 12px 14px;
+        border-radius: 10px;
+        background: rgba(13, 165, 139, 0.14);
+        color: white;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+      }
+
+      .actions {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+        margin: 18px 0;
+      }
+
+      button {
+        border: 0;
+        border-radius: 10px;
+        padding: 11px 14px;
+        cursor: pointer;
+        font: inherit;
+      }
+
+      .primary {
+        background: var(--accent);
+        color: white;
+      }
+
+      .primary:hover {
+        background: var(--accent-strong);
+      }
+
+      .ghost {
+        background: white;
+        border: 1px solid var(--border);
+        color: var(--text);
+      }
+
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(12, minmax(0, 1fr));
+        gap: 16px;
+      }
+
+      .span-12 { grid-column: span 12; }
+      .span-8 { grid-column: span 8; }
+      .span-6 { grid-column: span 6; }
+      .span-4 { grid-column: span 4; }
+
+      .panel {
+        padding: 20px;
+      }
+
+      .panel h2,
+      .panel h3 {
+        margin: 0 0 8px;
+      }
+
+      .panel p {
+        margin: 0 0 14px;
+        color: var(--muted);
+        line-height: 1.5;
+      }
+
+      .summary-grid {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 12px;
+      }
+
+      .summary-card {
+        padding: 14px;
+        border-radius: 10px;
+        background: var(--panel-soft);
+        border: 1px solid var(--border);
+      }
+
+      .summary-card span {
+        display: block;
+        font-size: 12px;
+        color: var(--muted);
+        text-transform: uppercase;
+      }
+
+      .summary-card strong {
+        display: block;
+        margin-top: 6px;
+        font-size: 28px;
+      }
+
+      form {
+        display: grid;
+        gap: 14px;
+      }
+
+      .form-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 14px;
+      }
+
+      .field {
+        display: grid;
+        gap: 8px;
+      }
+
+      .field.span-2 {
+        grid-column: span 2;
+      }
+
+      label {
+        font-weight: 700;
+      }
+
+      input,
+      select,
+      textarea {
+        width: 100%;
+        padding: 11px 12px;
+        border-radius: 10px;
+        border: 1px solid var(--border);
+        background: white;
+        font: inherit;
+        color: var(--text);
+      }
+
+      textarea {
+        min-height: 110px;
+        resize: vertical;
+      }
+
+      .hint {
+        font-size: 12px;
+        color: var(--muted);
+        line-height: 1.45;
+      }
+
+      .status {
+        min-height: 20px;
+        color: var(--muted);
+        font-size: 14px;
+      }
+
+      .cards {
+        display: grid;
+        gap: 12px;
+      }
+
+      .handoff-card {
+        padding: 14px;
+        border-radius: 10px;
+        border: 1px solid var(--border);
+        background: var(--panel-soft);
+      }
+
+      .handoff-top {
+        display: flex;
+        gap: 8px;
+        align-items: center;
+        flex-wrap: wrap;
+        margin-bottom: 8px;
+      }
+
+      .chip {
+        display: inline-flex;
+        align-items: center;
+        padding: 6px 10px;
+        border-radius: 999px;
+        background: rgba(47, 109, 255, 0.1);
+        color: var(--blue);
+        font-size: 12px;
+        border: 1px solid rgba(47, 109, 255, 0.16);
+      }
+
+      .chip.warning {
+        background: rgba(166, 105, 8, 0.12);
+        color: var(--warning);
+        border-color: rgba(166, 105, 8, 0.16);
+      }
+
+      .chip.danger {
+        background: rgba(185, 51, 82, 0.12);
+        color: var(--danger);
+        border-color: rgba(185, 51, 82, 0.16);
+      }
+
+      .handoff-card p {
+        margin: 8px 0 0;
+        color: var(--text);
+      }
+
+      @media (max-width: 960px) {
+        .span-8,
+        .span-6,
+        .span-4 {
+          grid-column: span 12;
+        }
+
+        .summary-grid,
+        .form-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .field.span-2 {
+          grid-column: span 1;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="app">
+      <section class="hero">
+        <div class="eyebrow">Standalone Continuity Layer</div>
+        <h1 id="app-title">Loading...</h1>
+        <p id="app-subtitle"></p>
+        <div id="hero-note" class="notice"></div>
+      </section>
+
+      <div class="actions">
+        <button class="primary" type="button" id="refresh-button">Refresh</button>
+        <button class="ghost" type="button" id="seed-button">Seed demo data</button>
+      </div>
+
+      <div class="grid">
+        <section class="panel span-12">
+          <h2>Dashboard</h2>
+          <p>Quick view of safe handoff readiness, consent status, and open coordination loops.</p>
+          <div id="summary-grid" class="summary-grid"></div>
+        </section>
+
+        <section class="panel span-6">
+          <h3>Create Case</h3>
+          <p>Use a patient code and alias only. No full hospital record is stored here.</p>
+          <form id="case-form">
+            <div class="form-grid">
+              <div class="field">
+                <label>Patient code</label>
+                <input name="patient_code" placeholder="e.g. MH-001">
+              </div>
+              <div class="field">
+                <label>Case label / alias</label>
+                <input name="case_label" placeholder="e.g. Patient Alpha">
+              </div>
+              <div class="field">
+                <label>Entry pathway</label>
+                <select name="entry_pathway"></select>
+              </div>
+              <div class="field">
+                <label>Current status</label>
+                <select name="current_status"></select>
+              </div>
+              <div class="field">
+                <label>Priority flag</label>
+                <select name="priority_flag"></select>
+              </div>
+            </div>
+            <button class="primary" type="submit">Save case</button>
+            <div id="case-status" class="status"></div>
+          </form>
+        </section>
+
+        <section class="panel span-6">
+          <h3>Partner Coordination Log</h3>
+          <p>Track whether external follow-up was requested, accepted, and completed.</p>
+          <form id="partner-form">
+            <div class="form-grid">
+              <div class="field span-2">
+                <label>Case</label>
+                <select name="case_id" class="case-selector"></select>
+              </div>
+              <div class="field">
+                <label>Partner name</label>
+                <input name="partner_name" placeholder="e.g. District Health Office">
+              </div>
+              <div class="field">
+                <label>Partner type</label>
+                <select name="partner_type"></select>
+              </div>
+              <div class="field">
+                <label>Contact status</label>
+                <select name="contact_status"></select>
+              </div>
+              <div class="field span-2">
+                <label>Requested action</label>
+                <textarea name="requested_action"></textarea>
+              </div>
+              <div class="field span-2">
+                <label>Notes</label>
+                <textarea name="notes"></textarea>
+              </div>
+            </div>
+            <button class="primary" type="submit">Save partner log</button>
+            <div id="partner-status" class="status"></div>
+          </form>
+        </section>
+
+        <section class="panel span-12">
+          <h2>Safe Handoff Summary</h2>
+          <p>Prepare only the minimum necessary summary needed for continuity, follow-up, and risk-safe coordination.</p>
+          <form id="handoff-form">
+            <div class="form-grid">
+              <div class="field span-2">
+                <label>Case</label>
+                <select name="case_id" class="case-selector"></select>
+              </div>
+              <div class="field">
+                <label>Reviewed by</label>
+                <input name="reviewed_by" placeholder="Staff member preparing the handoff">
+              </div>
+              <div class="field">
+                <label>Consent status</label>
+                <select name="consent_status"></select>
+              </div>
+              <div class="field">
+                <label>Caregiver involvement</label>
+                <select name="caregiver_involvement"></select>
+              </div>
+              <div class="field">
+                <label>Receiving sector</label>
+                <select name="receiving_sector"></select>
+              </div>
+              <div class="field">
+                <label>Handoff readiness</label>
+                <select name="handoff_ready"></select>
+              </div>
+              <div class="field">
+                <label>Next step owner</label>
+                <input name="next_step_owner" placeholder="Who accepts the next action">
+              </div>
+              <div class="field">
+                <label>Next contact window</label>
+                <select name="next_contact_window"></select>
+              </div>
+              <div class="field">
+                <label>Referral status</label>
+                <select name="referral_status"></select>
+              </div>
+              <div class="field span-2">
+                <label>Minimum necessary summary</label>
+                <textarea name="minimum_necessary_summary"></textarea>
+                <div class="hint">Write only what the receiving team must know to continue care safely.</div>
+              </div>
+              <div class="field span-2">
+                <label>Crisis / safety summary</label>
+                <textarea name="crisis_safety_summary"></textarea>
+              </div>
+              <div class="field span-2">
+                <label>Do not share / keep in hospital record</label>
+                <textarea name="do_not_share"></textarea>
+              </div>
+            </div>
+            <button class="primary" type="submit">Save safe handoff</button>
+            <div id="handoff-status" class="status"></div>
+          </form>
+        </section>
+
+        <section class="panel span-12">
+          <h2>Latest Handoffs</h2>
+          <p>Recent minimum necessary summaries prepared for safe external coordination.</p>
+          <div id="handoff-cards" class="cards"></div>
+        </section>
+      </div>
+    </div>
+
+    <script>
+      const state = {
+        bootstrap: null
+      };
+
+      document.addEventListener('DOMContentLoaded', init);
+
+      function init() {
+        google.script.run
+          .withSuccessHandler(function(bootstrap) {
+            state.bootstrap = bootstrap;
+            renderApp();
+            bindActions();
+          })
+          .withFailureHandler(showFatalError)
+          .getBootstrap();
+      }
+
+      function bindActions() {
+        document.getElementById('refresh-button').onclick = reloadBootstrap;
+        document.getElementById('seed-button').onclick = seedDemoData;
+        document.getElementById('case-form').onsubmit = submitCase;
+        document.getElementById('handoff-form').onsubmit = submitHandoff;
+        document.getElementById('partner-form').onsubmit = submitPartnerLog;
+      }
+
+      function reloadBootstrap() {
+        setStatus('case-status', '');
+        setStatus('handoff-status', '');
+        setStatus('partner-status', '');
+        google.script.run
+          .withSuccessHandler(function(bootstrap) {
+            state.bootstrap = bootstrap;
+            renderApp();
+          })
+          .withFailureHandler(function(error) {
+            alert(error.message || 'Unable to refresh.');
+          })
+          .getBootstrap();
+      }
+
+      function seedDemoData() {
+        setStatus('case-status', 'Seeding demo data...');
+        google.script.run
+          .withSuccessHandler(function(payload) {
+            updateState(payload);
+            setStatus('case-status', payload.message || 'Demo data ready.');
+          })
+          .withFailureHandler(function(error) {
+            setStatus('case-status', error.message || 'Unable to seed demo data.');
+          })
+          .seedDemoData();
+      }
+
+      function submitCase(event) {
+        event.preventDefault();
+        const form = event.currentTarget;
+        const payload = serialize(form);
+        setStatus('case-status', 'Saving case...');
+        google.script.run
+          .withSuccessHandler(function(response) {
+            form.reset();
+            updateState(response);
+            setStatus('case-status', response.message || 'Case saved.');
+          })
+          .withFailureHandler(function(error) {
+            setStatus('case-status', error.message || 'Unable to save case.');
+          })
+          .saveCase(payload);
+      }
+
+      function submitHandoff(event) {
+        event.preventDefault();
+        const form = event.currentTarget;
+        const payload = serialize(form);
+        setStatus('handoff-status', 'Saving safe handoff...');
+        google.script.run
+          .withSuccessHandler(function(response) {
+            form.reset();
+            updateState(response);
+            setStatus('handoff-status', response.message || 'Safe handoff saved.');
+          })
+          .withFailureHandler(function(error) {
+            setStatus('handoff-status', error.message || 'Unable to save handoff.');
+          })
+          .saveHandoff(payload);
+      }
+
+      function submitPartnerLog(event) {
+        event.preventDefault();
+        const form = event.currentTarget;
+        const payload = serialize(form);
+        setStatus('partner-status', 'Saving partner log...');
+        google.script.run
+          .withSuccessHandler(function(response) {
+            form.reset();
+            updateState(response);
+            setStatus('partner-status', response.message || 'Partner log saved.');
+          })
+          .withFailureHandler(function(error) {
+            setStatus('partner-status', error.message || 'Unable to save partner log.');
+          })
+          .savePartnerLog(payload);
+      }
+
+      function updateState(payload) {
+        if (!state.bootstrap) {
+          return;
+        }
+        state.bootstrap.dashboard = payload.dashboard || state.bootstrap.dashboard;
+        state.bootstrap.caseOptions = payload.caseOptions || state.bootstrap.caseOptions;
+        state.bootstrap.latestHandoffs = payload.latestHandoffs || state.bootstrap.latestHandoffs;
+        renderDashboard();
+        renderCaseSelectors();
+        renderHandoffCards();
+      }
+
+      function renderApp() {
+        document.getElementById('app-title').textContent = state.bootstrap.appTitle;
+        document.getElementById('app-subtitle').textContent = state.bootstrap.subtitle;
+        document.getElementById('hero-note').textContent = state.bootstrap.note;
+        renderDashboard();
+        renderSelectOptions();
+        renderCaseSelectors();
+        renderHandoffCards();
+      }
+
+      function renderDashboard() {
+        const dashboard = state.bootstrap.dashboard || {};
+        document.getElementById('summary-grid').innerHTML = [
+          card('Total cases', dashboard.totalCases || 0),
+          card('Handoffs ready', dashboard.handoffsReady || 0),
+          card('Consent pending', dashboard.consentPending || 0),
+          card('Open partner loops', dashboard.openPartnerLoops || 0)
+        ].join('');
+      }
+
+      function renderSelectOptions() {
+        const options = state.bootstrap.optionSets || {};
+        setOptions('select[name="entry_pathway"]', options.entryPathway);
+        setOptions('select[name="current_status"]', options.caseStatus);
+        setOptions('select[name="priority_flag"]', options.priorityFlag);
+        setOptions('select[name="consent_status"]', options.consentStatus);
+        setOptions('select[name="caregiver_involvement"]', options.caregiverInvolvement);
+        setOptions('select[name="receiving_sector"]', options.receivingSector);
+        setOptions('select[name="handoff_ready"]', options.handoffReady);
+        setOptions('select[name="next_contact_window"]', options.nextContactWindow);
+        setOptions('select[name="referral_status"]', options.referralStatus);
+        setOptions('select[name="partner_type"]', options.partnerType);
+        setOptions('select[name="contact_status"]', options.contactStatus);
+      }
+
+      function renderCaseSelectors() {
+        const options = state.bootstrap.caseOptions || [];
+        document.querySelectorAll('.case-selector').forEach(function(select) {
+          const currentValue = select.value;
+          select.innerHTML = '<option value="">Select case</option>' + options.map(function(option) {
+            return '<option value="' + escapeHtml(option.value) + '">' + escapeHtml(option.label) + '</option>';
+          }).join('');
+          if (currentValue) {
+            select.value = currentValue;
+          }
+        });
+      }
+
+      function renderHandoffCards() {
+        const items = state.bootstrap.latestHandoffs || [];
+        document.getElementById('handoff-cards').innerHTML = items.length ? items.map(function(item) {
+          return [
+            '<article class="handoff-card">',
+            '<div class="handoff-top"><strong>',
+            escapeHtml(item.patientCode || item.caseId),
+            '</strong>',
+            renderChip(item.handoffReady, item.handoffReady === 'Needs review' ? 'danger' : item.handoffReady === 'Draft' ? 'warning' : ''),
+            renderChip(item.consentStatus, item.consentStatus !== 'Confirmed' ? 'warning' : ''),
+            '</div>',
+            '<div class="hint">Case: ', escapeHtml(item.caseId), ' | Sector: ', escapeHtml(item.receivingSector || '-'), ' | Reviewed by: ', escapeHtml(item.reviewedBy || '-'), '</div>',
+            '<p>', escapeHtml(item.summary || 'No summary recorded.'), '</p>',
+            '<div class="hint" style="margin-top:8px;">Updated: ', escapeHtml(item.updatedAt || ''), '</div>',
+            '</article>'
+          ].join('');
+        }).join('') : '<div class="hint">No handoff summaries recorded yet.</div>';
+      }
+
+      function setOptions(selector, values) {
+        document.querySelectorAll(selector).forEach(function(select) {
+          select.innerHTML = '<option value="">Select</option>' + (values || []).map(function(value) {
+            return '<option value="' + escapeHtml(value) + '">' + escapeHtml(value) + '</option>';
+          }).join('');
+        });
+      }
+
+      function setStatus(id, message) {
+        document.getElementById(id).textContent = message || '';
+      }
+
+      function serialize(form) {
+        const data = {};
+        new FormData(form).forEach(function(value, key) {
+          data[key] = value;
+        });
+        return data;
+      }
+
+      function card(label, value) {
+        return '<article class="summary-card"><span>' + escapeHtml(label) + '</span><strong>' + escapeHtml(String(value)) + '</strong></article>';
+      }
+
+      function renderChip(text, extraClass) {
+        return '<span class="chip ' + (extraClass || '') + '">' + escapeHtml(text || '-') + '</span>';
+      }
+
+      function showFatalError(error) {
+        document.body.innerHTML = '<div style="padding:24px;font-family:Arial,sans-serif;">' + escapeHtml(error.message || 'Unable to load app.') + '</div>';
+      }
+
+      function escapeHtml(value) {
+        return String(value === undefined || value === null ? '' : value)
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;')
+          .replace(/"/g, '&quot;')
+          .replace(/'/g, '&#39;');
+      }
+    </script>
+  </body>
+</html>

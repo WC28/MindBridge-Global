@@ -1,0 +1,425 @@
+<script>
+  function getFormContext(formKey) {
+    return (state.bootstrap.formContext && state.bootstrap.formContext[formKey]) || {};
+  }
+
+  function renderCaseSelector(formKey) {
+    return [
+      '<div class="form-grid case-selector-wrap">',
+      '<div class="field span-2">',
+      '<label>Case</label>',
+      '<select name="case_id" class="case-selector" data-form-key="',
+      escapeHtml(formKey),
+      '">',
+      '<option value="">Select case</option>',
+      '</select>',
+      '<div class="field-help">Use the case created from check-in or a previously opened case workflow.</div>',
+      '</div>',
+      '</div>'
+    ].join('');
+  }
+
+  function renderField(formKey, field) {
+    const context = getFormContext(formKey);
+    const hiddenFields = context.hiddenFields || [];
+    const fixedValues = context.fixedValues || {};
+    const fixedValue = fixedValues[field.name] || '';
+
+    if (hiddenFields.indexOf(field.name) !== -1) {
+      return '<input type="hidden" name="' + escapeHtml(field.name) + '" value="' + escapeHtml(fixedValue) + '">';
+    }
+
+    const fieldClass = field.span === 2 ? 'field span-2' : 'field';
+    let inputHtml = '';
+
+    if (field.type === 'textarea') {
+      inputHtml = [
+        '<textarea name="',
+        escapeHtml(field.name),
+        '"',
+        field.placeholder ? ' placeholder="' + escapeHtml(field.placeholder) + '"' : '',
+        '>',
+        escapeHtml(fixedValue),
+        '</textarea>'
+      ].join('');
+    } else if (field.type === 'select') {
+      inputHtml = [
+        '<select name="',
+        escapeHtml(field.name),
+        '">',
+        '<option value="">Select</option>',
+        renderOptions(field.optionsKey),
+        '</select>'
+      ].join('');
+    } else {
+      inputHtml = [
+        '<input type="',
+        escapeHtml(field.type),
+        '" name="',
+        escapeHtml(field.name),
+        '"',
+        field.min !== undefined ? ' min="' + escapeHtml(String(field.min)) + '"' : '',
+        field.max !== undefined ? ' max="' + escapeHtml(String(field.max)) + '"' : '',
+        field.step !== undefined ? ' step="' + escapeHtml(String(field.step)) + '"' : '',
+        field.placeholder ? ' placeholder="' + escapeHtml(field.placeholder) + '"' : '',
+        fixedValue ? ' value="' + escapeHtml(fixedValue) + '"' : '',
+        '>'
+      ].join('');
+    }
+
+    return [
+      '<div class="',
+      fieldClass,
+      '">',
+      '<label>',
+      escapeHtml(field.label),
+      '</label>',
+      inputHtml,
+      field.help ? '<div class="field-help">' + escapeHtml(field.help) + '</div>' : '',
+      '</div>'
+    ].join('');
+  }
+
+  function renderOptions(optionsKey) {
+    if (!state.bootstrap.optionSets || !state.bootstrap.optionSets[optionsKey]) {
+      return '';
+    }
+    return state.bootstrap.optionSets[optionsKey].map(function(option) {
+      return '<option value="' + escapeHtml(option) + '">' + escapeHtml(option) + '</option>';
+    }).join('');
+  }
+
+  function applyFormContext(form) {
+    const formKey = form.getAttribute('data-form-key');
+    const context = getFormContext(formKey);
+    const fixedValues = context.fixedValues || {};
+
+    Object.keys(fixedValues).forEach(function(key) {
+      const field = form.elements[key];
+      if (field) {
+        field.value = fixedValues[key];
+      }
+    });
+
+    ['visit_date', 'meeting_date'].forEach(function(fieldName) {
+      const field = form.elements[fieldName];
+      if (field && !field.value) {
+        field.value = new Date().toISOString().slice(0, 10);
+      }
+    });
+
+    const preferredLanguageField = form.elements.preferred_language;
+    if (preferredLanguageField && !preferredLanguageField.value) {
+      preferredLanguageField.value = 'English';
+    }
+
+    const followUpField = form.elements.follow_up_due_date;
+    if (followUpField && !followUpField.value) {
+      followUpField.value = new Date().toISOString().slice(0, 10);
+    }
+
+    const reviewedByField = form.elements.reviewed_by;
+    if (reviewedByField && !reviewedByField.value && state.bootstrap.currentUser) {
+      reviewedByField.value = state.bootstrap.currentUser.displayName || '';
+    }
+
+    const consentField = form.elements.consent_acknowledged;
+    if (consentField && !consentField.value) {
+      consentField.value = 'Yes';
+    }
+  }
+
+  function renderSpreadsheetLink() {
+    const wrap = document.getElementById('sheet-link-wrap');
+    const link = document.getElementById('sheet-link');
+    if (!state.bootstrap.spreadsheetUrl) {
+      wrap.classList.add('hidden');
+      return;
+    }
+    wrap.classList.remove('hidden');
+    link.href = state.bootstrap.spreadsheetUrl;
+    link.textContent = state.bootstrap.spreadsheetName || 'Open Google Sheet';
+  }
+
+  function renderDashboard() {
+    const dashboard = state.bootstrap.dashboard || buildEmptyDashboardState();
+    const waitingForLiveStaffData = !!(state.bootstrap &&
+      state.bootstrap.currentUser &&
+      state.bootstrap.currentUser.portalType === 'staff' &&
+      state.bootstrap.needsStaffHydration &&
+      !dashboard.lastUpdated);
+    document.getElementById('last-updated').textContent = dashboard.lastUpdated ? 'Dashboard updated ' + dashboard.lastUpdated : '';
+
+    document.getElementById('summary-cards').innerHTML = dashboard.summaryCards.length
+      ? dashboard.summaryCards.map(function(card) {
+          return [
+            '<article class="summary-card tone-',
+            escapeHtml(card.tone || 'teal'),
+            '">',
+            '<div class="summary-card-label">',
+            escapeHtml(card.label),
+            '</div>',
+            '<div class="summary-card-value" data-counter-value="',
+            escapeHtml(String(card.value)),
+            '">',
+            escapeHtml(String(card.value)),
+            '</div>',
+            '</article>'
+          ].join('');
+        }).join('')
+      : '<div class="empty-state">' + (waitingForLiveStaffData ? 'Loading live dashboard signals...' : 'No dashboard data available yet.') + '</div>';
+    animateCountersIn(document.getElementById('summary-cards'));
+
+    renderBarCollection('workflow-coverage', dashboard.workflowCoverage, waitingForLiveStaffData ? 'Loading workflow activity...' : 'No workflow activity yet.');
+    renderBarCollection('arrival-mix', dashboard.arrivalMix, waitingForLiveStaffData ? 'Loading intake pattern...' : 'No intake pattern available yet.');
+
+    document.getElementById('network-overview').innerHTML = dashboard.networkOverview.length
+      ? dashboard.networkOverview.map(function(item) {
+          return [
+            '<div class="metric-row">',
+            '<span>',
+            escapeHtml(item.label),
+            '</span>',
+            '<strong>',
+            escapeHtml(String(item.value)),
+            '</strong>',
+            '</div>'
+          ].join('');
+        }).join('')
+      : '<div class="empty-state">' + (waitingForLiveStaffData ? 'Loading coordination data...' : 'No coordination data yet.') + '</div>';
+
+    document.getElementById('ai-monitoring').innerHTML = dashboard.aiMonitoring.length
+      ? dashboard.aiMonitoring.map(function(item) {
+          return [
+            '<div class="metric-row">',
+            '<span>',
+            escapeHtml(item.label),
+            '</span>',
+            '<strong>',
+            escapeHtml(String(item.value)),
+            '</strong>',
+            '</div>'
+          ].join('');
+        }).join('')
+      : '<div class="empty-state">' + (waitingForLiveStaffData ? 'Loading AI monitoring...' : 'AI monitoring is not active yet.') + '</div>';
+
+    document.getElementById('bias-watch').innerHTML = dashboard.biasWatch.length
+      ? dashboard.biasWatch.map(function(item) {
+          return [
+            '<div class="metric-row metric-row-stack">',
+            '<span>',
+            escapeHtml(item.label),
+            '</span>',
+            '<strong>',
+            escapeHtml(String(item.value)),
+            '</strong>',
+            item.notes ? '<div class="metric-note">' + escapeHtml(item.notes) + '</div>' : '',
+            '</div>'
+          ].join('');
+        }).join('')
+      : '<div class="empty-state">' + (waitingForLiveStaffData ? 'Loading disagreement signals...' : 'No disagreement clusters detected yet.') + '</div>';
+
+    document.getElementById('risk-factors').innerHTML = dashboard.commonRiskFactors.length
+      ? dashboard.commonRiskFactors.map(function(item) {
+          return [
+            '<div class="tag"><span>',
+            escapeHtml(item.label),
+            '</span><span class="tag-count">',
+            escapeHtml(String(item.value)),
+            '</span></div>'
+          ].join('');
+        }).join('')
+      : '<div class="empty-state">' + (waitingForLiveStaffData ? 'Loading risk factors...' : 'No risk factors recorded yet.') + '</div>';
+
+    document.getElementById('triage-queue-table').innerHTML = dashboard.triageQueue.length
+      ? dashboard.triageQueue.map(function(item) {
+          return [
+            '<tr class="', getTriageRowClass(item), '">',
+            '<td>',
+            '<div class="table-case-cell"><strong>',
+            escapeHtml(item.patientCode),
+            '</strong>',
+            renderUrgencySign(item.riskFlag, item.queuePriority),
+            '</div>',
+            '</td>',
+            '<td>',
+            escapeHtml(item.source || '-'),
+            '</td>',
+            '<td>',
+            renderPriority(item.queuePriority),
+            '</td>',
+            '<td>',
+            renderFlag(item.riskFlag),
+            '</td>',
+            '<td>',
+            escapeHtml(item.telegramStatus || ''),
+            '</td>',
+            '<td>',
+            escapeHtml(item.queuedAt || ''),
+            '</td>',
+            '</tr>'
+          ].join('');
+        }).join('')
+      : '<tr><td colspan="6" class="empty-state">' + (waitingForLiveStaffData ? 'Loading live triage queue...' : 'No triage queue activity yet.') + '</td></tr>';
+
+    document.getElementById('recent-flags-table').innerHTML = dashboard.recentFlags.length
+      ? dashboard.recentFlags.map(function(item) {
+          return [
+            '<tr class="', getTriageRowClass(item), '">',
+            '<td>',
+            '<div class="table-case-cell"><strong>',
+            escapeHtml(item.patientCode),
+            '</strong>',
+            renderUrgencySign(item.riskFlag, ''),
+            '</div>',
+            '</td>',
+            '<td>',
+            renderFlag(item.riskFlag),
+            '</td>',
+            '<td>',
+            escapeHtml(item.mainConcern || ''),
+            '</td>',
+            '<td>',
+            escapeHtml(item.riskReasons || ''),
+            '</td>',
+            '<td>',
+            escapeHtml(item.lastUpdated || ''),
+            '</td>',
+            '</tr>'
+          ].join('');
+        }).join('')
+      : '<tr><td colspan="5" class="empty-state">' + (waitingForLiveStaffData ? 'Loading flagged cases...' : 'No flagged case activity yet.') + '</td></tr>';
+  }
+
+  function renderBarCollection(targetId, items, emptyText) {
+    const target = document.getElementById(targetId);
+    if (!items || !items.length) {
+      target.innerHTML = '<div class="empty-state">' + escapeHtml(emptyText) + '</div>';
+      return;
+    }
+
+    const maxValue = Math.max.apply(null, items.map(function(item) {
+      return item.value;
+    }).concat([1]));
+
+    target.innerHTML = items.map(function(item) {
+      const width = Math.max(8, Math.round((item.value / maxValue) * 100));
+      return [
+        '<div class="bar-row">',
+        '<div class="bar-meta"><span>',
+        escapeHtml(item.label),
+        '</span><strong>',
+        escapeHtml(String(item.value)),
+        '</strong></div>',
+        '<div class="bar-track"><div class="bar-fill" style="width:',
+        width,
+        '%"></div></div>',
+        '</div>'
+      ].join('');
+    }).join('');
+  }
+
+  function buildEmptyDashboardState() {
+    return {
+      summaryCards: [],
+      workflowCoverage: [],
+      arrivalMix: [],
+      networkOverview: [],
+      aiMonitoring: [],
+      biasWatch: [],
+      commonRiskFactors: [],
+      triageQueue: [],
+      recentFlags: [],
+      lastUpdated: ''
+    };
+  }
+
+  function refreshCaseSelectors() {
+    const options = state.bootstrap.caseOptions || [];
+    document.querySelectorAll('.case-selector').forEach(function(select) {
+      const currentValue = select.value;
+      select.innerHTML = '<option value="">Select case</option>' + options.map(function(option) {
+        return '<option value="' + escapeHtml(option.value) + '">' + escapeHtml(option.label) + '</option>';
+      }).join('');
+      if (currentValue) {
+        select.value = currentValue;
+        applyCaseLinkedDefaults(select.form, currentValue);
+      }
+      select.onchange = function() {
+        applyCaseLinkedDefaults(select.form, select.value);
+      };
+    });
+  }
+
+  function getWorkspaceCaseById(caseId) {
+    const cases = (state.bootstrap.caseWorkspace && state.bootstrap.caseWorkspace.cases) || [];
+    return cases.find(function(item) {
+      return item.caseId === caseId;
+    }) || null;
+  }
+
+  function applyCaseLinkedDefaults(form, caseId) {
+    if (!form || !caseId || !state.bootstrap.currentUser || state.bootstrap.currentUser.portalType !== 'staff') {
+      return;
+    }
+
+    const formKey = form.getAttribute('data-form-key');
+    const caseItem = getWorkspaceCaseById(caseId);
+    if (!caseItem) {
+      return;
+    }
+
+    if (formKey === 'Minimum_Necessary_Handoff') {
+      if (form.elements.minimum_necessary_summary && !form.elements.minimum_necessary_summary.value && caseItem.latestSummary) {
+        form.elements.minimum_necessary_summary.value = caseItem.latestSummary;
+      }
+      if (form.elements.crisis_safety_summary && !form.elements.crisis_safety_summary.value && caseItem.crisisSafetySummary) {
+        form.elements.crisis_safety_summary.value = caseItem.crisisSafetySummary;
+      }
+      return;
+    }
+
+    if (formKey === 'Public_Coordination') {
+      if (form.elements.shared_information && !form.elements.shared_information.value && caseItem.handoffSummary) {
+        form.elements.shared_information.value = caseItem.handoffSummary;
+      }
+      if (form.elements.notes && !form.elements.notes.value && caseItem.doNotShare) {
+        form.elements.notes.value = 'Do not share: ' + caseItem.doNotShare;
+      }
+      return;
+    }
+
+    if (formKey === 'Private_Coordination') {
+      if (form.elements.support_needs && !form.elements.support_needs.value && caseItem.handoffSummary) {
+        form.elements.support_needs.value = caseItem.handoffSummary;
+      }
+      if (form.elements.notes && !form.elements.notes.value && caseItem.doNotShare) {
+        form.elements.notes.value = 'Do not share: ' + caseItem.doNotShare;
+      }
+      return;
+    }
+
+    if (formKey === 'Follow_Up') {
+      if (form.elements.follow_up_notes && !form.elements.follow_up_notes.value && caseItem.handoffSummary) {
+        form.elements.follow_up_notes.value = caseItem.handoffSummary;
+      }
+    }
+  }
+
+  function refreshPageVisibility() {
+    document.querySelectorAll('.page').forEach(function(page) {
+      page.classList.remove('active');
+    });
+    const target = document.getElementById('page-' + state.activePage);
+    if (target) {
+      target.classList.add('active');
+    }
+  }
+
+  function toggleStaffControls() {
+    const canRefresh = !!state.bootstrap.canRefreshDashboard;
+    const canSeed = !!state.bootstrap.canSeedDemoData;
+    document.getElementById('refresh-button').classList.toggle('hidden', !canRefresh);
+    document.getElementById('seed-button').classList.toggle('hidden', !canSeed);
+  }
+</script>

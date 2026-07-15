@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <base target="_top">
+    <meta charset="utf-8">
+    <meta name="color-scheme" content="light only">
+    <title>MindBridge Case Dashboard</title>
+    <?!= include('Stylesheet'); ?>
+  </head>
+  <body class="dashboard-body">
+    <div class="ambient-orb ambient-orb-a"></div>
+    <div class="ambient-orb ambient-orb-b"></div>
+
+    <header class="dashboard-hero panel panel-tone-mint">
+      <div class="dashboard-hero-copy">
+        <div class="eyebrow">Psychiatrist + MDT Workflow</div>
+        <h1 id="dashboard-title">MindBridge Case Dashboard</h1>
+        <p class="dashboard-subtitle">
+          ดูเคสใหม่, การแจ้งเตือนจิตแพทย์, MDT coordination, และ community monitoring ในหน้าเดียว
+        </p>
+        <div id="dashboard-generated-at" class="dashboard-generated-at">Loading dashboard...</div>
+      </div>
+
+      <div class="dashboard-hero-actions">
+        <a id="dashboard-public-link" class="dashboard-link-button" href="#" target="_blank" rel="noopener">Open patient intake</a>
+        <a id="dashboard-sheet-link" class="ghost-link-button" href="#" target="_blank" rel="noopener">Open Google Sheet</a>
+      </div>
+    </header>
+
+    <main class="dashboard-shell">
+      <section class="panel panel-tone-sunset">
+        <div class="panel-header">
+          <h2>Live status</h2>
+          <p>ติดตามจำนวนเคส, ความเร่งด่วน, การแจ้งเตือน, และการส่งต่อ workflow แบบ real-time จาก Google Sheet</p>
+        </div>
+        <div id="dashboard-banner" class="banner hidden" role="status" aria-live="polite"></div>
+        <div id="dashboard-stats" class="dashboard-stats-grid"></div>
+      </section>
+
+      <section class="panel panel-tone-sky">
+        <div class="panel-header">
+          <h2>Workflow board</h2>
+          <p>เคสจะถูกจัดเข้าคิวอัตโนมัติตามความเสี่ยง และทีมสามารถเปลี่ยน stage ได้จริงเพื่อส่งต่อ psychiatrist, MDT, community, หรือปิดเคส</p>
+        </div>
+        <div id="dashboard-board" class="dashboard-board"></div>
+      </section>
+
+      <section class="panel panel-tone-lemon">
+        <div class="panel-header">
+          <h2>Recent cases</h2>
+          <p>มุมมองล่าสุดสำหรับ staff โดยใช้รหัสเคสและคะแนนเท่านั้น ไม่โชว์ข้อมูลผู้ป่วยในหน้าการแจ้งเตือน Telegram</p>
+        </div>
+        <div id="dashboard-recent" class="dashboard-recent-grid"></div>
+      </section>
+    </main>
+
+    <?!= include('DashboardJavaScript'); ?>
+  </body>
+</html>

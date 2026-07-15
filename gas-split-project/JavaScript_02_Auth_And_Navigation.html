@@ -1,0 +1,356 @@
+<script>
+  function initializeApp() {
+    const savedToken = getStoredSessionToken();
+    showBanner('Loading prototype data...');
+    runServer('getAppBootstrap', [savedToken], function(bootstrap) {
+      state.bootstrap = bootstrap;
+      if (!bootstrap.authenticated) {
+        clearStoredSessionToken();
+      }
+      hydrateApp();
+      hideBanner();
+    }, function(error) {
+      showBanner(error.message || 'Unable to load app data.', true);
+    });
+  }
+
+  function hydrateApp() {
+    renderTitles();
+    document.body.setAttribute('data-portal', state.bootstrap.authenticated && state.bootstrap.currentUser
+      ? state.bootstrap.currentUser.portalType
+      : 'auth');
+    state.selectedPortal = getSafePortalSelection();
+    if (state.bootstrap.authenticated) {
+      storeSessionToken(state.bootstrap.sessionToken);
+      showAppShell();
+      renderCurrentUser();
+      renderNavigation();
+      renderFormPages();
+      bindGlobalActions();
+      renderSpreadsheetLink();
+      renderDashboard();
+      refreshCaseSelectors();
+      refreshPageVisibility();
+      toggleStaffControls();
+      maybeHydrateStaffPortalData();
+    } else {
+      showAuthShell();
+      renderPortalPicker();
+      renderLoginForm();
+      maybeAutoLaunchPublicScreening();
+    }
+  }
+
+  function getSafePortalSelection() {
+    const portalOptions = (state.bootstrap && state.bootstrap.portalOptions) || [];
+    if (!portalOptions.length) {
+      return 'register';
+    }
+    const exists = portalOptions.some(function(portal) {
+      return portal.id === state.selectedPortal;
+    });
+    return exists ? state.selectedPortal : portalOptions[0].id;
+  }
+
+  function renderTitles() {
+    const title = state.bootstrap.appTitle || 'MindBridge Global';
+    const subtitle = state.bootstrap.subtitle || '';
+    document.getElementById('auth-app-title').textContent = title;
+    document.getElementById('app-title').textContent = title;
+    document.getElementById('auth-app-subtitle').textContent = subtitle;
+    document.getElementById('app-subtitle').textContent = subtitle;
+    document.getElementById('proposal-note').textContent = state.bootstrap.proposalNote || '';
+  }
+
+  function showAuthShell() {
+    document.getElementById('auth-shell').classList.remove('hidden');
+    document.getElementById('app-shell').classList.add('hidden');
+  }
+
+  function showAppShell() {
+    document.getElementById('auth-shell').classList.add('hidden');
+    document.getElementById('app-shell').classList.remove('hidden');
+    const defaultPage = state.bootstrap.defaultPage || 'dashboard';
+    const availablePages = getAvailablePages();
+    state.activePage = availablePages.some(function(page) {
+      return page.id === defaultPage;
+    }) ? defaultPage : (availablePages[0] ? availablePages[0].id : 'dashboard');
+  }
+
+  function renderPortalPicker() {
+    const portals = state.bootstrap.portalOptions || [];
+    const picker = document.getElementById('portal-picker');
+    picker.innerHTML = portals.map(function(portal) {
+      return [
+        '<button class="portal-card',
+        portal.id === state.selectedPortal ? ' active' : '',
+        '" type="button" data-portal="',
+        escapeHtml(portal.id),
+        '">',
+        '<span class="portal-card-title">',
+        escapeHtml(portal.title),
+        '</span>',
+        '<span class="portal-card-subtitle">',
+        escapeHtml(portal.subtitle),
+        '</span>',
+        '</button>'
+      ].join('');
+    }).join('');
+
+    picker.querySelectorAll('[data-portal]').forEach(function(button) {
+      button.addEventListener('click', function() {
+        state.selectedPortal = button.getAttribute('data-portal');
+        renderPortalPicker();
+        renderLoginForm();
+      });
+    });
+  }
+
+  function renderLoginForm() {
+    const config = getLoginConfig();
+    document.getElementById('login-title').textContent = config.title;
+    document.getElementById('login-subtitle').textContent = config.subtitle;
+
+    const form = document.getElementById('login-form');
+    form.innerHTML = [
+      config.fields.map(function(field) {
+        return [
+          '<div class="field',
+          field.span === 2 ? ' span-2' : '',
+          '">',
+          '<label>',
+          escapeHtml(field.label),
+          '</label>',
+          '<input type="',
+          escapeHtml(field.type),
+          '" name="',
+          escapeHtml(field.name),
+          '"',
+          field.placeholder ? ' placeholder="' + escapeHtml(field.placeholder) + '"' : '',
+          field.autocomplete ? ' autocomplete="' + escapeHtml(field.autocomplete) + '"' : '',
+          '>',
+          field.help ? '<div class="field-help">' + escapeHtml(field.help) + '</div>' : '',
+          '</div>'
+        ].join('');
+      }).join(''),
+      '<div class="field span-2">',
+      '<div class="button-group">',
+      '<button class="primary-button" type="submit">',
+      escapeHtml(config.buttonLabel),
+      '</button>',
+      '</div>',
+      '</div>'
+    ].join('');
+
+    form.onsubmit = function(event) {
+      event.preventDefault();
+      submitLogin(form);
+    };
+  }
+
+  function maybeAutoLaunchPublicScreening() {
+    if (state.bootstrap.authenticated || state.selectedPortal !== 'screening' || state.screeningAutoLaunchTried) {
+      return;
+    }
+    state.screeningAutoLaunchTried = true;
+    const form = document.getElementById('login-form');
+    if (form) {
+      submitLogin(form);
+    }
+  }
+
+  function getLoginConfig() {
+    switch (state.selectedPortal) {
+      case 'register':
+        return {
+          title: 'New Patient Registration',
+          subtitle: 'Open the registration workspace to create a patient code and portal access codes.',
+          buttonLabel: 'Open registration portal',
+          fields: []
+        };
+      case 'patient':
+        return {
+          title: 'Patient Sign In',
+          subtitle: 'Use patient code and portal access code to submit check-in or follow-up requests.',
+          buttonLabel: 'Sign in to patient portal',
+          fields: [
+            { name: 'patient_code', label: 'Patient code', type: 'text', placeholder: 'e.g. MH-001' },
+            { name: 'access_code', label: 'Access code', type: 'password' }
+          ]
+        };
+      case 'screening':
+        return {
+          title: 'Conference QR Screening',
+          subtitle: 'Start a public BPRS plus AI-supported self-screening for patients, family members, or caregivers. This same link can be used from home 24/7.',
+          buttonLabel: 'Start screening now',
+          fields: []
+        };
+      case 'family':
+        return {
+          title: 'Family / Caregiver Sign In',
+          subtitle: 'Use patient code and family access code to support check-in and follow-up requests.',
+          buttonLabel: 'Sign in to family portal',
+          fields: [
+            { name: 'patient_code', label: 'Patient code', type: 'text', placeholder: 'e.g. MH-001' },
+            { name: 'access_code', label: 'Access code', type: 'password' }
+          ]
+        };
+      case 'community':
+        return {
+          title: 'Community Referral Sign In',
+          subtitle: 'Community members or volunteers can submit structured referral information from this portal.',
+          buttonLabel: 'Sign in to community portal',
+          fields: [
+            { name: 'login_username', label: 'Username', type: 'text', autocomplete: 'username' },
+            { name: 'login_password', label: 'Password', type: 'password', autocomplete: 'current-password' }
+          ]
+        };
+      case 'public':
+        return {
+          title: 'Public Sector Network Sign In',
+          subtitle: 'Use a partner account for interagency coordination updates and action tracking.',
+          buttonLabel: 'Sign in to public sector portal',
+          fields: [
+            { name: 'login_username', label: 'Username', type: 'text', autocomplete: 'username' },
+            { name: 'login_password', label: 'Password', type: 'password', autocomplete: 'current-password' }
+          ]
+        };
+      case 'private':
+        return {
+          title: 'Private / NGO Network Sign In',
+          subtitle: 'Use a partner account to coordinate external support, rehabilitation, or welfare actions.',
+          buttonLabel: 'Sign in to private / NGO portal',
+          fields: [
+            { name: 'login_username', label: 'Username', type: 'text', autocomplete: 'username' },
+            { name: 'login_password', label: 'Password', type: 'password', autocomplete: 'current-password' }
+          ]
+        };
+      default:
+        return {
+          title: 'Hospital Staff Sign In',
+          subtitle: 'Access the dashboard, multidisciplinary reviews, shared care planning, and follow-up workflow.',
+          buttonLabel: 'Sign in to staff portal',
+          fields: [
+            { name: 'login_username', label: 'Username', type: 'text', autocomplete: 'username' },
+            { name: 'login_password', label: 'Password', type: 'password', autocomplete: 'current-password' }
+          ]
+        };
+    }
+  }
+
+  function submitLogin(form) {
+    const credentials = serializeForm(form);
+    showBanner('Signing in...');
+    runServer('loginPortal', [state.selectedPortal, credentials], function(bootstrap) {
+      state.bootstrap = bootstrap;
+      hydrateApp();
+      hideBanner();
+    }, function(error) {
+      showBanner(error.message || 'Unable to sign in.', true);
+    });
+  }
+
+  function renderCurrentUser() {
+    const user = state.bootstrap.currentUser || {};
+    const label = buildCurrentUserLabel(user);
+    const sidebarUser = document.getElementById('sidebar-user');
+    const topbarUser = document.getElementById('topbar-user');
+
+    if (!label) {
+      sidebarUser.classList.add('hidden');
+      topbarUser.classList.add('hidden');
+      return;
+    }
+
+    sidebarUser.textContent = label;
+    topbarUser.textContent = label;
+    sidebarUser.classList.remove('hidden');
+    topbarUser.classList.remove('hidden');
+  }
+
+  function buildCurrentUserLabel(user) {
+    if (!user || !user.portalType) {
+      return '';
+    }
+    if (user.portalType === 'patient' || user.portalType === 'family') {
+      return [user.displayName, user.patientCode].filter(Boolean).join(' - ');
+    }
+    return [user.displayName, user.organization || user.profession || user.roleLabel].filter(Boolean).join(' - ');
+  }
+
+  function getAvailablePages() {
+    const allowed = state.bootstrap.allowedPages || [];
+    return PAGE_DEFINITIONS.filter(function(page) {
+      return allowed.indexOf(page.id) !== -1;
+    });
+  }
+
+  function getNavigationSections() {
+    const pageMap = getAvailablePages().reduce(function(index, page) {
+      index[page.id] = page;
+      return index;
+    }, {});
+
+    const sections = NAVIGATION_SECTIONS.map(function(section) {
+      return {
+        title: section.title,
+        pages: section.pages.map(function(pageId) {
+          return pageMap[pageId];
+        }).filter(Boolean)
+      };
+    }).filter(function(section) {
+      return section.pages.length > 0;
+    });
+
+    if (sections.length) {
+      return sections;
+    }
+
+    return [{
+      title: 'Workspace',
+      pages: getAvailablePages()
+    }];
+  }
+
+  function renderNavigation() {
+    const nav = document.getElementById('nav-list');
+    const sections = getNavigationSections();
+
+    nav.innerHTML = sections.map(function(section) {
+      return [
+        '<div class="nav-section">',
+        '<div class="nav-section-label">',
+        escapeHtml(section.title),
+        '</div>',
+        section.pages.map(function(page) {
+          return [
+            '<button class="nav-button',
+            page.id === state.activePage ? ' active' : '',
+            '" type="button" data-page="',
+            escapeHtml(page.id),
+            '">',
+            '<span class="nav-button-title">',
+            escapeHtml(page.title),
+            '</span>',
+            '<span class="nav-button-subtitle">',
+            escapeHtml(page.subtitle),
+            '</span>',
+            '</button>'
+          ].join('');
+        }).join(''),
+        '</div>'
+      ].join('');
+    }).join('');
+
+    nav.querySelectorAll('[data-page]').forEach(function(button) {
+      button.onclick = function() {
+        state.activePage = button.getAttribute('data-page');
+        if (isCustomPage(state.activePage)) {
+          renderFormPages();
+        }
+        renderNavigation();
+        refreshPageVisibility();
+      };
+    });
+  }
+</script>

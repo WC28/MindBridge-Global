@@ -1,0 +1,2447 @@
+<script>
+  const LANGUAGE_OPTIONS = [
+    { code: 'th', label: 'TH', lang: 'th', dir: 'ltr' },
+    { code: 'en', label: 'EN', lang: 'en', dir: 'ltr' },
+    { code: 'zh', label: '中文', lang: 'zh-Hans', dir: 'ltr' },
+    { code: 'hi', label: 'हिंदी', lang: 'hi', dir: 'ltr' },
+    { code: 'ur', label: 'اردو', lang: 'ur', dir: 'rtl' }
+  ];
+
+  const PRESENTATION_CONTENT = {
+    members: [
+      {
+        name: 'Ms. Sadia Hashmi',
+        detail: 'Psychotherapist / Counselor at Pakistan Association of Cognitive Therapy (PACT)',
+        meta: 'Pakistan'
+      },
+      {
+        name: 'Miss Witthirasa Chaemphichanyotin',
+        detail: 'Psychiatric Social Worker at Nakhon Ratchasima Rajanagarindra Psychiatric Hospital, Thailand',
+        meta: 'Thailand'
+      },
+      {
+        name: 'Yuanruo Xu',
+        detail: 'China',
+        meta: ''
+      },
+      {
+        name: 'Dr. Madhu Vamsi Ganduri',
+        detail: 'Psychiatrist at MV Health India',
+        meta: 'India'
+      },
+      {
+        name: 'Assoc. Prof. Yuchen Li',
+        detail: 'Associate Professor at Mental Health Center, National Center for Mental Disorder, West China Hospital, Sichuan University, China',
+        meta: 'China'
+      }
+    ]
+  };
+
+  const PRESENTATION_COPY = {
+    en: {
+      headerContext: 'IMHWF 2026 Group 4 - Topic 2',
+      kicker: 'Presentation Team',
+      title: 'International Group 4 Faculty and Team',
+      intro: 'Prepared for IMHWF 2026 Topic 2 as a presentation-ready proposal on innovation in mental health care and treatment.',
+      topicLabel: 'Program topic',
+      topic: 'IMHWF 2026 Group 4 - Topic 2: Innovations in Mental Health Care and Treatment',
+      teamLabel: 'Group members'
+    },
+    th: {
+      headerContext: 'IMHWF 2026 กลุ่ม 4 - หัวข้อ 2',
+      kicker: 'คณะผู้นำเสนอ',
+      title: 'คณะและทีม Group 4 ระดับนานาชาติ',
+      intro: 'จัดทำสำหรับ IMHWF 2026 Topic 2 ในรูปแบบข้อเสนอที่พร้อมนำเสนอด้านนวัตกรรมการดูแลและการรักษาสุขภาพจิต',
+      topicLabel: 'หัวข้อการนำเสนอ',
+      topic: 'IMHWF 2026 กลุ่ม 4 - หัวข้อ 2: นวัตกรรมด้านการดูแลและการรักษาสุขภาพจิต',
+      teamLabel: 'รายชื่อคณะ'
+    },
+    zh: {
+      headerContext: 'IMHWF 2026 第4组 - 主题2',
+      kicker: '展示团队',
+      title: 'Group 4 国际师资与团队',
+      intro: '本提案作为 IMHWF 2026 Topic 2 的展示版本，聚焦心理健康照护与治疗创新。',
+      topicLabel: '展示主题',
+      topic: 'IMHWF 2026 第4组 - 主题2：心理健康照护与治疗创新',
+      teamLabel: '团队成员'
+    },
+    hi: {
+      headerContext: 'IMHWF 2026 समूह 4 - विषय 2',
+      kicker: 'प्रस्तुति टीम',
+      title: 'Group 4 की अंतरराष्ट्रीय फैकल्टी और टीम',
+      intro: 'यह प्रस्तुति-पयोगी प्रस्ताव IMHWF 2026 Topic 2 के लिए मानसिक स्वास्थ्य देखभाल और उपचार में नवाचार पर केंद्रित है।',
+      topicLabel: 'प्रोग्राम विषय',
+      topic: 'IMHWF 2026 समूह 4 - विषय 2: मानसिक स्वास्थ्य देखभाल और उपचार में नवाचार',
+      teamLabel: 'समूह सदस्य'
+    },
+    ur: {
+      headerContext: 'IMHWF 2026 گروپ 4 - موضوع 2',
+      kicker: 'پریزنٹیشن ٹیم',
+      title: 'گروپ 4 کی بین الاقوامی فیکلٹی اور ٹیم',
+      intro: 'یہ پریزنٹیشن کے لیے تیار کردہ تجویز IMHWF 2026 Topic 2 کے لیے ذہنی صحت کی نگہداشت اور علاج میں جدت پر مرکوز ہے۔',
+      topicLabel: 'پروگرام موضوع',
+      topic: 'IMHWF 2026 گروپ 4 - موضوع 2: ذہنی صحت کی نگہداشت اور علاج میں جدت',
+      teamLabel: 'گروپ اراکین'
+    }
+  };
+
+  const APP_COPY = {
+    en: {
+      pageTitle: 'Integrated AI-Powered Global Mental Health Ecosystem',
+      header: {
+        badge: 'Integrated AI-Powered Global Mental Health Ecosystem',
+        title: 'MindBridge Global',
+        badges: ['WHO aligned', 'Privacy by design', 'Human oversight']
+      },
+      hero: {
+        badge: 'Integrated AI-Powered Global Mental Health Ecosystem',
+        title: 'One <span class="gradient-text">Patient</span>. One <span class="gradient-text">Journey</span>. One <span class="gradient-text">Global Mental Health Ecosystem</span>.',
+        subhead: 'A human-centered continuity-of-care model that connects access, screening, triage, multidisciplinary care, follow-up, community recovery, and research learning.',
+        pill: 'AI-supported, human-supervised',
+        visionLabel: 'Design principle',
+        visionText: 'Built so mental health professionals can spend more time on what matters most - caring for patients, families, and communities.',
+        cta: 'Contact / Learn More',
+        snapshotLabel: 'Live dashboard mockup',
+        liveLabel: 'Live',
+        snapshotTitle: 'Ecosystem Snapshot',
+        snapshotSubtitle: 'A live-looking summary of the proposed operating model and Phase 1 MVP spine.',
+        stats: [
+          { value: 8, label: 'Workflow layers' },
+          { value: 4, label: 'Core MVP pillars' },
+          { value: 5, label: 'Roadmap phases' },
+          { value: 4, label: 'WHO objectives aligned' }
+        ],
+        signalsLabel: 'Active design signals',
+        signals: [
+          'Access, screening, triage, and MDT care in one flow',
+          'Closed-loop follow-up from hospital to community',
+          'Privacy-preserving data for quality improvement and research'
+        ],
+        note: 'Phase 1 already demonstrates the intake-to-follow-up spine while the wider ecosystem scales responsibly under WHO-aligned safeguards.'
+      },
+      sections: {
+        why: {
+          kicker: 'Why This Matters',
+          title: 'Why This Matters Now',
+          intro: 'Mental health systems are carrying more complexity with too little continuity. The proposal focuses on the operational gaps that most often undermine timely, humane care.',
+          cards: [
+            {
+              title: 'Rising demand and staff burnout',
+              copy: 'More people need support while specialist teams remain stretched, leaving less time for direct patient and family care.'
+            },
+            {
+              title: 'Long waiting lists',
+              copy: 'Frontline teams need earlier visibility of urgent needs so waiting time does not hide high-risk situations.'
+            },
+            {
+              title: 'Repeated assessments',
+              copy: 'Patients and caregivers often repeat the same story across disciplines because information is not carried forward well.'
+            },
+            {
+              title: 'Fragmented communication',
+              copy: 'Clinical, psychosocial, and community actions are frequently documented in separate channels with limited shared visibility.'
+            },
+            {
+              title: 'Weak post-discharge follow-up',
+              copy: 'Transitions from hospital to community remain vulnerable, especially when responsibilities and consent boundaries are unclear.'
+            },
+            {
+              title: 'Limited psychosocial data use',
+              copy: 'Routine services often capture too little about housing, family burden, stigma, and care barriers to support learning and planning.'
+            }
+          ]
+        },
+        matrix: {
+          kicker: 'Problem to Safeguard',
+          title: 'Problem, Digital Response, Human Safeguard',
+          intro: 'Every digital function is paired with an explicit human safeguard so efficiency gains do not compromise safety, rights, or professional accountability.',
+          labels: {
+            problem: 'Problem',
+            response: 'Digital response',
+            safeguard: 'Human safeguard'
+          },
+          items: [
+            {
+              theme: 'Access and triage',
+              problem: 'Long waits and burnout reduce the ability to identify urgent needs early.',
+              response: 'Automated check-ins and triage dashboards highlight priority cases before formal review.',
+              safeguard: 'All high-risk flags require human review and escalation through real clinical teams.'
+            },
+            {
+              theme: 'Care coordination',
+              problem: 'Fragmented care leaves plans and handoffs scattered across different professions and settings.',
+              response: 'A shared communication hub and care plan keep role-relevant updates in one coordinated workflow.',
+              safeguard: 'Role-based access and minimum necessary sharing limit exposure to sensitive information.'
+            },
+            {
+              theme: 'Continuity',
+              problem: 'Weak follow-up after discharge increases the risk of disengagement and avoidable relapse.',
+              response: 'Community follow-up workflows, reminders, and alerts support closed-loop continuity.',
+              safeguard: 'Consent management and caregiver involvement remain visible throughout transition planning.'
+            },
+            {
+              theme: 'Evidence and learning',
+              problem: 'Services struggle to produce usable evidence from routine care without creating privacy risk.',
+              response: 'A secure research and evaluation database supports dashboards, quality improvement, and service learning.',
+              safeguard: 'De-identification, governance, and ethics approval protect rights before broader data use.'
+            }
+          ]
+        },
+        core: {
+          kicker: 'Core Components',
+          title: 'The Four Core Components',
+          intro: 'The web app translates the proposal into four reusable building blocks that can operate in low-resource settings and evolve over time.',
+          items: [
+            {
+              badge: '01',
+              title: 'Automated pre-session check-ins',
+              copy: 'Structured intake gathers concerns, symptoms, barriers, and support context before or at contact with services.'
+            },
+            {
+              badge: '02',
+              title: 'AI-assisted safety and psychosocial risk screening',
+              copy: 'Validated decision support can help surface patterns linked to suicide risk, relapse, caregiver strain, violence, or housing insecurity under human oversight.'
+            },
+            {
+              badge: '03',
+              title: 'Shared multidisciplinary and community hub',
+              copy: 'Psychiatrists, nurses, psychologists, social workers, and community teams can coordinate around one shared care pathway.'
+            },
+            {
+              badge: '04',
+              title: 'Privacy-preserving research and evaluation database',
+              copy: 'De-identified or pseudonymized data can support dashboards, quality improvement, workforce planning, and future cross-site learning.'
+            }
+          ]
+        },
+        scale: {
+          kicker: 'Scale Pathway',
+          title: 'From Local Prototype to Global Model',
+          intro: 'The proposal is credible because it starts with a working operational prototype and makes the scale-up pathway explicit rather than abstract.',
+          localLabel: 'Local prototype',
+          localTitle: 'Low-cost operational prototype',
+          localCopy: 'Google Forms, Sheets, Drive, and Apps Script provide a practical environment to test workflow design, staff acceptance, and essential data elements in resource-limited settings.',
+          localPoints: [
+            'Rapid iteration with affordable tools',
+            'Suitable for pilot services and implementation learning',
+            'Tests data flow, triage logic, and team coordination before heavier infrastructure'
+          ],
+          bridge: 'Scale responsibly',
+          globalLabel: 'Global scalable model',
+          globalTitle: 'Secure, interoperable continuity platform',
+          globalCopy: 'The next stage adds stronger technical and governance foundations so the same care logic can scale safely across sites and countries.',
+          globalPoints: [
+            'Standardized data elements and governance',
+            'Privacy by design and role-based access control',
+            'Interoperability, audit trails, consent, and oversight'
+          ]
+        },
+        journey: {
+          kicker: 'Integrated Workflow',
+          title: 'The 8-Layer Care Ecosystem',
+          intro: 'The final concept is best understood as eight connected layers that keep the patient journey central while showing how technology supports safer, faster, more coordinated care.',
+          steps: [
+            {
+              meta: 'Layer 1',
+              title: 'Access and engagement',
+              summary: 'Give patients, families, and communities an easier, multilingual front door into care.',
+              detail: 'The ecosystem begins with low-friction access, culturally adaptable entry, and 24/7 availability so people can ask for help earlier and with less confusion.'
+            },
+            {
+              meta: 'Layer 2',
+              title: 'AI chatbot and screening',
+              summary: 'Use structured conversation and screening support to surface symptoms, risks, and support needs.',
+              detail: 'In Phase 1, this is demonstrated through structured intake plus optional AI-assisted suggestions for professional review rather than unsupervised automation.'
+            },
+            {
+              meta: 'Layer 3',
+              title: 'Intelligent triage',
+              summary: 'Prioritize who needs urgent, routine, or specialist review first.',
+              detail: 'Risk flags, urgency signals, and entry context help teams identify which cases need immediate escalation and which can move safely through standard review.'
+            },
+            {
+              meta: 'Layer 4',
+              title: 'Right care, right time',
+              summary: 'Route people to the most suitable professional or service pathway without repeating the whole story.',
+              detail: 'The model connects psychiatrists, psychologists, primary care, urgent support, and other services so care can be matched more quickly to severity and need.'
+            },
+            {
+              meta: 'Layer 5',
+              title: 'Multidisciplinary care team',
+              summary: 'Bring psychiatry, psychology, nursing, social work, and rehabilitation into one shared case spine.',
+              detail: 'This reduces repeated assessments and allows one care plan to reflect clinical needs, psychosocial barriers, caregiver context, and practical next actions.'
+            },
+            {
+              meta: 'Layer 6',
+              title: 'Appointment and follow-up',
+              summary: 'Keep continuity visible through reminders, check-ins, and safe handoff planning.',
+              detail: 'The workflow supports next-step ownership, minimum necessary handoff summaries, discharge readiness, and follow-up tracking so the care journey does not stop at the visit.'
+            },
+            {
+              meta: 'Layer 7',
+              title: 'Community support and recovery',
+              summary: 'Extend care into family, peer, NGO, education, employment, and telehealth supports.',
+              detail: 'Recovery becomes more realistic when the platform connects hospital care with community-based resources that address social determinants, rehabilitation, and long-term inclusion.'
+            },
+            {
+              meta: 'Layer 8',
+              title: 'Data, outcomes, and research',
+              summary: 'Turn routine care data into privacy-preserving insight for quality improvement and learning.',
+              detail: 'Dashboards, de-identification, governance, and future research pathways allow services to learn from practice without treating patients as raw data.'
+            }
+          ]
+        },
+        ethics: {
+          kicker: 'Ethics and Safety',
+          title: 'Ethics, Privacy, and Safety',
+          intro: 'The proposal treats safety, rights, and public trust as product requirements rather than a later compliance layer.',
+          items: [
+            {
+              title: 'Informed consent',
+              copy: 'Patients and families should understand what is collected, why it matters, and how it will be used.'
+            },
+            {
+              title: 'Role-based access',
+              copy: 'Different professionals only see the information needed for their task and level of responsibility.'
+            },
+            {
+              title: 'Human oversight',
+              copy: 'AI never makes final care decisions. High-risk situations always require trained professional review.'
+            },
+            {
+              title: 'De-identification and minimum necessary data',
+              copy: 'Only the minimum information needed for continuity, evaluation, or research should move beyond the direct care setting.'
+            },
+            {
+              title: 'Audit trails',
+              copy: 'Access, edits, and transfers should be traceable to strengthen governance and accountability.'
+            },
+            {
+              title: 'Bias and equity review',
+              copy: 'Any future AI-assisted screening must be tested for bias, subgroup performance, and unintended harm.'
+            },
+            {
+              title: 'Crisis escalation protocols',
+              copy: 'Digital alerts need real escalation pathways connected to accountable clinical and community teams.'
+            },
+            {
+              title: 'Local legal compliance',
+              copy: 'Implementation should follow local privacy and health data requirements, including PDPA or equivalent regulations.'
+            }
+          ],
+          banner: 'AI-supported decision support under human oversight - not AI replacing professionals.'
+        },
+        impact: {
+          kicker: 'Expected Outcomes',
+          title: 'Expected Outcomes and Impact',
+          intro: 'The impact model connects user-facing outcomes with measurable indicators and plausible routine data sources.',
+          indicatorLabel: 'Indicator',
+          sourceLabel: 'Data source',
+          cards: [
+            {
+              trend: 'Continuity',
+              title: 'Patient / Family',
+              outcome: 'Fewer repeated assessments, faster recognition of urgent needs, and stronger continuity after discharge.',
+              indicator: 'Follow-up completion, urgent review time, patient-reported coordination experience.',
+              source: 'Check-in records, continuity tracker, patient and caregiver feedback.'
+            },
+            {
+              trend: 'Workflow',
+              title: 'Professional',
+              outcome: 'Less repetitive documentation and clearer prioritization across multidisciplinary teams.',
+              indicator: 'Administrative burden survey, time from intake to review, shared plan completion.',
+              source: 'Workflow timestamps, staff pulse surveys, MDT documentation.'
+            },
+            {
+              trend: 'Performance',
+              title: 'Service',
+              outcome: 'Improved follow-up, stronger referral completion, and better visibility of psychosocial risk patterns.',
+              indicator: 'Referral completion rate, loss-to-follow-up rate, dashboard review frequency.',
+              source: 'Coordination hub, follow-up logs, service dashboards.'
+            },
+            {
+              trend: 'Evidence',
+              title: 'Policy / Research',
+              outcome: 'More reliable mental health service data for planning, evaluation, and future cross-site learning.',
+              indicator: 'Routine indicator use, comparable data fields across sites, governance-approved research outputs.',
+              source: 'De-identified analytics layer, standardized data dictionary, approved extracts.'
+            }
+          ]
+        },
+        roadmap: {
+          kicker: 'Feasibility Roadmap',
+          title: 'A Five-Phase Feasibility Roadmap',
+          intro: 'The roadmap frames digital transformation as staged implementation work, not as a single technology launch.',
+          steps: [
+            {
+              meta: 'Phase 1',
+              title: 'Low-cost prototype',
+              summary: 'Pilot the core workflow using affordable tools and real service operations.',
+              detail: 'Use Google Apps Script, Forms, Sheets, and Drive to test practical workflow fit, user acceptance, triage logic, and essential operating metrics.'
+            },
+            {
+              meta: 'Phase 2',
+              title: 'Standardized data dictionary',
+              summary: 'Define comparable data elements for symptoms, psychosocial risk, and continuity.',
+              detail: 'Develop a common data model covering presenting concerns, risk flags, follow-up status, referral outcomes, and social determinants relevant to mental health care.'
+            },
+            {
+              meta: 'Phase 3',
+              title: 'Secure MDT hub with RBAC and consent',
+              summary: 'Introduce stronger governance and access boundaries for shared coordination.',
+              detail: 'Separate role-specific views, add consent management, strengthen audit trails, and formalize minimum necessary sharing across service and community partners.'
+            },
+            {
+              meta: 'Phase 4',
+              title: 'AI-assisted screening with bias monitoring',
+              summary: 'Add decision support only after local validation, ethics review, and safety testing.',
+              detail: 'Responsible AI support should be introduced gradually, with subgroup monitoring, clinician escalation pathways, and explicit human accountability.'
+            },
+            {
+              meta: 'Phase 5',
+              title: 'Privacy-preserving research database',
+              summary: 'Expand toward cross-site learning, evaluation, and future federated approaches.',
+              detail: 'De-identified or federated data methods can support service comparison, workforce planning, and practice-based evidence without requiring unnecessary centralization of sensitive records.'
+            }
+          ]
+        },
+        alignment: {
+          kicker: 'Alignment',
+          title: 'Global and Course Alignment',
+          intro: 'The proposal deliberately aligns with international mental health priorities while staying grounded in implementation realities.',
+          groups: [
+            {
+              title: 'WHO Comprehensive Mental Health Action Plan 2013-2030',
+              tags: [
+                'Leadership and governance',
+                'Integrated community-based care',
+                'Promotion and prevention',
+                'Mental health information systems',
+                'Evidence and research'
+              ]
+            },
+            {
+              title: 'IMHWF 2026 course objectives',
+              tags: [
+                'Digital mental health',
+                'Workforce strengthening',
+                'Interdisciplinary collaboration',
+                'Community follow-up',
+                'Implementation feasibility',
+                'Learning health systems'
+              ]
+            }
+          ]
+        },
+        closing: {
+          kicker: 'Conclusion',
+          title: 'The future of mental health care is not only better treatment, but better connection.',
+          copy: 'MindBridge Global presents digital transformation as a safer, smarter, and more compassionate system in which technology helps professionals, patients, families, and communities stay connected across the full journey of care.',
+          cta: 'Contact / Learn More'
+        },
+        footer: {
+          kicker: 'References',
+          refs: [
+            {
+              label: 'World Health Organization. Comprehensive Mental Health Action Plan 2013-2030.',
+              url: 'https://www.who.int/publications/i/item/9789240031029'
+            },
+            {
+              label: 'World Health Organization. World Mental Health Report: Transforming mental health for all.',
+              url: 'https://www.who.int/teams/mental-health-and-substance-use/world-mental-health-report'
+            },
+            {
+              label: 'United Nations Sustainable Development Goals: Goals 3 and 17.',
+              url: 'https://sdgs.un.org/goals'
+            },
+            {
+              label: 'IMHWF 2026 Mental Health Workforce Forum briefing context.',
+              url: ''
+            }
+          ],
+          org: 'Department of Mental Health · Social Work Digital Innovation · Thailand'
+        }
+      }
+    },
+    th: {
+      pageTitle: 'ระบบนิเวศดิจิทัลสุขภาพจิตที่ยึดมนุษย์เป็นศูนย์กลาง',
+      header: {
+        badge: 'ระบบนิเวศดิจิทัลสุขภาพจิตที่ยึดมนุษย์เป็นศูนย์กลาง',
+        title: 'MindBridge Global',
+        badges: ['สอดคล้องกรอบ WHO', 'คุ้มครองข้อมูลตั้งแต่การออกแบบ', 'มนุษย์กำกับการตัดสินใจ']
+      },
+      hero: {
+        badge: 'ระบบนิเวศดิจิทัลสุขภาพจิตที่ยึดมนุษย์เป็นศูนย์กลาง',
+        title: 'ยกระดับ<span class="gradient-text">การดูแลสุขภาพจิต</span>ด้วย<span class="gradient-text">ระบบนิเวศดิจิทัลที่ยึดมนุษย์เป็นศูนย์กลาง</span>',
+        subhead: 'ข้อเสนอโครงการสำหรับแพลตฟอร์มการดูแลต่อเนื่องที่เพิ่มประสิทธิภาพโดยไม่ลดทอนความเป็นมนุษย์ เริ่มจากต้นแบบต้นทุนต่ำและขยายสู่โมเดลที่ประยุกต์ใช้ได้ในหลายบริบททั่วโลก',
+        pill: 'AI ช่วยสนับสนุน มนุษย์กำกับ',
+        visionLabel: 'หลักการออกแบบ',
+        visionText: 'ออกแบบเพื่อให้ผู้ปฏิบัติงานด้านสุขภาพจิตมีเวลากับสิ่งที่สำคัญที่สุดมากขึ้น นั่นคือการดูแลผู้ป่วย ครอบครัว และชุมชน',
+        cta: 'ติดต่อ / ขอข้อมูลเพิ่มเติม',
+        snapshotLabel: 'ภาพรวมระบบจำลอง',
+        liveLabel: 'สด',
+        snapshotTitle: 'ภาพรวมระบบ',
+        snapshotSubtitle: 'มุมมองแบบแดชบอร์ดของรูปแบบการดำเนินงานที่เสนอ',
+        stats: [
+          { value: 4, label: 'องค์ประกอบหลัก' },
+          { value: 6, label: 'ช่วงการเดินทางผู้ป่วย' },
+          { value: 5, label: 'ระยะของโรดแมป' },
+          { value: 4, label: 'วัตถุประสงค์ WHO ที่สอดคล้อง' }
+        ],
+        signalsLabel: 'สัญญาณการออกแบบ',
+        signals: [
+          'คัดกรองและจัดลำดับความเร่งด่วนก่อนพบทีมบริการ',
+          'ประสานข้อมูลร่วมกันระหว่างสหวิชาชีพและชุมชน',
+          'วิเคราะห์ข้อมูลแบบคุ้มครองความเป็นส่วนตัวเพื่อพัฒนาบริการ'
+        ],
+        note: 'สอดคล้องกับ WHO Comprehensive Mental Health Action Plan 2013-2030 และเป้าหมายการเรียนรู้ของ IMHWF 2026'
+      },
+      sections: {
+        why: {
+          kicker: 'เหตุผลที่โครงการนี้สำคัญ',
+          title: 'เหตุใดเรื่องนี้จึงสำคัญในตอนนี้',
+          intro: 'ระบบสุขภาพจิตกำลังเผชิญความซับซ้อนมากขึ้น แต่ความต่อเนื่องของการดูแลยังไม่แข็งแรงพอ ข้อเสนอนี้จึงมุ่งแก้ช่องว่างเชิงปฏิบัติการที่กระทบต่อการดูแลอย่างทันท่วงทีและมีมนุษยธรรมมากที่สุด',
+          cards: [
+            {
+              title: 'ความต้องการบริการเพิ่มขึ้นและบุคลากรเหนื่อยล้า',
+              copy: 'ผู้ที่ต้องการความช่วยเหลือมีจำนวนมากขึ้น ขณะที่ทีมผู้เชี่ยวชาญยังมีข้อจำกัด ทำให้เวลาสำหรับการดูแลผู้ป่วยและครอบครัวโดยตรงลดลง'
+            },
+            {
+              title: 'เวลารอคอยยาวนาน',
+              copy: 'ทีมหน้างานจำเป็นต้องเห็นสัญญาณความเร่งด่วนให้เร็วขึ้น เพื่อไม่ให้ผู้ป่วยที่มีความเสี่ยงสูงถูกกลบด้วยคิวที่ยาว'
+            },
+            {
+              title: 'การประเมินซ้ำหลายครั้ง',
+              copy: 'ผู้ป่วยและผู้ดูแลมักต้องเล่าเรื่องเดิมซ้ำในหลายจุดบริการ เพราะข้อมูลไม่ถูกส่งต่ออย่างต่อเนื่อง'
+            },
+            {
+              title: 'การสื่อสารระหว่างทีมกระจัดกระจาย',
+              copy: 'ข้อมูลทางคลินิก จิตสังคม และงานเชื่อมต่อชุมชนมักอยู่คนละช่องทาง ทำให้ภาพรวมการดูแลไม่ชัดเจน'
+            },
+            {
+              title: 'การติดตามหลังจำหน่ายยังไม่เข้มแข็ง',
+              copy: 'ช่วงเปลี่ยนผ่านจากโรงพยาบาลสู่ชุมชนยังเปราะบาง โดยเฉพาะเมื่อบทบาท ความรับผิดชอบ และขอบเขตความยินยอมไม่ชัดเจน'
+            },
+            {
+              title: 'การใช้ข้อมูลจิตสังคมยังจำกัด',
+              copy: 'บริการประจำมักเก็บข้อมูลเรื่องที่อยู่อาศัย ภาระครอบครัว ตราบาป และอุปสรรคในการเข้าถึงบริการได้น้อยเกินไปต่อการเรียนรู้และวางแผน'
+            }
+          ]
+        },
+        matrix: {
+          kicker: 'จากปัญหาสู่หลักประกัน',
+          title: 'ปัญหา คำตอบเชิงดิจิทัล และหลักประกันเชิงมนุษย์',
+          intro: 'ทุกฟังก์ชันดิจิทัลต้องจับคู่กับหลักประกันเชิงมนุษย์อย่างชัดเจน เพื่อให้การเพิ่มประสิทธิภาพไม่แลกมาด้วยความปลอดภัย สิทธิ หรือความรับผิดชอบทางวิชาชีพ',
+          labels: {
+            problem: 'ปัญหา',
+            response: 'คำตอบเชิงดิจิทัล',
+            safeguard: 'หลักประกันเชิงมนุษย์'
+          },
+          items: [
+            {
+              theme: 'การเข้าถึงและคัดกรอง',
+              problem: 'คิวรอนานและภาระงานสูง ทำให้ยากต่อการเห็นความเร่งด่วนตั้งแต่ระยะแรก',
+              response: 'แบบเช็กอินอัตโนมัติและแดชบอร์ดคัดแยกช่วยให้เห็นเคสที่ต้องทบทวนก่อนเข้าสู่การประเมินอย่างเป็นทางการ',
+              safeguard: 'ทุกสัญญาณความเสี่ยงสูงต้องผ่านการทบทวนโดยมนุษย์และเชื่อมต่อสู่ทีมคลินิกที่รับผิดชอบจริง'
+            },
+            {
+              theme: 'การประสานการดูแล',
+              problem: 'การดูแลที่แยกส่วนทำให้แผนและการส่งต่อกระจัดกระจายระหว่างวิชาชีพและระหว่างหน่วยบริการ',
+              response: 'ศูนย์สื่อสารร่วมและแผนการดูแลร่วมช่วยให้ข้อมูลที่เกี่ยวข้องตามบทบาทอยู่ในเส้นทางการทำงานเดียวกัน',
+              safeguard: 'สิทธิ์เข้าถึงตามบทบาทและหลักการใช้ข้อมูลเท่าที่จำเป็นช่วยจำกัดการเปิดเผยข้อมูลอ่อนไหว'
+            },
+            {
+              theme: 'ความต่อเนื่อง',
+              problem: 'การติดตามหลังจำหน่ายที่อ่อนแอเพิ่มความเสี่ยงต่อการหลุดจากระบบและการกลับเป็นซ้ำที่ป้องกันได้',
+              response: 'เวิร์กโฟลว์ติดตามในชุมชน ระบบเตือน และการติดตามผลแบบปิดวงจรช่วยพยุงความต่อเนื่องของการดูแล',
+              safeguard: 'สถานะความยินยอมและการมีส่วนร่วมของผู้ดูแลยังคงมองเห็นได้ตลอดกระบวนการเปลี่ยนผ่าน'
+            },
+            {
+              theme: 'หลักฐานและการเรียนรู้',
+              problem: 'บริการมักสร้างหลักฐานจากงานประจำได้ยาก โดยเฉพาะเมื่อกังวลเรื่องความเป็นส่วนตัวของข้อมูล',
+              response: 'ฐานข้อมูลวิจัยและประเมินผลที่ปลอดภัยช่วยสร้างแดชบอร์ด การพัฒนาคุณภาพ และการเรียนรู้ของระบบบริการ',
+              safeguard: 'การลบตัวระบุ การกำกับดูแล และการรับรองด้านจริยธรรมต้องมาก่อนการใช้ข้อมูลในวงกว้าง'
+            }
+          ]
+        },
+        core: {
+          kicker: 'องค์ประกอบหลัก',
+          title: 'องค์ประกอบหลัก 4 ส่วน',
+          intro: 'เว็บแอปนี้แปลงข้อเสนอให้เป็นโครงสร้างการทำงาน 4 ส่วนที่นำไปใช้ได้จริงในบริบททรัพยากรจำกัด และสามารถพัฒนาต่อได้ในระยะยาว',
+          items: [
+            {
+              badge: '01',
+              title: 'แบบเช็กอินก่อนรับบริการแบบอัตโนมัติ',
+              copy: 'การรับข้อมูลอย่างมีโครงสร้างช่วยเก็บข้อกังวล อาการ อุปสรรค และบริบทการสนับสนุนก่อนหรือขณะเข้าสู่บริการ'
+            },
+            {
+              badge: '02',
+              title: 'การคัดกรองความปลอดภัยและความเสี่ยงทางจิตสังคมที่มี AI ช่วยสนับสนุน',
+              copy: 'เครื่องมือช่วยตัดสินใจที่ผ่านการตรวจสอบสามารถช่วยมองเห็นรูปแบบที่เชื่อมโยงกับความเสี่ยงต่อการฆ่าตัวตาย การกลับเป็นซ้ำ ภาระผู้ดูแล ความรุนแรง หรือความไม่มั่นคงด้านที่อยู่อาศัย ภายใต้การกำกับของมนุษย์'
+            },
+            {
+              badge: '03',
+              title: 'ศูนย์ประสานงานร่วมของสหวิชาชีพและชุมชน',
+              copy: 'จิตแพทย์ พยาบาล นักจิตวิทยา นักสังคมสงเคราะห์ และทีมชุมชนสามารถประสานงานบนเส้นทางการดูแลร่วมเดียวกัน'
+            },
+            {
+              badge: '04',
+              title: 'ฐานข้อมูลวิจัยและประเมินผลที่คุ้มครองความเป็นส่วนตัว',
+              copy: 'ข้อมูลที่ลบตัวระบุหรือใช้นามแฝงสามารถสนับสนุนแดชบอร์ด การพัฒนาคุณภาพ การวางแผนกำลังคน และการเรียนรู้ข้ามพื้นที่ในอนาคต'
+            }
+          ]
+        },
+        scale: {
+          kicker: 'เส้นทางการขยายผล',
+          title: 'จากต้นแบบระดับพื้นที่สู่โมเดลระดับโลก',
+          intro: 'ข้อเสนอนี้มีความน่าเชื่อถือเพราะเริ่มจากต้นแบบที่ใช้งานได้จริง และอธิบายเส้นทางการขยายผลอย่างเป็นรูปธรรม ไม่ใช่เพียงแนวคิดลอยตัว',
+          localLabel: 'ต้นแบบระดับพื้นที่',
+          localTitle: 'ต้นแบบปฏิบัติการต้นทุนต่ำ',
+          localCopy: 'Google Forms, Sheets, Drive และ Apps Script เป็นสภาพแวดล้อมที่ใช้ทดสอบการออกแบบเวิร์กโฟลว์ การยอมรับของบุคลากร และชุดข้อมูลจำเป็นได้อย่างเป็นรูปธรรมในบริบททรัพยากรจำกัด',
+          localPoints: [
+            'ปรับแก้ได้รวดเร็วด้วยเครื่องมือที่ต้นทุนไม่สูง',
+            'เหมาะสำหรับบริการนำร่องและการเรียนรู้เชิงปฏิบัติ',
+            'ทดสอบการไหลของข้อมูล ตรรกะคัดกรอง และการประสานทีมก่อนลงทุนโครงสร้างพื้นฐานขนาดใหญ่'
+          ],
+          bridge: 'ขยายอย่างรับผิดชอบ',
+          globalLabel: 'โมเดลที่ขยายได้ระดับโลก',
+          globalTitle: 'แพลตฟอร์มความต่อเนื่องที่ปลอดภัยและเชื่อมต่อได้',
+          globalCopy: 'ระยะถัดไปจะเสริมฐานเทคนิคและธรรมาภิบาลให้แข็งแรงขึ้น เพื่อให้ตรรกะการดูแลแบบเดียวกันขยายใช้ได้อย่างปลอดภัยในหลายหน่วยบริการและหลายประเทศ',
+          globalPoints: [
+            'มีชุดข้อมูลมาตรฐานและกรอบกำกับดูแล',
+            'คุ้มครองข้อมูลตั้งแต่การออกแบบและกำหนดสิทธิ์ตามบทบาท',
+            'เชื่อมต่อระบบได้ มี audit trail มีการยินยอม และมีการกำกับดูแล'
+          ]
+        },
+        journey: {
+          kicker: 'เส้นทางผู้ป่วย',
+          title: 'เส้นทางผู้ป่วยและการไหลของข้อมูล',
+          intro: 'เส้นทาง 6 ช่วงช่วยคงภาพการเดินทางของผู้ป่วยไว้เป็นแกนกลาง พร้อมแสดงจุดที่ข้อมูลอย่างมีโครงสร้างสามารถช่วยให้การประสานงานปลอดภัยและนำไปสู่การเรียนรู้ของระบบบริการ',
+          steps: [
+            {
+              meta: 'ระยะที่ 1',
+              title: 'จุดเริ่มต้นการรับบริการ / การส่งต่อ',
+              summary: 'เห็นให้ชัดว่าใครกำลังขอความช่วยเหลือ เพราะอะไร และมีความเร่งด่วนระดับใดตั้งแต่จุดเข้า',
+              detail: 'การรับข้อมูลอย่างมีโครงสร้างสามารถทำได้โดยผู้ป่วย ผู้ดูแล บุคลากร หรือผู้ส่งต่อจากชุมชน เพื่อให้ข้อกังวล อุปสรรคทางจิตสังคม และสัญญาณเตือนเร่งด่วนปรากฏตั้งแต่ต้น'
+            },
+            {
+              meta: 'ระยะที่ 2',
+              title: 'การประเมินและวางแผนการดูแล',
+              summary: 'รวมข้อมูลทางคลินิก จิตวิทยา และสังคมให้อยู่ในภาพเดียวกัน',
+              detail: 'การประเมินแบบสหวิชาชีพช่วยลดการถามซ้ำ และสนับสนุนแผนการดูแลที่สะท้อนทั้งอาการ บริบทครอบครัว ความปลอดภัย และอุปสรรคต่อการรักษา'
+            },
+            {
+              meta: 'ระยะที่ 3',
+              title: 'การรักษาและการช่วยเหลือด้านสังคม',
+              summary: 'ประสานการใช้ยา จิตบำบัด การช่วยเหลือด้านจิตสังคม และการฟื้นฟูไว้ในเวิร์กโฟลว์เดียว',
+              detail: 'การติดตามภารกิจร่วมช่วยให้ทีมสามารถจัดแนวทางรักษา งานสังคมสงเคราะห์ เป้าหมายการฟื้นฟู และการสนับสนุนจากชุมชนได้โดยไม่ทำให้ข้อมูลกระจัดกระจาย'
+            },
+            {
+              meta: 'ระยะที่ 4',
+              title: 'การเตรียมจำหน่ายและส่งต่อ',
+              summary: 'เตรียมการเปลี่ยนผ่านอย่างปลอดภัยก่อนผู้ป่วยออกจากหน่วยบริการ',
+              detail: 'ความพร้อมในการจำหน่าย ศักยภาพของผู้ดูแล ความต้องการส่งต่อ และแนวทางรับมือภาวะวิกฤตสามารถทบทวนร่วมกันได้ก่อนการเปลี่ยนผ่าน'
+            },
+            {
+              meta: 'ระยะที่ 5',
+              title: 'การติดตามต่อเนื่องในชุมชน',
+              summary: 'ติดตามความต่อเนื่องร่วมกับปฐมภูมิ ทีมชุมชน NGO และบริการสังคม',
+              detail: 'เวิร์กโฟลว์ส่งต่อและติดตามผลแบบปิดวงจรช่วยยืนยันว่าการติดต่อ outreach เกิดขึ้นจริง อุปสรรคได้รับการแก้ไข และผู้ป่วยกับครอบครัวได้รับการสนับสนุนจริง'
+            },
+            {
+              meta: 'ระยะที่ 6',
+              title: 'การประเมินผลและการเรียนรู้',
+              summary: 'ใช้ข้อมูลบริการที่ลบตัวระบุแล้วเพื่อพัฒนาคุณภาพ การวางแผน และนโยบาย',
+              detail: 'แดชบอร์ดและการวิเคราะห์ที่ได้รับอนุมัติด้านธรรมาภิบาลช่วยให้เห็นคอขวด ประสิทธิภาพการติดตาม รูปแบบความเสี่ยงทางจิตสังคม และโอกาสในการปรับระบบบริการ โดยไม่เปิดเผยข้อมูลส่วนบุคคลเกินจำเป็น'
+            }
+          ]
+        },
+        ethics: {
+          kicker: 'จริยธรรมและความปลอดภัย',
+          title: 'จริยธรรม ความเป็นส่วนตัว และความปลอดภัย',
+          intro: 'ข้อเสนอนี้มองความปลอดภัย สิทธิ และความไว้วางใจของสาธารณะเป็นข้อกำหนดของผลิตภัณฑ์ตั้งแต่ต้น ไม่ใช่ชั้นของการปฏิบัติตามกฎหมายที่ค่อยมาเสริมภายหลัง',
+          items: [
+            {
+              title: 'ความยินยอมอย่างรู้ข้อมูล',
+              copy: 'ผู้ป่วยและครอบครัวควรเข้าใจว่ามีการเก็บข้อมูลอะไร เพราะเหตุใด และจะนำไปใช้อย่างไร'
+            },
+            {
+              title: 'สิทธิ์เข้าถึงตามบทบาท',
+              copy: 'ผู้เชี่ยวชาญแต่ละกลุ่มควรเห็นเฉพาะข้อมูลที่จำเป็นต่อหน้าที่และระดับความรับผิดชอบของตน'
+            },
+            {
+              title: 'มนุษย์กำกับการตัดสินใจ',
+              copy: 'AI ไม่ตัดสินใจแทนผู้ให้บริการในขั้นสุดท้าย สถานการณ์เสี่ยงสูงทุกกรณีต้องผ่านการทบทวนโดยผู้เชี่ยวชาญ'
+            },
+            {
+              title: 'ลบตัวระบุและใช้ข้อมูลเท่าที่จำเป็น',
+              copy: 'ควรส่งต่อเฉพาะข้อมูลขั้นต่ำที่จำเป็นต่อความต่อเนื่อง การประเมินผล หรือการวิจัยนอกบริบทการดูแลโดยตรง'
+            },
+            {
+              title: 'บันทึกการเข้าถึงและการแก้ไข',
+              copy: 'การเข้าถึง การแก้ไข และการส่งต่อควรตรวจสอบย้อนหลังได้ เพื่อเสริมธรรมาภิบาลและความรับผิดชอบ'
+            },
+            {
+              title: 'ทบทวนอคติและความเป็นธรรม',
+              copy: 'หากมีการใช้ AI ในอนาคต ต้องประเมินอคติ ประสิทธิภาพในกลุ่มย่อย และผลกระทบที่ไม่พึงประสงค์อย่างจริงจัง'
+            },
+            {
+              title: 'แนวทางยกระดับภาวะวิกฤต',
+              copy: 'การแจ้งเตือนทางดิจิทัลต้องเชื่อมกับเส้นทางการยกระดับที่มีทีมคลินิกและทีมชุมชนรับผิดชอบจริง'
+            },
+            {
+              title: 'สอดคล้องกฎหมายท้องถิ่น',
+              copy: 'การนำไปใช้ควรเป็นไปตามข้อกำหนดด้านข้อมูลสุขภาพและความเป็นส่วนตัวของแต่ละพื้นที่ รวมถึง PDPA หรือกฎหมายที่เทียบเท่า'
+            }
+          ],
+          banner: 'AI เป็นเครื่องมือช่วยตัดสินใจภายใต้การกำกับของมนุษย์ ไม่ใช่การแทนที่ผู้เชี่ยวชาญ'
+        },
+        impact: {
+          kicker: 'ผลลัพธ์ที่คาดหวัง',
+          title: 'ผลลัพธ์ที่คาดหวังและผลกระทบ',
+          intro: 'กรอบผลกระทบนี้เชื่อมผลลัพธ์ที่ผู้ใช้รับรู้ได้กับตัวชี้วัดที่วัดได้จริง และแหล่งข้อมูลจากงานประจำที่มีความเป็นไปได้',
+          indicatorLabel: 'ตัวชี้วัด',
+          sourceLabel: 'แหล่งข้อมูล',
+          cards: [
+            {
+              trend: 'ความต่อเนื่อง',
+              title: 'ผู้ป่วย / ครอบครัว',
+              outcome: 'ลดการประเมินซ้ำ เห็นความเร่งด่วนได้เร็วขึ้น และมีความต่อเนื่องหลังจำหน่ายที่เข้มแข็งกว่าเดิม',
+              indicator: 'อัตราการติดตามครบถ้วน ระยะเวลาถึงการทบทวนเคสเร่งด่วน และประสบการณ์ด้านการประสานการดูแลจากมุมมองผู้ป่วย',
+              source: 'ข้อมูลเช็กอิน ระบบติดตามต่อเนื่อง และข้อเสนอแนะจากผู้ป่วยกับผู้ดูแล'
+            },
+            {
+              trend: 'เวิร์กโฟลว์',
+              title: 'ผู้ปฏิบัติงาน',
+              outcome: 'ลดภาระบันทึกข้อมูลซ้ำซ้อน และทำให้การจัดลำดับความสำคัญระหว่างทีมสหวิชาชีพชัดเจนขึ้น',
+              indicator: 'แบบสำรวจภาระงาน ระยะเวลาจากการรับข้อมูลถึงการทบทวน และความครบถ้วนของแผนดูแลร่วม',
+              source: 'เวลาบันทึกในระบบ แบบสำรวจทีม และเอกสาร MDT'
+            },
+            {
+              trend: 'ประสิทธิผลบริการ',
+              title: 'ระบบบริการ',
+              outcome: 'ติดตามต่อเนื่องดีขึ้น ส่งต่อสำเร็จมากขึ้น และมองเห็นรูปแบบความเสี่ยงทางจิตสังคมได้ชัดขึ้น',
+              indicator: 'อัตราส่งต่อสำเร็จ อัตราหลุดจากการติดตาม และความถี่ในการทบทวนตัวชี้วัดผ่านแดชบอร์ด',
+              source: 'ศูนย์ประสานงาน ระบบติดตามผล และแดชบอร์ดบริการ'
+            },
+            {
+              trend: 'หลักฐานเชิงระบบ',
+              title: 'นโยบาย / วิจัย',
+              outcome: 'ได้ข้อมูลบริการสุขภาพจิตที่น่าเชื่อถือยิ่งขึ้นเพื่อการวางแผน ประเมินผล และการเรียนรู้ข้ามพื้นที่ในอนาคต',
+              indicator: 'การใช้ตัวชี้วัดอย่างสม่ำเสมอ ความสามารถในการเปรียบเทียบข้อมูลระหว่างหน่วย และผลผลิตวิจัยที่ผ่านการกำกับดูแล',
+              source: 'ชั้นข้อมูลวิเคราะห์ที่ลบตัวระบุแล้ว ชุดข้อมูลมาตรฐาน และสารสนเทศที่ได้รับอนุมัติ'
+            }
+          ]
+        },
+        roadmap: {
+          kicker: 'โรดแมปความเป็นไปได้',
+          title: 'โรดแมปความเป็นไปได้ 5 ระยะ',
+          intro: 'โรดแมปนี้วางการเปลี่ยนผ่านสู่ดิจิทัลเป็นงานนำไปใช้แบบเป็นขั้นตอน ไม่ใช่การเปิดตัวเทคโนโลยีครั้งเดียวแล้วจบ',
+          steps: [
+            {
+              meta: 'ระยะที่ 1',
+              title: 'ต้นแบบต้นทุนต่ำ',
+              summary: 'นำร่องเวิร์กโฟลว์หลักด้วยเครื่องมือที่เข้าถึงได้และงานบริการจริง',
+              detail: 'ใช้ Google Apps Script, Forms, Sheets และ Drive เพื่อทดสอบความเหมาะสมของเวิร์กโฟลว์ การยอมรับของผู้ใช้ ตรรกะคัดกรอง และตัวชี้วัดการดำเนินงานพื้นฐาน'
+            },
+            {
+              meta: 'ระยะที่ 2',
+              title: 'ชุดข้อมูลมาตรฐาน',
+              summary: 'กำหนดองค์ประกอบข้อมูลที่เปรียบเทียบกันได้สำหรับอาการ ความเสี่ยงทางจิตสังคม และความต่อเนื่อง',
+              detail: 'พัฒนาพจนานุกรมข้อมูลร่วมที่ครอบคลุมข้อกังวลตั้งต้น สัญญาณความเสี่ยง สถานะการติดตาม ผลการส่งต่อ และปัจจัยกำหนดทางสังคมที่เกี่ยวข้องกับสุขภาพจิต'
+            },
+            {
+              meta: 'ระยะที่ 3',
+              title: 'ศูนย์ MDT ที่ปลอดภัยพร้อม RBAC และความยินยอม',
+              summary: 'เสริมธรรมาภิบาลและขอบเขตการเข้าถึงสำหรับการประสานงานร่วม',
+              detail: 'แยกมุมมองตามบทบาท เพิ่มการจัดการความยินยอม เสริม audit trail และกำหนดหลักการใช้ข้อมูลเท่าที่จำเป็นระหว่างบริการและภาคีชุมชนให้ชัดเจน'
+            },
+            {
+              meta: 'ระยะที่ 4',
+              title: 'คัดกรองด้วย AI ภายใต้การติดตามอคติ',
+              summary: 'เพิ่มเครื่องมือช่วยตัดสินใจหลังผ่านการตรวจสอบเชิงจริยธรรม ความปลอดภัย และความเหมาะสมในบริบท',
+              detail: 'การนำ AI มาใช้ควรค่อยเป็นค่อยไป พร้อมการติดตามผลในกลุ่มย่อย เส้นทาง escalation ที่ชัดเจน และความรับผิดชอบของผู้เชี่ยวชาญที่ระบุได้'
+            },
+            {
+              meta: 'ระยะที่ 5',
+              title: 'ฐานข้อมูลวิจัยที่คุ้มครองความเป็นส่วนตัว',
+              summary: 'ขยายสู่การเรียนรู้ข้ามพื้นที่ การประเมินผล และแนวทาง federated ในอนาคต',
+              detail: 'แนวทางลบตัวระบุหรือ federated data สามารถสนับสนุนการเปรียบเทียบบริการ การวางแผนกำลังคน และหลักฐานจากการปฏิบัติงานจริง โดยไม่ต้องรวมศูนย์ข้อมูลอ่อนไหวเกินจำเป็น'
+            }
+          ]
+        },
+        alignment: {
+          kicker: 'ความสอดคล้อง',
+          title: 'ความสอดคล้องกับกรอบสากลและเป้าหมายการเรียนรู้',
+          intro: 'ข้อเสนอนี้ออกแบบให้สอดคล้องกับวาระด้านสุขภาพจิตระดับนานาชาติ ขณะเดียวกันก็ยืนอยู่บนความเป็นจริงของการนำไปใช้',
+          groups: [
+            {
+              title: 'WHO Comprehensive Mental Health Action Plan 2013-2030',
+              tags: [
+                'ภาวะผู้นำและธรรมาภิบาล',
+                'การดูแลแบบบูรณาการในชุมชน',
+                'การส่งเสริมและป้องกัน',
+                'ระบบสารสนเทศสุขภาพจิต',
+                'หลักฐานและการวิจัย'
+              ]
+            },
+            {
+              title: 'วัตถุประสงค์ของ IMHWF 2026',
+              tags: [
+                'สุขภาพจิตดิจิทัล',
+                'การเสริมกำลังคนด้านสุขภาพ',
+                'การทำงานข้ามสาขา',
+                'การติดตามต่อเนื่องในชุมชน',
+                'ความเป็นไปได้ในการนำไปใช้',
+                'ระบบบริการที่เรียนรู้ได้'
+              ]
+            }
+          ]
+        },
+        closing: {
+          kicker: 'บทสรุป',
+          title: 'อนาคตของการดูแลสุขภาพจิตไม่ได้ต้องการเพียงการรักษาที่ดีขึ้น แต่ต้องการการเชื่อมต่อที่ดีขึ้นด้วย',
+          copy: 'MindBridge Global นำเสนอการเปลี่ยนผ่านสู่ดิจิทัลในฐานะระบบที่ปลอดภัย ชาญฉลาด และมีความเมตตามากขึ้น ซึ่งเทคโนโลยีช่วยให้ผู้เชี่ยวชาญ ผู้ป่วย ครอบครัว และชุมชนเชื่อมต่อกันตลอดเส้นทางการดูแล',
+          cta: 'ติดต่อ / ขอข้อมูลเพิ่มเติม'
+        },
+        footer: {
+          kicker: 'เอกสารอ้างอิง',
+          refs: [
+            {
+              label: 'World Health Organization. Comprehensive Mental Health Action Plan 2013-2030.',
+              url: 'https://www.who.int/publications/i/item/9789240031029'
+            },
+            {
+              label: 'World Health Organization. World Mental Health Report: Transforming mental health for all.',
+              url: 'https://www.who.int/teams/mental-health-and-substance-use/world-mental-health-report'
+            },
+            {
+              label: 'United Nations Sustainable Development Goals: Goals 3 and 17.',
+              url: 'https://sdgs.un.org/goals'
+            },
+            {
+              label: 'บริบทประกอบการนำเสนอ IMHWF 2026 Mental Health Workforce Forum',
+              url: ''
+            }
+          ],
+          org: 'กรมสุขภาพจิต · นวัตกรรมดิจิทัลด้านสังคมสงเคราะห์ · ประเทศไทย'
+        }
+      }
+    },
+    zh: {
+      pageTitle: '以人为本的数字心理健康生态系统',
+      header: {
+        badge: '以人为本的数字心理健康生态系统',
+        title: 'MindBridge Global',
+        badges: ['与 WHO 对齐', '隐私内建', '人工监督']
+      },
+      hero: {
+        badge: '以人为本的数字心理健康生态系统',
+        title: '通过<span class="gradient-text">以人为本的数字生态系统</span>提升<span class="gradient-text">心理健康照护</span>',
+        subhead: '这是一项连续照护提案，旨在在不削弱人文关怀的前提下提升效率，从低成本原型起步，逐步扩展为可全球适配的模式。',
+        pill: 'AI 辅助，人工监督',
+        visionLabel: '设计原则',
+        visionText: '让心理健康专业人员把更多时间留给真正重要的事 - 照护患者、家庭与社区。',
+        cta: '联系 / 了解更多',
+        snapshotLabel: '实时仪表板示意',
+        liveLabel: '实时',
+        snapshotTitle: '系统概览',
+        snapshotSubtitle: '对拟议运行模式的实时化摘要视图。',
+        stats: [
+          { value: 4, label: '核心组成' },
+          { value: 6, label: '患者旅程阶段' },
+          { value: 5, label: '路线图阶段' },
+          { value: 4, label: '对应 WHO 目标' }
+        ],
+        signalsLabel: '设计信号',
+        signals: [
+          '在接触服务前完成结构化接诊与分诊',
+          '跨场景共享的多学科协同',
+          '以隐私保护方式支持服务改进分析'
+        ],
+        note: '与 WHO《2013-2030 年全面精神卫生行动计划》及 IMHWF 2026 学习重点保持一致。'
+      },
+      sections: {
+        why: {
+          kicker: '为何重要',
+          title: '为什么现在必须推进',
+          intro: '心理健康系统正面对更高复杂度，却缺乏足够的连续性。本提案聚焦最容易削弱及时、有人情味照护的关键运行缺口。',
+          cards: [
+            {
+              title: '需求上升与人员倦怠',
+              copy: '寻求帮助的人越来越多，而专业团队仍然紧绷，直接服务患者与家庭的时间因此被压缩。'
+            },
+            {
+              title: '等待时间过长',
+              copy: '一线团队需要更早识别高优先级需求，避免风险个案被漫长排队所掩盖。'
+            },
+            {
+              title: '重复评估',
+              copy: '由于信息无法顺畅延续，患者与照护者常常要在不同专业之间重复讲述同样的经历。'
+            },
+            {
+              title: '沟通碎片化',
+              copy: '临床、心理社会与社区行动往往记录在彼此割裂的渠道中，难以形成共享视图。'
+            },
+            {
+              title: '出院后随访薄弱',
+              copy: '从医院到社区的过渡仍然脆弱，尤其是在职责分工与同意边界不清晰时。'
+            },
+            {
+              title: '心理社会数据利用不足',
+              copy: '常规服务往往难以充分捕捉住房、家庭负担、污名与就医障碍，因而无法有效支持学习与规划。'
+            }
+          ]
+        },
+        matrix: {
+          kicker: '从问题到保障',
+          title: '问题、数字回应与人工保障',
+          intro: '每一项数字功能都必须配套明确的人工保障，确保效率提升不会以安全、权利或专业责任为代价。',
+          labels: {
+            problem: '问题',
+            response: '数字回应',
+            safeguard: '人工保障'
+          },
+          items: [
+            {
+              theme: '进入与分诊',
+              problem: '长时间等待与职业倦怠削弱了团队尽早识别紧急需求的能力。',
+              response: '自动化签到与分诊仪表板可在正式评估前突出优先个案。',
+              safeguard: '所有高风险标记都必须由人工复核，并接入真实临床团队的升级流程。'
+            },
+            {
+              theme: '照护协同',
+              problem: '碎片化照护使计划与交接散落在不同专业和不同场域之间。',
+              response: '共享沟通枢纽与照护计划把与角色相关的更新纳入同一协同流程。',
+              safeguard: '基于角色的访问控制与最少必要共享可限制敏感信息暴露。'
+            },
+            {
+              theme: '连续性',
+              problem: '出院后的随访薄弱，会提高脱离服务与可避免复发的风险。',
+              response: '社区随访流程、提醒与告警可支持闭环式连续照护。',
+              safeguard: '同意状态与照护者参与情况在转衔计划中始终可见。'
+            },
+            {
+              theme: '证据与学习',
+              problem: '服务机构难以在不增加隐私风险的前提下，从常规照护中形成可用证据。',
+              response: '安全的研究与评估数据库可支持仪表板、质量改进与服务学习。',
+              safeguard: '在更广泛使用数据前，必须完成去标识化、治理安排与伦理审批。'
+            }
+          ]
+        },
+        core: {
+          kicker: '核心组成',
+          title: '四个核心组成',
+          intro: '该网页将提案转化为四个可复用模块，既能在资源有限环境中运行，也便于逐步升级。',
+          items: [
+            {
+              badge: '01',
+              title: '就诊前自动签到',
+              copy: '以结构化方式采集主要诉求、症状、障碍与支持背景，可在接触服务前或接触当下完成。'
+            },
+            {
+              badge: '02',
+              title: 'AI 辅助的安全与心理社会风险筛查',
+              copy: '经过验证的决策支持可在人工监督下帮助识别与自杀风险、复发、照护者压力、暴力或住房不稳相关的模式。'
+            },
+            {
+              badge: '03',
+              title: '多学科与社区共享协同枢纽',
+              copy: '精神科医师、护士、心理学家、社会工作者与社区团队可以围绕同一照护路径协同工作。'
+            },
+            {
+              badge: '04',
+              title: '保护隐私的研究与评估数据库',
+              copy: '去标识化或假名化数据可用于仪表板、质量改进、队伍规划以及未来跨点位学习。'
+            }
+          ]
+        },
+        scale: {
+          kicker: '扩展路径',
+          title: '从本地原型到全球模型',
+          intro: '本提案之所以可信，是因为它从可运行的原型出发，并明确展示了扩展路径，而不是停留在抽象愿景。',
+          localLabel: '本地原型',
+          localTitle: '低成本运行原型',
+          localCopy: 'Google Forms、Sheets、Drive 与 Apps Script 提供了实用环境，可在资源有限场景中测试流程设计、员工接受度与关键数据元素。',
+          localPoints: [
+            '以可负担工具快速迭代',
+            '适用于试点服务与实施学习',
+            '在投入更重型基础设施前先验证数据流、分诊逻辑与团队协同'
+          ],
+          bridge: '负责任地扩展',
+          globalLabel: '全球可扩展模型',
+          globalTitle: '安全且可互操作的连续照护平台',
+          globalCopy: '下一阶段将补强技术与治理基础，使同一照护逻辑能够安全地扩展到多机构与多国家场景。',
+          globalPoints: [
+            '标准化数据元素与治理框架',
+            '隐私内建设计与基于角色的访问控制',
+            '互操作性、审计轨迹、同意管理与监督机制'
+          ]
+        },
+        journey: {
+          kicker: '患者旅程',
+          title: '患者旅程与数据流',
+          intro: '六阶段路径既保持对人的照护旅程的关注，也展示了结构化数据如何支持更安全的协同与系统学习。',
+          steps: [
+            {
+              meta: '阶段 1',
+              title: '首次接触 / 转介',
+              summary: '在入口就清楚识别是谁在求助、为何此刻需要帮助，以及紧急程度如何。',
+              detail: '结构化接诊可以由患者、照护者、工作人员或社区转介者完成，从而及早看见主要诉求、心理社会障碍与紧急预警信号。'
+            },
+            {
+              meta: '阶段 2',
+              title: '评估与照护规划',
+              summary: '把临床、心理与社会信息汇聚为同一视图。',
+              detail: '多学科评估可减少重复询问，并形成兼顾症状、家庭情境、安全问题与治疗障碍的照护计划。'
+            },
+            {
+              meta: '阶段 3',
+              title: '治疗与社会干预',
+              summary: '把用药、心理治疗、社会工作与康复支持放在同一工作流中协调。',
+              detail: '共享任务追踪能帮助团队将治疗措施、社会干预、康复目标与社区支持对齐，而不让记录再度碎片化。'
+            },
+            {
+              meta: '阶段 4',
+              title: '出院规划',
+              summary: '在患者离开服务场域前先把安全转衔准备好。',
+              detail: '出院准备度、照护者能力、转介需求与危机指导可以被一并审视，让下一步在转衔发生前就清晰可行。'
+            },
+            {
+              meta: '阶段 5',
+              title: '社区随访',
+              summary: '追踪与基层医疗、社区团队、NGO 及社会服务之间的连续性。',
+              detail: '闭环转介与随访流程有助于确认外展是否完成、障碍是否被处理，以及支持是否真正抵达患者与家庭。'
+            },
+            {
+              meta: '阶段 6',
+              title: '评估与学习',
+              summary: '利用去标识化服务数据推动质量改进、规划与政策学习。',
+              detail: '在治理批准前提下，仪表板与分析可以揭示瓶颈、随访表现、心理社会模式与服务重设计机会，而不暴露不必要的个人细节。'
+            }
+          ]
+        },
+        ethics: {
+          kicker: '伦理与安全',
+          title: '伦理、隐私与安全',
+          intro: '本提案把安全、权利与公众信任视为产品要求，而非上线之后再补上的合规层。',
+          items: [
+            {
+              title: '知情同意',
+              copy: '患者与家庭应清楚了解收集什么、为何收集，以及这些信息将如何被使用。'
+            },
+            {
+              title: '基于角色的访问',
+              copy: '不同专业只应看到其履职所需、且与责任相称的信息。'
+            },
+            {
+              title: '人工监督',
+              copy: 'AI 不做最终照护决定。所有高风险情境都必须经过受过训练的专业人员复核。'
+            },
+            {
+              title: '去标识化与最少必要数据',
+              copy: '离开直接照护场景的数据，应严格限定在连续性、评估或研究所必需的最少范围内。'
+            },
+            {
+              title: '审计轨迹',
+              copy: '访问、编辑与传输都应可追溯，以强化治理与问责。'
+            },
+            {
+              title: '偏差与公平审查',
+              copy: '未来任何 AI 辅助筛查都必须评估偏差、亚群体表现以及潜在非预期伤害。'
+            },
+            {
+              title: '危机升级流程',
+              copy: '数字告警必须连接到真实、可问责的临床与社区团队升级路径。'
+            },
+            {
+              title: '本地法律合规',
+              copy: '实施必须遵守当地隐私与健康数据法规，包括 PDPA 或同等要求。'
+            }
+          ],
+          banner: 'AI 是在人工监督下提供决策支持，而不是取代专业人员。'
+        },
+        impact: {
+          kicker: '预期成效',
+          title: '预期结果与影响',
+          intro: '影响框架把用户可感知的结果，与可衡量的指标和现实可得的常规数据来源相连接。',
+          indicatorLabel: '指标',
+          sourceLabel: '数据来源',
+          cards: [
+            {
+              trend: '连续性',
+              title: '患者 / 家庭',
+              outcome: '减少重复评估，更快识别紧急需求，并增强出院后的连续照护。',
+              indicator: '随访完成率、紧急个案复核时间、患者对照护协同的感受。',
+              source: '签到记录、连续照护追踪器、患者与照护者反馈。'
+            },
+            {
+              trend: '流程',
+              title: '专业人员',
+              outcome: '减少重复文书工作，并让多学科团队的优先级排序更清晰。',
+              indicator: '行政负担调查、从接诊到复核的时间、共享计划完成度。',
+              source: '流程时间戳、员工脉搏调查、MDT 文档。'
+            },
+            {
+              trend: '绩效',
+              title: '服务系统',
+              outcome: '改善随访、提升转介完成率，并更清楚地看见心理社会风险模式。',
+              indicator: '转介完成率、失访率、仪表板审查频率。',
+              source: '协同枢纽、随访日志、服务仪表板。'
+            },
+            {
+              trend: '证据',
+              title: '政策 / 研究',
+              outcome: '形成更可靠的心理健康服务数据，用于规划、评估与未来跨点位学习。',
+              indicator: '常规指标使用频率、跨点位可比数据字段、经治理批准的研究产出。',
+              source: '去标识化分析层、标准化数据字典、获批数据提取。'
+            }
+          ]
+        },
+        roadmap: {
+          kicker: '可行性路线图',
+          title: '五阶段可行性路线图',
+          intro: '路线图将数字转型描述为分阶段推进的实施工作，而非一次性的技术发布。',
+          steps: [
+            {
+              meta: '阶段 1',
+              title: '低成本原型',
+              summary: '使用可负担工具与真实服务场景试点核心流程。',
+              detail: '利用 Google Apps Script、Forms、Sheets 与 Drive 测试实际流程适配性、用户接受度、分诊逻辑与关键运行指标。'
+            },
+            {
+              meta: '阶段 2',
+              title: '标准化数据字典',
+              summary: '为症状、心理社会风险与连续照护定义可比较的数据元素。',
+              detail: '建立共同数据模型，覆盖主要诉求、风险标记、随访状态、转介结果及与心理健康相关的社会决定因素。'
+            },
+            {
+              meta: '阶段 3',
+              title: '具备 RBAC 与同意管理的安全 MDT 枢纽',
+              summary: '为共享协同引入更强的治理与访问边界。',
+              detail: '区分角色视图、加入同意管理、加强审计轨迹，并正式化服务与社区伙伴之间的最少必要共享。'
+            },
+            {
+              meta: '阶段 4',
+              title: '带偏差监测的 AI 辅助筛查',
+              summary: '仅在本地验证、伦理审查与安全测试之后引入决策支持。',
+              detail: '负责任的 AI 应分阶段引入，并伴随亚群体监测、临床升级路径与清晰的人类责任界定。'
+            },
+            {
+              meta: '阶段 5',
+              title: '保护隐私的研究数据库',
+              summary: '扩展至跨点位学习、评估与未来联邦式方法。',
+              detail: '去标识化或联邦式数据方法可在不不必要集中敏感记录的前提下，支持服务比较、队伍规划与实践型证据生成。'
+            }
+          ]
+        },
+        alignment: {
+          kicker: '对齐',
+          title: '全球框架与课程目标对齐',
+          intro: '本提案在国际心理健康优先事项上保持一致，同时始终扎根于实施现实。',
+          groups: [
+            {
+              title: 'WHO Comprehensive Mental Health Action Plan 2013-2030',
+              tags: [
+                '领导力与治理',
+                '整合型社区照护',
+                '促进与预防',
+                '心理健康信息系统',
+                '证据与研究'
+              ]
+            },
+            {
+              title: 'IMHWF 2026 课程目标',
+              tags: [
+                '数字心理健康',
+                '卫生人力强化',
+                '跨学科协作',
+                '社区随访',
+                '实施可行性',
+                '学习型卫生系统'
+              ]
+            }
+          ]
+        },
+        closing: {
+          kicker: '结语',
+          title: '心理健康照护的未来，不仅需要更好的治疗，也需要更好的连接。',
+          copy: 'MindBridge Global 将数字转型定义为一个更安全、更聪明、更有温度的系统，让技术帮助专业人员、患者、家庭与社区在整个照护旅程中保持连接。',
+          cta: '联系 / 了解更多'
+        },
+        footer: {
+          kicker: '参考资料',
+          refs: [
+            {
+              label: 'World Health Organization. Comprehensive Mental Health Action Plan 2013-2030.',
+              url: 'https://www.who.int/publications/i/item/9789240031029'
+            },
+            {
+              label: 'World Health Organization. World Mental Health Report: Transforming mental health for all.',
+              url: 'https://www.who.int/teams/mental-health-and-substance-use/world-mental-health-report'
+            },
+            {
+              label: 'United Nations Sustainable Development Goals: Goals 3 and 17.',
+              url: 'https://sdgs.un.org/goals'
+            },
+            {
+              label: 'IMHWF 2026 Mental Health Workforce Forum 简报背景',
+              url: ''
+            }
+          ],
+          org: '泰国精神卫生部 · 社会工作数字创新'
+        }
+      }
+    },
+    hi: {
+      pageTitle: 'मानव-केंद्रित डिजिटल मानसिक स्वास्थ्य पारितंत्र',
+      header: {
+        badge: 'मानव-केंद्रित डिजिटल मानसिक स्वास्थ्य पारितंत्र',
+        title: 'MindBridge Global',
+        badges: ['WHO के अनुरूप', 'गोपनीयता-आधारित डिज़ाइन', 'मानवीय पर्यवेक्षण']
+      },
+      hero: {
+        badge: 'मानव-केंद्रित डिजिटल मानसिक स्वास्थ्य पारितंत्र',
+        title: '<span class="gradient-text">मानसिक स्वास्थ्य देखभाल</span> को <span class="gradient-text">मानव-केंद्रित डिजिटल पारितंत्र</span> के माध्यम से उन्नत करना',
+        subhead: 'यह एक निरंतरता-आधारित देखभाल प्रस्ताव है जो मानवीय स्पर्श बनाए रखते हुए दक्षता बढ़ाता है, और कम लागत वाले प्रोटोटाइप से शुरू होकर वैश्विक रूप से अनुकूल मॉडल तक पहुँचता है।',
+        pill: 'AI समर्थित, मानव पर्यवेक्षित',
+        visionLabel: 'डिज़ाइन सिद्धांत',
+        visionText: 'ऐसे निर्मित कि मानसिक स्वास्थ्य पेशेवर अपना अधिक समय सबसे महत्वपूर्ण कार्य पर लगा सकें - रोगियों, परिवारों और समुदायों की देखभाल पर।',
+        cta: 'संपर्क / अधिक जानें',
+        snapshotLabel: 'लाइव डैशबोर्ड रूपरेखा',
+        liveLabel: 'लाइव',
+        snapshotTitle: 'सिस्टम स्नैपशॉट',
+        snapshotSubtitle: 'प्रस्तावित संचालन मॉडल का एक जीवंत सारांश दृश्य।',
+        stats: [
+          { value: 4, label: 'मुख्य घटक' },
+          { value: 6, label: 'रोगी यात्रा के चरण' },
+          { value: 5, label: 'रोडमैप चरण' },
+          { value: 4, label: 'WHO उद्देश्यों से संरेखण' }
+        ],
+        signalsLabel: 'सक्रिय डिज़ाइन संकेत',
+        signals: [
+          'सेवा संपर्क से पहले संरचित इनटेक और ट्रायेज',
+          'विभिन्न सेटिंग्स में साझा बहुविषयक समन्वय',
+          'सेवा सुधार के लिए गोपनीयता-सुरक्षित विश्लेषण'
+        ],
+        note: 'WHO Comprehensive Mental Health Action Plan 2013-2030 और IMHWF 2026 की सीखने की प्राथमिकताओं के अनुरूप।'
+      },
+      sections: {
+        why: {
+          kicker: 'यह क्यों महत्वपूर्ण है',
+          title: 'अभी इसकी आवश्यकता क्यों है',
+          intro: 'मानसिक स्वास्थ्य प्रणालियाँ अधिक जटिलता का सामना कर रही हैं, लेकिन निरंतरता अपर्याप्त है। यह प्रस्ताव उन परिचालन अंतरालों पर केंद्रित है जो समय पर, मानवीय देखभाल को सबसे अधिक कमजोर करते हैं।',
+          cards: [
+            {
+              title: 'बढ़ती मांग और कर्मियों की थकान',
+              copy: 'मदद की आवश्यकता रखने वाले लोगों की संख्या बढ़ रही है, जबकि विशेषज्ञ टीमें पहले से ही दबाव में हैं, जिससे रोगियों और परिवारों की प्रत्यक्ष देखभाल के लिए समय कम हो जाता है।'
+            },
+            {
+              title: 'लंबी प्रतीक्षा सूची',
+              copy: 'फ्रंटलाइन टीमों को तात्कालिक आवश्यकताओं की पहले पहचान करनी होगी ताकि लंबी प्रतीक्षा में उच्च-जोखिम स्थितियाँ छिप न जाएँ।'
+            },
+            {
+              title: 'दोहराई जाने वाली आकलन प्रक्रियाएँ',
+              copy: 'रोगियों और देखभालकर्ताओं को अक्सर विभिन्न पेशेवरों के सामने वही कहानी दोहरानी पड़ती है क्योंकि जानकारी सुचारु रूप से आगे नहीं बढ़ती।'
+            },
+            {
+              title: 'खंडित संचार',
+              copy: 'क्लिनिकल, मनोसामाजिक और सामुदायिक कार्य प्रायः अलग-अलग चैनलों में दर्ज होते हैं, जिससे साझा स्थिति अस्पष्ट रहती है।'
+            },
+            {
+              title: 'डिस्चार्ज के बाद कमजोर फॉलो-अप',
+              copy: 'अस्पताल से समुदाय तक संक्रमण अभी भी नाजुक है, खासकर जब जिम्मेदारियाँ और सहमति की सीमाएँ स्पष्ट नहीं होतीं।'
+            },
+            {
+              title: 'मनोसामाजिक डेटा का सीमित उपयोग',
+              copy: 'नियमित सेवाएँ अक्सर आवास, पारिवारिक भार, कलंक और देखभाल बाधाओं से जुड़ी जानकारी पर्याप्त रूप से दर्ज नहीं कर पातीं, जिससे सीखने और योजना बनाने की क्षमता घटती है।'
+            }
+          ]
+        },
+        matrix: {
+          kicker: 'समस्या से सुरक्षा तक',
+          title: 'समस्या, डिजिटल प्रतिक्रिया और मानवीय सुरक्षा',
+          intro: 'हर डिजिटल कार्य को स्पष्ट मानवीय सुरक्षा के साथ जोड़ा जाना चाहिए ताकि दक्षता लाभ सुरक्षा, अधिकारों या पेशेवर जवाबदेही की कीमत पर न मिलें।',
+          labels: {
+            problem: 'समस्या',
+            response: 'डिजिटल प्रतिक्रिया',
+            safeguard: 'मानवीय सुरक्षा'
+          },
+          items: [
+            {
+              theme: 'प्रवेश और ट्रायेज',
+              problem: 'लंबी प्रतीक्षा और बर्नआउट शुरुआती चरण में तात्कालिक जरूरतों की पहचान करने की क्षमता को कम कर देते हैं।',
+              response: 'स्वचालित चेक-इन और ट्रायेज डैशबोर्ड औपचारिक समीक्षा से पहले प्राथमिकता वाले मामलों को सामने लाते हैं।',
+              safeguard: 'सभी उच्च-जोखिम संकेतों की मानव द्वारा समीक्षा और वास्तविक क्लिनिकल टीमों के माध्यम से एस्केलेशन आवश्यक है।'
+            },
+            {
+              theme: 'देखभाल समन्वय',
+              problem: 'खंडित देखभाल योजनाओं और हैंडऑफ को अलग-अलग पेशों और सेटिंग्स में बिखरा देती है।',
+              response: 'एक साझा संचार हब और देखभाल योजना भूमिका-उपयुक्त अपडेट को एकीकृत कार्यप्रवाह में रखती है।',
+              safeguard: 'भूमिका-आधारित पहुँच और न्यूनतम आवश्यक साझा करने से संवेदनशील जानकारी का अनावश्यक खुलासा सीमित होता है।'
+            },
+            {
+              theme: 'निरंतरता',
+              problem: 'डिस्चार्ज के बाद कमजोर फॉलो-अप सेवा से अलगाव और रोकी जा सकने वाली पुनरावृत्ति के जोखिम को बढ़ाता है।',
+              response: 'सामुदायिक फॉलो-अप कार्यप्रवाह, रिमाइंडर और अलर्ट बंद-चक्र निरंतरता का समर्थन करते हैं।',
+              safeguard: 'संक्रमण योजना के दौरान सहमति की स्थिति और देखभालकर्ता की भागीदारी स्पष्ट रूप से दिखाई देती रहती है।'
+            },
+            {
+              theme: 'साक्ष्य और सीख',
+              problem: 'सेवाओं को गोपनीयता जोखिम बढ़ाए बिना नियमित देखभाल से उपयोगी साक्ष्य तैयार करना कठिन होता है।',
+              response: 'सुरक्षित शोध और मूल्यांकन डेटाबेस डैशबोर्ड, गुणवत्ता सुधार और सेवा सीखने का आधार बनता है।',
+              safeguard: 'वृहद डेटा उपयोग से पहले डि-आइडेंटिफिकेशन, गवर्नेंस और एथिक्स अनुमोदन अनिवार्य हैं।'
+            }
+          ]
+        },
+        core: {
+          kicker: 'मुख्य घटक',
+          title: 'चार मुख्य घटक',
+          intro: 'यह वेब ऐप प्रस्ताव को चार पुन: उपयोग योग्य निर्माण-खंडों में बदलता है, जो संसाधन-सीमित सेटिंग्स में भी कार्य कर सकते हैं और समय के साथ विकसित हो सकते हैं।',
+          items: [
+            {
+              badge: '01',
+              title: 'पूर्व-सत्र स्वचालित चेक-इन',
+              copy: 'संरचित इनटेक मुख्य चिंताओं, लक्षणों, बाधाओं और समर्थन संदर्भ को सेवा से पहले या सेवा के समय कैप्चर करता है।'
+            },
+            {
+              badge: '02',
+              title: 'AI-सहायित सुरक्षा और मनोसामाजिक जोखिम स्क्रीनिंग',
+              copy: 'सत्यापित निर्णय-सहायता मानव पर्यवेक्षण के तहत आत्महत्या जोखिम, पुनरावृत्ति, देखभालकर्ता तनाव, हिंसा या आवास अस्थिरता से जुड़े पैटर्न सामने ला सकती है।'
+            },
+            {
+              badge: '03',
+              title: 'साझा बहुविषयक और सामुदायिक हब',
+              copy: 'मनोचिकित्सक, नर्स, मनोवैज्ञानिक, सामाजिक कार्यकर्ता और सामुदायिक टीमें एक साझा देखभाल मार्ग के इर्द-गिर्द समन्वय कर सकती हैं।'
+            },
+            {
+              badge: '04',
+              title: 'गोपनीयता-सुरक्षित शोध और मूल्यांकन डेटाबेस',
+              copy: 'डि-आइडेंटिफाइड या छद्म-नामित डेटा डैशबोर्ड, गुणवत्ता सुधार, कार्यबल योजना और भविष्य की बहु-साइट सीख के लिए उपयोगी हो सकता है।'
+            }
+          ]
+        },
+        scale: {
+          kicker: 'विस्तार मार्ग',
+          title: 'स्थानीय प्रोटोटाइप से वैश्विक मॉडल तक',
+          intro: 'यह प्रस्ताव इसलिए विश्वसनीय है क्योंकि यह एक कार्यशील परिचालन प्रोटोटाइप से शुरू होता है और विस्तार की राह को स्पष्ट रूप से दर्शाता है।',
+          localLabel: 'स्थानीय प्रोटोटाइप',
+          localTitle: 'कम लागत वाला परिचालन प्रोटोटाइप',
+          localCopy: 'Google Forms, Sheets, Drive और Apps Script एक व्यावहारिक वातावरण प्रदान करते हैं जिसमें संसाधन-सीमित परिस्थितियों में कार्यप्रवाह, कर्मचारियों की स्वीकृति और आवश्यक डेटा तत्वों की जाँच की जा सकती है।',
+          localPoints: [
+            'सुलभ साधनों के साथ तीव्र पुनरावृत्ति',
+            'पायलट सेवाओं और कार्यान्वयन-आधारित सीख के लिए उपयुक्त',
+            'भारी अवसंरचना से पहले डेटा प्रवाह, ट्रायेज लॉजिक और टीम समन्वय की जाँच'
+          ],
+          bridge: 'जिम्मेदारी के साथ विस्तार',
+          globalLabel: 'वैश्विक रूप से विस्तार योग्य मॉडल',
+          globalTitle: 'सुरक्षित और इंटरऑपरेबल निरंतरता प्लेटफ़ॉर्म',
+          globalCopy: 'अगला चरण तकनीकी और गवर्नेंस आधार को मजबूत करता है ताकि वही देखभाल तर्क विभिन्न साइटों और देशों में सुरक्षित रूप से फैल सके।',
+          globalPoints: [
+            'मानकीकृत डेटा तत्व और गवर्नेंस',
+            'गोपनीयता-आधारित डिज़ाइन और भूमिका-आधारित पहुँच नियंत्रण',
+            'इंटरऑपरेबिलिटी, ऑडिट ट्रेल, सहमति और पर्यवेक्षण'
+          ]
+        },
+        journey: {
+          kicker: 'रोगी यात्रा',
+          title: 'रोगी यात्रा और डेटा प्रवाह',
+          intro: 'छह-चरणीय मार्ग रोगी की मानवीय यात्रा को केंद्र में रखता है और दिखाता है कि संरचित डेटा किस तरह सुरक्षित समन्वय और सेवा-आधारित सीख को मजबूत कर सकता है।',
+          steps: [
+            {
+              meta: 'चरण 1',
+              title: 'पहला संपर्क / रेफरल',
+              summary: 'प्रवेश बिंदु पर स्पष्ट करें कि कौन मदद चाहता है, क्यों चाहता है और स्थिति कितनी तात्कालिक है।',
+              detail: 'संरचित इनटेक रोगी, देखभालकर्ता, स्टाफ या सामुदायिक रेफरर द्वारा पूरा किया जा सकता है, जिससे मुख्य चिंताएँ, मनोसामाजिक बाधाएँ और तात्कालिक चेतावनी संकेत जल्दी दिखाई देते हैं।'
+            },
+            {
+              meta: 'चरण 2',
+              title: 'आकलन और देखभाल योजना',
+              summary: 'क्लिनिकल, मनोवैज्ञानिक और सामाजिक जानकारी को एक साझा दृश्य में लाना।',
+              detail: 'बहुविषयक आकलन दोहरावपूर्ण प्रश्नों को कम करता है और ऐसी देखभाल योजना को संभव बनाता है जो लक्षणों, पारिवारिक संदर्भ, सुरक्षा चिंताओं और व्यावहारिक बाधाओं को साथ रखे।'
+            },
+            {
+              meta: 'चरण 3',
+              title: 'उपचार और सामाजिक हस्तक्षेप',
+              summary: 'दवा, थेरेपी, मनोसामाजिक सहायता और पुनर्वास को एक ही कार्यप्रवाह में समन्वित करना।',
+              detail: 'साझा कार्य ट्रैकिंग टीमों को उपचार कार्रवाई, सामाजिक कार्य हस्तक्षेप, पुनर्वास लक्ष्य और सामुदायिक सहायता को एक-दूसरे से जोड़े रखने में मदद करती है।'
+            },
+            {
+              meta: 'चरण 4',
+              title: 'डिस्चार्ज योजना',
+              summary: 'रोगी के सेवा-स्थल छोड़ने से पहले सुरक्षित संक्रमण की तैयारी करना।',
+              detail: 'डिस्चार्ज तैयारी, देखभालकर्ता की क्षमता, रेफरल आवश्यकता और संकट मार्गदर्शन को एक साथ समीक्षा किया जा सकता है ताकि अगले कदम स्पष्ट रहें।'
+            },
+            {
+              meta: 'चरण 5',
+              title: 'सामुदायिक फॉलो-अप',
+              summary: 'प्राथमिक देखभाल, सामुदायिक टीमों, NGO और सामाजिक सेवाओं के साथ निरंतरता को ट्रैक करना।',
+              detail: 'बंद-चक्र रेफरल और फॉलो-अप कार्यप्रवाह यह पुष्टि करने में मदद करते हैं कि पहुँच पूरी हुई, बाधाएँ संबोधित हुईं और समर्थन वास्तव में रोगी तथा परिवार तक पहुँचा।'
+            },
+            {
+              meta: 'चरण 6',
+              title: 'मूल्यांकन और सीख',
+              summary: 'डि-आइडेंटिफाइड सेवा डेटा का उपयोग गुणवत्ता सुधार, योजना और नीति सीख के लिए करना।',
+              detail: 'गवर्नेंस-अनुमोदित डैशबोर्ड और विश्लेषण बाधाएँ, फॉलो-अप प्रदर्शन, मनोसामाजिक पैटर्न और सेवा पुनर्रचना के अवसरों को उजागर कर सकते हैं, बिना अनावश्यक व्यक्तिगत जानकारी उजागर किए।'
+            }
+          ]
+        },
+        ethics: {
+          kicker: 'नैतिकता और सुरक्षा',
+          title: 'नैतिकता, गोपनीयता और सुरक्षा',
+          intro: 'यह प्रस्ताव सुरक्षा, अधिकारों और सार्वजनिक विश्वास को बाद में जोड़ी जाने वाली अनुपालन परत नहीं, बल्कि उत्पाद की मूल आवश्यकताएँ मानता है।',
+          items: [
+            {
+              title: 'सूचित सहमति',
+              copy: 'रोगियों और परिवारों को स्पष्ट होना चाहिए कि क्या एकत्र किया जा रहा है, क्यों महत्वपूर्ण है और उसका उपयोग कैसे होगा।'
+            },
+            {
+              title: 'भूमिका-आधारित पहुँच',
+              copy: 'विभिन्न पेशेवरों को केवल वही जानकारी दिखनी चाहिए जो उनके कार्य और जिम्मेदारी के स्तर के लिए आवश्यक है।'
+            },
+            {
+              title: 'मानवीय पर्यवेक्षण',
+              copy: 'AI अंतिम देखभाल निर्णय नहीं लेता। हर उच्च-जोखिम स्थिति के लिए प्रशिक्षित पेशेवर समीक्षा आवश्यक है।'
+            },
+            {
+              title: 'डि-आइडेंटिफिकेशन और न्यूनतम आवश्यक डेटा',
+              copy: 'प्रत्यक्ष देखभाल सेटिंग से बाहर केवल वही जानकारी जानी चाहिए जो निरंतरता, मूल्यांकन या शोध के लिए न्यूनतम आवश्यक हो।'
+            },
+            {
+              title: 'ऑडिट ट्रेल',
+              copy: 'पहुँच, संपादन और स्थानांतरण का पता लगाया जा सके, ताकि गवर्नेंस और जवाबदेही मजबूत हो।'
+            },
+            {
+              title: 'पक्षपात और समानता समीक्षा',
+              copy: 'भविष्य की किसी भी AI-सहायित स्क्रीनिंग को पक्षपात, उप-समूह प्रदर्शन और अनपेक्षित नुकसान के लिए परखा जाना चाहिए।'
+            },
+            {
+              title: 'संकट एस्केलेशन प्रोटोकॉल',
+              copy: 'डिजिटल अलर्ट वास्तविक, जवाबदेह क्लिनिकल और सामुदायिक टीमों से जुड़े एस्केलेशन मार्गों के साथ होने चाहिए।'
+            },
+            {
+              title: 'स्थानीय कानूनी अनुपालन',
+              copy: 'कार्यान्वयन स्थानीय गोपनीयता और स्वास्थ्य डेटा नियमों, जैसे PDPA या समकक्ष कानूनों, के अनुरूप होना चाहिए।'
+            }
+          ],
+          banner: 'AI मानव पर्यवेक्षण के तहत निर्णय-सहायता का साधन है - पेशेवरों का विकल्प नहीं।'
+        },
+        impact: {
+          kicker: 'अपेक्षित परिणाम',
+          title: 'अपेक्षित परिणाम और प्रभाव',
+          intro: 'यह प्रभाव ढाँचा उपयोगकर्ता-अनुभव स्तर के परिणामों को मापनीय संकेतकों और यथार्थवादी नियमित डेटा स्रोतों से जोड़ता है।',
+          indicatorLabel: 'सूचक',
+          sourceLabel: 'डेटा स्रोत',
+          cards: [
+            {
+              trend: 'निरंतरता',
+              title: 'रोगी / परिवार',
+              outcome: 'कम दोहरावपूर्ण आकलन, तात्कालिक आवश्यकताओं की तेज पहचान और डिस्चार्ज के बाद मजबूत निरंतरता।',
+              indicator: 'फॉलो-अप पूर्णता, तात्कालिक समीक्षा का समय, रोगी-रिपोर्टेड समन्वय अनुभव।',
+              source: 'चेक-इन रिकॉर्ड, निरंतरता ट्रैकर, रोगी और देखभालकर्ता प्रतिक्रिया।'
+            },
+            {
+              trend: 'कार्यप्रवाह',
+              title: 'पेशेवर',
+              outcome: 'कम दोहरावपूर्ण दस्तावेज़ीकरण और बहुविषयक टीमों में अधिक स्पष्ट प्राथमिकता-निर्धारण।',
+              indicator: 'प्रशासनिक भार सर्वेक्षण, इनटेक से समीक्षा तक का समय, साझा योजना पूर्णता।',
+              source: 'कार्यप्रवाह टाइमस्टैम्प, स्टाफ पल्स सर्वे, MDT दस्तावेज़ीकरण।'
+            },
+            {
+              trend: 'प्रदर्शन',
+              title: 'सेवा प्रणाली',
+              outcome: 'बेहतर फॉलो-अप, मजबूत रेफरल पूर्णता और मनोसामाजिक जोखिम पैटर्न की अधिक स्पष्टता।',
+              indicator: 'रेफरल पूर्णता दर, फॉलो-अप से छूटने की दर, डैशबोर्ड समीक्षा की आवृत्ति।',
+              source: 'समन्वय हब, फॉलो-अप लॉग, सेवा डैशबोर्ड।'
+            },
+            {
+              trend: 'साक्ष्य',
+              title: 'नीति / शोध',
+              outcome: 'योजना, मूल्यांकन और भविष्य की बहु-साइट सीख के लिए अधिक विश्वसनीय मानसिक स्वास्थ्य सेवा डेटा।',
+              indicator: 'नियमित संकेतक उपयोग, साइटों के बीच तुलनीय डेटा फ़ील्ड, गवर्नेंस-अनुमोदित शोध आउटपुट।',
+              source: 'डि-आइडेंटिफाइड विश्लेषण परत, मानकीकृत डेटा शब्दकोश, अनुमोदित डेटा निष्कर्षण।'
+            }
+          ]
+        },
+        roadmap: {
+          kicker: 'व्यवहार्यता रोडमैप',
+          title: 'पाँच-चरणीय व्यवहार्यता रोडमैप',
+          intro: 'यह रोडमैप डिजिटल परिवर्तन को एक चरणबद्ध कार्यान्वयन प्रक्रिया के रूप में प्रस्तुत करता है, न कि एक बार की तकनीकी लॉन्च के रूप में।',
+          steps: [
+            {
+              meta: 'चरण 1',
+              title: 'कम लागत वाला प्रोटोटाइप',
+              summary: 'सुलभ उपकरणों और वास्तविक सेवा संचालन के साथ मुख्य कार्यप्रवाह का पायलट।',
+              detail: 'Google Apps Script, Forms, Sheets और Drive का उपयोग कर व्यावहारिक कार्यप्रवाह अनुकूलता, उपयोगकर्ता स्वीकृति, ट्रायेज लॉजिक और आवश्यक परिचालन संकेतकों का परीक्षण करें।'
+            },
+            {
+              meta: 'चरण 2',
+              title: 'मानकीकृत डेटा शब्दकोश',
+              summary: 'लक्षण, मनोसामाजिक जोखिम और निरंतरता के लिए तुलनीय डेटा तत्व परिभाषित करें।',
+              detail: 'एक साझा डेटा मॉडल विकसित करें जिसमें मुख्य चिंताएँ, जोखिम संकेत, फॉलो-अप स्थिति, रेफरल परिणाम और मानसिक स्वास्थ्य से जुड़े सामाजिक निर्धारक शामिल हों।'
+            },
+            {
+              meta: 'चरण 3',
+              title: 'RBAC और सहमति सहित सुरक्षित MDT हब',
+              summary: 'साझा समन्वय के लिए मजबूत गवर्नेंस और पहुँच सीमाएँ जोड़ें।',
+              detail: 'भूमिका-विशिष्ट दृश्य अलग करें, सहमति प्रबंधन जोड़ें, ऑडिट ट्रेल मजबूत करें और सेवा तथा सामुदायिक साझेदारों के बीच न्यूनतम आवश्यक साझा करने को औपचारिक बनाएँ।'
+            },
+            {
+              meta: 'चरण 4',
+              title: 'पक्षपात निगरानी के साथ AI-सहायित स्क्रीनिंग',
+              summary: 'स्थानीय सत्यापन, नैतिक समीक्षा और सुरक्षा परीक्षण के बाद ही निर्णय-सहायता जोड़ें।',
+              detail: 'जिम्मेदार AI को क्रमिक रूप से लागू किया जाना चाहिए, साथ ही उप-समूह निगरानी, क्लिनिकल एस्केलेशन मार्ग और स्पष्ट मानवीय जवाबदेही होनी चाहिए।'
+            },
+            {
+              meta: 'चरण 5',
+              title: 'गोपनीयता-सुरक्षित शोध डेटाबेस',
+              summary: 'बहु-साइट सीख, मूल्यांकन और भविष्य की federated पद्धतियों की ओर विस्तार।',
+              detail: 'डि-आइडेंटिफाइड या federated डेटा पद्धतियाँ संवेदनशील रिकॉर्ड का अनावश्यक केंद्रीकरण किए बिना सेवा तुलना, कार्यबल योजना और व्यवहार-आधारित साक्ष्य को समर्थन दे सकती हैं।'
+            }
+          ]
+        },
+        alignment: {
+          kicker: 'संरेखण',
+          title: 'वैश्विक ढाँचे और पाठ्यक्रम उद्देश्यों से संरेखण',
+          intro: 'यह प्रस्ताव अंतरराष्ट्रीय मानसिक स्वास्थ्य प्राथमिकताओं के साथ स्पष्ट रूप से संरेखित है, जबकि कार्यान्वयन की वास्तविकताओं से जुड़ा रहता है।',
+          groups: [
+            {
+              title: 'WHO Comprehensive Mental Health Action Plan 2013-2030',
+              tags: [
+                'नेतृत्व और गवर्नेंस',
+                'एकीकृत सामुदायिक-आधारित देखभाल',
+                'प्रोत्साहन और रोकथाम',
+                'मानसिक स्वास्थ्य सूचना प्रणालियाँ',
+                'साक्ष्य और शोध'
+              ]
+            },
+            {
+              title: 'IMHWF 2026 पाठ्यक्रम उद्देश्य',
+              tags: [
+                'डिजिटल मानसिक स्वास्थ्य',
+                'कार्यबल सुदृढ़ीकरण',
+                'अंतर्विषयी सहयोग',
+                'सामुदायिक फॉलो-अप',
+                'कार्यान्वयन व्यवहार्यता',
+                'सीखने वाली स्वास्थ्य प्रणालियाँ'
+              ]
+            }
+          ]
+        },
+        closing: {
+          kicker: 'निष्कर्ष',
+          title: 'मानसिक स्वास्थ्य देखभाल का भविष्य केवल बेहतर उपचार नहीं, बल्कि बेहतर जुड़ाव भी मांगता है।',
+          copy: 'MindBridge Global डिजिटल परिवर्तन को एक अधिक सुरक्षित, अधिक बुद्धिमान और अधिक करुणामय प्रणाली के रूप में प्रस्तुत करता है, जहाँ तकनीक पेशेवरों, रोगियों, परिवारों और समुदायों को पूरे देखभाल मार्ग में जोड़े रखती है।',
+          cta: 'संपर्क / अधिक जानें'
+        },
+        footer: {
+          kicker: 'संदर्भ',
+          refs: [
+            {
+              label: 'World Health Organization. Comprehensive Mental Health Action Plan 2013-2030.',
+              url: 'https://www.who.int/publications/i/item/9789240031029'
+            },
+            {
+              label: 'World Health Organization. World Mental Health Report: Transforming mental health for all.',
+              url: 'https://www.who.int/teams/mental-health-and-substance-use/world-mental-health-report'
+            },
+            {
+              label: 'United Nations Sustainable Development Goals: Goals 3 and 17.',
+              url: 'https://sdgs.un.org/goals'
+            },
+            {
+              label: 'IMHWF 2026 Mental Health Workforce Forum संदर्भ सामग्री',
+              url: ''
+            }
+          ],
+          org: 'मानसिक स्वास्थ्य विभाग · सोशल वर्क डिजिटल इनोवेशन · थाईलैंड'
+        }
+      }
+    },
+    ur: {
+      pageTitle: 'انسانی مرکزیت پر مبنی ڈیجیٹل ذہنی صحت ایکوسسٹم',
+      header: {
+        badge: 'انسانی مرکزیت پر مبنی ڈیجیٹل ذہنی صحت ایکوسسٹم',
+        title: 'MindBridge Global',
+        badges: ['WHO سے ہم آہنگ', 'پرائیویسی بائے ڈیزائن', 'انسانی نگرانی']
+      },
+      hero: {
+        badge: 'انسانی مرکزیت پر مبنی ڈیجیٹل ذہنی صحت ایکوسسٹم',
+        title: '<span class="gradient-text">ذہنی صحت کی نگہداشت</span> کو ایک <span class="gradient-text">انسانی مرکزیت والے ڈیجیٹل ایکوسسٹم</span> کے ذریعے بلند تر سطح پر لے جانا',
+        subhead: 'یہ تسلسلِ نگہداشت پر مبنی ایک تجویز ہے جو انسانی لمس برقرار رکھتے ہوئے کارکردگی بہتر بناتی ہے، کم لاگت والے پروٹوٹائپ سے شروع ہو کر عالمی سطح پر قابلِ اطلاق ماڈل تک پہنچتی ہے۔',
+        pill: 'AI معاون، انسانی نگرانی کے ساتھ',
+        visionLabel: 'ڈیزائن اصول',
+        visionText: 'اس طرح تیار کیا گیا ہے کہ ذہنی صحت کے پیشہ ور افراد اپنا زیادہ وقت سب سے اہم کام پر لگا سکیں - مریضوں، خاندانوں اور برادریوں کی نگہداشت پر۔',
+        cta: 'رابطہ / مزید جانیں',
+        snapshotLabel: 'لائیو ڈیش بورڈ خاکہ',
+        liveLabel: 'لائیو',
+        snapshotTitle: 'سسٹم اسنیپ شاٹ',
+        snapshotSubtitle: 'مجوزہ عملی ماڈل کا ایک جاندار اور فوری خلاصہ۔',
+        stats: [
+          { value: 4, label: 'بنیادی اجزا' },
+          { value: 6, label: 'مریضی سفر کے مراحل' },
+          { value: 5, label: 'روڈمیپ کے مراحل' },
+          { value: 4, label: 'WHO اہداف سے ہم آہنگی' }
+        ],
+        signalsLabel: 'فعال ڈیزائن اشارے',
+        signals: [
+          'خدمت سے پہلے منظم انٹیک اور ٹرائیج',
+          'مختلف سطحوں پر مشترکہ کثیر الشعبہ ہم آہنگی',
+          'خدماتی بہتری کے لیے پرائیویسی محفوظ تجزیات'
+        ],
+        note: 'WHO Comprehensive Mental Health Action Plan 2013-2030 اور IMHWF 2026 کی تعلیمی ترجیحات سے ہم آہنگ۔'
+      },
+      sections: {
+        why: {
+          kicker: 'یہ کیوں اہم ہے',
+          title: 'اب اس کی ضرورت کیوں ہے',
+          intro: 'ذہنی صحت کے نظام زیادہ پیچیدگی کا سامنا کر رہے ہیں مگر تسلسلِ نگہداشت کافی مضبوط نہیں۔ یہ تجویز ان عملی خلا کو نشانہ بناتی ہے جو بروقت اور باوقار نگہداشت کو سب سے زیادہ کمزور کرتے ہیں۔',
+          cards: [
+            {
+              title: 'بڑھتی ہوئی طلب اور عملے کی تھکن',
+              copy: 'مدد کے ضرورت مند افراد کی تعداد بڑھ رہی ہے جبکہ ماہر ٹیمیں پہلے ہی دباؤ میں ہیں، جس سے مریضوں اور خاندانوں کی براہِ راست دیکھ بھال کے لیے وقت کم رہ جاتا ہے۔'
+            },
+            {
+              title: 'طویل انتظار کی فہرستیں',
+              copy: 'فرنٹ لائن ٹیموں کو فوری ضرورتوں کی پہلے نشاندہی کرنا ہوگی تاکہ زیادہ خطرے والے حالات لمبی قطاروں میں اوجھل نہ ہو جائیں۔'
+            },
+            {
+              title: 'بار بار دہرائے جانے والے جائزے',
+              copy: 'مریض اور دیکھ بھال کرنے والے اکثر مختلف پیشہ ور افراد کو ایک ہی کہانی بار بار سناتے ہیں کیونکہ معلومات مؤثر انداز میں آگے منتقل نہیں ہوتیں۔'
+            },
+            {
+              title: 'بکھرا ہوا رابطہ',
+              copy: 'کلینیکل، نفسی سماجی اور برادری سے متعلق اقدامات اکثر الگ الگ چینلز میں درج ہوتے ہیں، جس سے مشترکہ تصویر واضح نہیں رہتی۔'
+            },
+            {
+              title: 'ڈسچارج کے بعد کمزور فالو اپ',
+              copy: 'ہسپتال سے برادری تک منتقلی اب بھی نازک مرحلہ ہے، خاص طور پر جب ذمہ داریاں اور رضامندی کی حدود واضح نہ ہوں۔'
+            },
+            {
+              title: 'نفسی سماجی ڈیٹا کا محدود استعمال',
+              copy: 'معمول کی خدمات اکثر رہائش، خاندانی بوجھ، بدنامی اور نگہداشت کی رکاوٹوں سے متعلق کافی معلومات جمع نہیں کر پاتیں، جس سے سیکھنے اور منصوبہ بندی کی صلاحیت متاثر ہوتی ہے۔'
+            }
+          ]
+        },
+        matrix: {
+          kicker: 'مسئلے سے تحفظ تک',
+          title: 'مسئلہ، ڈیجیٹل جواب اور انسانی تحفظ',
+          intro: 'ہر ڈیجیٹل فعالیت کے ساتھ واضح انسانی تحفظ لازم ہے تاکہ کارکردگی میں اضافہ، حفاظت، حقوق یا پیشہ ورانہ جوابدہی کی قیمت پر حاصل نہ ہو۔',
+          labels: {
+            problem: 'مسئلہ',
+            response: 'ڈیجیٹل جواب',
+            safeguard: 'انسانی تحفظ'
+          },
+          items: [
+            {
+              theme: 'رسائی اور ٹرائیج',
+              problem: 'طویل انتظار اور برن آؤٹ فوری ضرورتوں کی ابتدائی شناخت کی صلاحیت کو کم کر دیتے ہیں۔',
+              response: 'خودکار چیک اِن اور ٹرائیج ڈیش بورڈ باقاعدہ جائزے سے پہلے ترجیحی کیسز کو نمایاں کرتے ہیں۔',
+              safeguard: 'ہر زیادہ خطرے والے اشارے کی انسانی جانچ اور حقیقی کلینیکل ٹیم کے ذریعے ایسكیلیشن ضروری ہے۔'
+            },
+            {
+              theme: 'نگہداشت کی ہم آہنگی',
+              problem: 'بکھری ہوئی نگہداشت، منصوبوں اور ہینڈ آف کو مختلف پیشوں اور سیٹنگز میں منتشر کر دیتی ہے۔',
+              response: 'ایک مشترکہ کمیونیکیشن ہب اور کیئر پلان، کردار کے مطابق اپ ڈیٹس کو ایک مربوط ورک فلو میں رکھتا ہے۔',
+              safeguard: 'کردار پر مبنی رسائی اور کم سے کم ضروری معلومات کی شراکت حساس معلومات کے غیر ضروری افشا کو محدود کرتی ہے۔'
+            },
+            {
+              theme: 'تسلسل',
+              problem: 'ڈسچارج کے بعد کمزور فالو اپ سروس سے دوری اور قابلِ تدارک دوبارہ بگاڑ کے خطرے کو بڑھاتا ہے۔',
+              response: 'برادری میں فالو اپ ورک فلو، یاد دہانیاں اور الرٹس بند-چکر تسلسل کو سہارا دیتے ہیں۔',
+              safeguard: 'رضامندی کی حالت اور دیکھ بھال کرنے والوں کی شمولیت منتقلی کے پورے منصوبے میں نمایاں رہتی ہے۔'
+            },
+            {
+              theme: 'شواہد اور سیکھنا',
+              problem: 'خدمات کے لیے یہ مشکل ہوتا ہے کہ وہ پرائیویسی کے خطرے میں اضافہ کیے بغیر معمول کی نگہداشت سے کارآمد شواہد پیدا کریں۔',
+              response: 'تحفظ یافتہ تحقیق اور جائزہ ڈیٹابیس ڈیش بورڈز، معیار میں بہتری اور سروس لرننگ کو سہارا دیتا ہے۔',
+              safeguard: 'وسیع تر استعمال سے پہلے ڈی-آئیڈینٹیفیکیشن، گورننس اور اخلاقی منظوری لازم ہے۔'
+            }
+          ]
+        },
+        core: {
+          kicker: 'بنیادی اجزا',
+          title: 'چار بنیادی اجزا',
+          intro: 'یہ ویب ایپ تجویز کو چار قابلِ استعمال حصوں میں بدلتی ہے جو وسائل کی کمی والے ماحول میں بھی کام کر سکتے ہیں اور وقت کے ساتھ وسعت پا سکتے ہیں۔',
+          items: [
+            {
+              badge: '01',
+              title: 'پری-سیشن خودکار چیک اِن',
+              copy: 'منظم انٹیک خدمت سے پہلے یا خدمت کے وقت بنیادی خدشات، علامات، رکاوٹوں اور معاون پس منظر کو جمع کرتا ہے۔'
+            },
+            {
+              badge: '02',
+              title: 'AI معاون حفاظت اور نفسی سماجی خطرہ اسکریننگ',
+              copy: 'تصدیق شدہ فیصلہ معاونت انسانی نگرانی میں خودکشی کے خطرے، دوبارہ بگاڑ، دیکھ بھال کرنے والے کے دباؤ، تشدد یا رہائشی عدم استحکام سے جڑے نمونوں کو سامنے لا سکتی ہے۔'
+            },
+            {
+              badge: '03',
+              title: 'مشترکہ کثیر الشعبہ اور برادری ہب',
+              copy: 'ماہرِ نفسیات، نرسیں، ماہرینِ نفسیات، سماجی کارکنان اور برادری ٹیمیں ایک مشترکہ کیئر پاتھ وے کے گرد ہم آہنگ ہو سکتی ہیں۔'
+            },
+            {
+              badge: '04',
+              title: 'پرائیویسی محفوظ تحقیق اور جائزہ ڈیٹابیس',
+              copy: 'ڈی-آئیڈینٹیفائیڈ یا پسوڈونیمائزڈ ڈیٹا ڈیش بورڈز، معیار میں بہتری، افرادی قوت کی منصوبہ بندی اور مستقبل کی کثیر مقامی سیکھ کے لیے استعمال ہو سکتا ہے۔'
+            }
+          ]
+        },
+        scale: {
+          kicker: 'توسیعی راستہ',
+          title: 'مقامی پروٹوٹائپ سے عالمی ماڈل تک',
+          intro: 'یہ تجویز اس لیے قابلِ اعتبار ہے کہ یہ ایک فعال عملی پروٹوٹائپ سے شروع ہوتی ہے اور توسیع کے راستے کو واضح طور پر بیان کرتی ہے۔',
+          localLabel: 'مقامی پروٹوٹائپ',
+          localTitle: 'کم لاگت والا عملی پروٹوٹائپ',
+          localCopy: 'Google Forms، Sheets، Drive اور Apps Script ایک عملی ماحول فراہم کرتے ہیں جہاں وسائل کی کمی والے حالات میں ورک فلو، عملے کی قبولیت اور ضروری ڈیٹا اجزا کو آزمایا جا سکتا ہے۔',
+          localPoints: [
+            'قابلِ استطاعت ٹولز کے ساتھ تیز رفتار تکرار',
+            'پائلٹ خدمات اور نفاذی سیکھ کے لیے موزوں',
+            'بھاری انفراسٹرکچر سے پہلے ڈیٹا فلو، ٹرائیج منطق اور ٹیم ہم آہنگی کی جانچ'
+          ],
+          bridge: 'ذمہ داری کے ساتھ توسیع',
+          globalLabel: 'عالمی سطح پر قابلِ توسیع ماڈل',
+          globalTitle: 'تحفظ یافتہ اور انٹرآپریبل تسلسل پلیٹ فارم',
+          globalCopy: 'اگلا مرحلہ تکنیکی اور گورننس بنیاد کو مضبوط بناتا ہے تاکہ یہی کیئر منطق مختلف سائٹس اور ممالک میں محفوظ انداز میں پھیل سکے۔',
+          globalPoints: [
+            'معیاری ڈیٹا اجزا اور گورننس',
+            'پرائیویسی بائے ڈیزائن اور کردار پر مبنی رسائی',
+            'انٹرآپریبلٹی، آڈٹ ٹریل، رضامندی اور نگرانی'
+          ]
+        },
+        journey: {
+          kicker: 'مریضی سفر',
+          title: 'مریضی سفر اور ڈیٹا کا بہاؤ',
+          intro: 'چھ مراحل پر مشتمل یہ راستہ انسانی سفر کو مرکز میں رکھتا ہے اور دکھاتا ہے کہ منظم ڈیٹا کس طرح زیادہ محفوظ ہم آہنگی اور خدماتی سیکھ کو مضبوط کر سکتا ہے۔',
+          steps: [
+            {
+              meta: 'مرحلہ 1',
+              title: 'پہلا رابطہ / ریفرل',
+              summary: 'داخلے کے مقام پر واضح کریں کہ کون مدد چاہتا ہے، کیوں چاہتا ہے اور صورتحال کتنی فوری ہے۔',
+              detail: 'منظم انٹیک مریض، دیکھ بھال کرنے والے، عملے یا برادری کے ریفرر کے ذریعے مکمل کیا جا سکتا ہے، جس سے بنیادی خدشات، نفسی سماجی رکاوٹیں اور فوری خبردار کرنے والے اشارے جلد سامنے آتے ہیں۔'
+            },
+            {
+              meta: 'مرحلہ 2',
+              title: 'جائزہ اور کیئر پلاننگ',
+              summary: 'کلینیکل، نفسیاتی اور سماجی معلومات کو ایک مشترکہ منظر میں جمع کرنا۔',
+              detail: 'کثیر الشعبہ جائزہ دہرائے جانے والے سوالات کم کرتا ہے اور ایسا کیئر پلان ممکن بناتا ہے جو علامات، خاندانی تناظر، حفاظتی خدشات اور عملی رکاوٹوں کو ایک ساتھ رکھے۔'
+            },
+            {
+              meta: 'مرحلہ 3',
+              title: 'علاج اور سماجی مداخلت',
+              summary: 'ادویات، تھراپی، نفسی سماجی معاونت اور بحالی کو ایک ہی ورک فلو میں ہم آہنگ کرنا۔',
+              detail: 'مشترکہ ٹاسک ٹریکنگ ٹیموں کو علاجی اقدامات، سماجی کام کی مداخلتوں، بحالی کے اہداف اور برادری کی معاونت کو مربوط رکھنے میں مدد دیتی ہے۔'
+            },
+            {
+              meta: 'مرحلہ 4',
+              title: 'ڈسچارج پلاننگ',
+              summary: 'مریض کے سروس سیٹنگ چھوڑنے سے پہلے محفوظ منتقلی کی تیاری کرنا۔',
+              detail: 'ڈسچارج کی تیاری، دیکھ بھال کرنے والے کی صلاحیت، ریفرل ضروریات اور بحرانی رہنمائی کو ایک ساتھ دیکھا جا سکتا ہے تاکہ اگلا قدم واضح ہو۔'
+            },
+            {
+              meta: 'مرحلہ 5',
+              title: 'برادری میں فالو اپ',
+              summary: 'بنیادی نگہداشت، برادری ٹیموں، NGO اور سماجی خدمات کے ساتھ تسلسل کو ٹریک کرنا۔',
+              detail: 'بند-چکر ریفرل اور فالو اپ ورک فلو یہ تصدیق کرنے میں مدد دیتے ہیں کہ رابطہ مکمل ہوا، رکاوٹیں دور ہوئیں اور مدد واقعی مریض اور خاندان تک پہنچی۔'
+            },
+            {
+              meta: 'مرحلہ 6',
+              title: 'جائزہ اور سیکھنا',
+              summary: 'ڈی-آئیڈینٹیفائیڈ سروس ڈیٹا کو معیار میں بہتری، منصوبہ بندی اور پالیسی سیکھ کے لیے استعمال کرنا۔',
+              detail: 'گورننس سے منظور شدہ ڈیش بورڈز اور تجزیات رکاوٹوں، فالو اپ کی کارکردگی، نفسی سماجی نمونوں اور سروس ازسرِ ترتیب کے مواقع کو نمایاں کر سکتے ہیں، بغیر غیر ضروری ذاتی تفصیل ظاہر کیے۔'
+            }
+          ]
+        },
+        ethics: {
+          kicker: 'اخلاقیات اور حفاظت',
+          title: 'اخلاقیات، پرائیویسی اور حفاظت',
+          intro: 'یہ تجویز حفاظت، حقوق اور عوامی اعتماد کو بعد میں جوڑی جانے والی تعمیل نہیں بلکہ بنیادی پراڈکٹ تقاضا سمجھتی ہے۔',
+          items: [
+            {
+              title: 'باخبر رضامندی',
+              copy: 'مریضوں اور خاندانوں کو واضح ہونا چاہیے کہ کیا جمع کیا جا رہا ہے، کیوں اہم ہے اور اسے کیسے استعمال کیا جائے گا۔'
+            },
+            {
+              title: 'کردار پر مبنی رسائی',
+              copy: 'مختلف پیشہ ور افراد کو صرف وہی معلومات دکھائی دینی چاہییں جو ان کے کام اور ذمہ داری کے درجے کے لیے ضروری ہوں۔'
+            },
+            {
+              title: 'انسانی نگرانی',
+              copy: 'AI حتمی نگہداشت کا فیصلہ نہیں کرتا۔ ہر زیادہ خطرے والی صورتحال کے لیے تربیت یافتہ پیشہ ور کا جائزہ ضروری ہے۔'
+            },
+            {
+              title: 'ڈی-آئیڈینٹیفیکیشن اور کم سے کم ضروری ڈیٹا',
+              copy: 'براہِ راست نگہداشت کے دائرے سے باہر صرف وہی معلومات جانی چاہییں جو تسلسل، جائزہ یا تحقیق کے لیے کم سے کم ضروری ہوں۔'
+            },
+            {
+              title: 'آڈٹ ٹریل',
+              copy: 'رسائی، ترمیم اور منتقلی کا سراغ لگایا جا سکے تاکہ گورننس اور جوابدہی مضبوط ہو۔'
+            },
+            {
+              title: 'تعصب اور مساوات کا جائزہ',
+              copy: 'مستقبل کی کسی بھی AI معاون اسکریننگ کو تعصب، ذیلی گروہی کارکردگی اور غیر ارادی نقصان کے لیے جانچا جانا چاہیے۔'
+            },
+            {
+              title: 'بحرانی ایسكیلیشن پروٹوکول',
+              copy: 'ڈیجیٹل الرٹس حقیقی، جوابدہ کلینیکل اور برادری ٹیموں سے جڑے ایسكیلیشن راستوں کے ساتھ ہونے چاہییں۔'
+            },
+            {
+              title: 'مقامی قانونی مطابقت',
+              copy: 'نفاذ کو مقامی پرائیویسی اور صحتیاتی ڈیٹا قوانین، بشمول PDPA یا اسی نوعیت کے ضوابط، کے مطابق ہونا چاہیے۔'
+            }
+          ],
+          banner: 'AI انسانی نگرانی کے تحت فیصلہ معاونت کا ذریعہ ہے - پیشہ ور افراد کا متبادل نہیں۔'
+        },
+        impact: {
+          kicker: 'متوقع نتائج',
+          title: 'متوقع نتائج اور اثرات',
+          intro: 'یہ اثراتی فریم ورک صارفین کے محسوس شدہ نتائج کو قابلِ پیمائش اشاروں اور حقیقت پسندانہ معمول کے ڈیٹا ذرائع سے جوڑتا ہے۔',
+          indicatorLabel: 'اشاریہ',
+          sourceLabel: 'ڈیٹا ماخذ',
+          cards: [
+            {
+              trend: 'تسلسل',
+              title: 'مریض / خاندان',
+              outcome: 'کم دہرائے جانے والے جائزے، فوری ضرورتوں کی تیز شناخت اور ڈسچارج کے بعد زیادہ مضبوط تسلسل۔',
+              indicator: 'فالو اپ کی تکمیل، فوری جائزے کا وقت، مریض کی نظر میں ہم آہنگی کا تجربہ۔',
+              source: 'چیک اِن ریکارڈز، تسلسل ٹریکر، مریض اور دیکھ بھال کرنے والوں کی آراء۔'
+            },
+            {
+              trend: 'ورک فلو',
+              title: 'پیشہ ور افراد',
+              outcome: 'کم دہرائی جانے والی دستاویز کاری اور کثیر الشعبہ ٹیموں میں زیادہ واضح ترجیح بندی۔',
+              indicator: 'انتظامی بوجھ کا سروے، انٹیک سے جائزے تک وقت، مشترکہ پلان کی تکمیل۔',
+              source: 'ورک فلو ٹائم اسٹیمپس، عملے کے مختصر سروے، MDT دستاویزات۔'
+            },
+            {
+              trend: 'کارکردگی',
+              title: 'سروس نظام',
+              outcome: 'بہتر فالو اپ، مضبوط ریفرل تکمیل اور نفسی سماجی خطرے کے نمونوں کی زیادہ واضح شناخت۔',
+              indicator: 'ریفرل تکمیل کی شرح، فالو اپ سے محرومی کی شرح، ڈیش بورڈ جائزے کی تعدد۔',
+              source: 'ہم آہنگی ہب، فالو اپ لاگز، سروس ڈیش بورڈز۔'
+            },
+            {
+              trend: 'شواہد',
+              title: 'پالیسی / تحقیق',
+              outcome: 'منصوبہ بندی، جائزے اور مستقبل کی کثیر مقامی سیکھ کے لیے زیادہ قابلِ اعتماد ذہنی صحت خدماتی ڈیٹا۔',
+              indicator: 'معمول کے اشاریوں کا استعمال، مختلف سائٹس میں قابلِ موازنہ ڈیٹا فیلڈز، گورننس سے منظور شدہ تحقیقی نتائج۔',
+              source: 'ڈی-آئیڈینٹیفائیڈ تجزیاتی تہہ، معیاری ڈیٹا ڈکشنری، منظور شدہ اخراجات۔'
+            }
+          ]
+        },
+        roadmap: {
+          kicker: 'عملی روڈمیپ',
+          title: 'پانچ مرحلہ جاتی عملی روڈمیپ',
+          intro: 'یہ روڈمیپ ڈیجیٹل تبدیلی کو ایک مرحلہ وار نفاذی عمل کے طور پر پیش کرتا ہے، نہ کہ ایک مرتبہ کے تکنیکی آغاز کے طور پر۔',
+          steps: [
+            {
+              meta: 'مرحلہ 1',
+              title: 'کم لاگت پروٹوٹائپ',
+              summary: 'قابلِ رسائی ٹولز اور حقیقی خدماتی عمل کے ساتھ بنیادی ورک فلو کا پائلٹ۔',
+              detail: 'Google Apps Script، Forms، Sheets اور Drive کے ذریعے عملی ورک فلو مطابقت، صارف کی قبولیت، ٹرائیج منطق اور ضروری عملی اشاریوں کی جانچ کریں۔'
+            },
+            {
+              meta: 'مرحلہ 2',
+              title: 'معیاری ڈیٹا ڈکشنری',
+              summary: 'علامات، نفسی سماجی خطرات اور تسلسل کے لیے قابلِ موازنہ ڈیٹا اجزا وضع کریں۔',
+              detail: 'ایک مشترکہ ڈیٹا ماڈل تیار کریں جس میں بنیادی خدشات، خطرے کے اشارے، فالو اپ حیثیت، ریفرل نتائج اور ذہنی صحت سے متعلق سماجی عوامل شامل ہوں۔'
+            },
+            {
+              meta: 'مرحلہ 3',
+              title: 'RBAC اور رضامندی کے ساتھ محفوظ MDT ہب',
+              summary: 'مشترکہ ہم آہنگی کے لیے زیادہ مضبوط گورننس اور رسائی کی حدیں شامل کریں۔',
+              detail: 'کردار مخصوص مناظر الگ کریں، رضامندی کا انتظام شامل کریں، آڈٹ ٹریل مضبوط بنائیں اور سروس و برادری شراکت داروں کے درمیان کم سے کم ضروری معلومات کی شراکت کو باقاعدہ بنائیں۔'
+            },
+            {
+              meta: 'مرحلہ 4',
+              title: 'تعصب کی نگرانی کے ساتھ AI معاون اسکریننگ',
+              summary: 'مقامی توثیق، اخلاقی جائزے اور حفاظتی جانچ کے بعد ہی فیصلہ معاونت شامل کریں۔',
+              detail: 'ذمہ دار AI کو تدریجی انداز میں متعارف کرایا جانا چاہیے، ساتھ ہی ذیلی گروہی نگرانی، کلینیکل ایسكیلیشن راستے اور واضح انسانی جوابدہی بھی موجود ہو۔'
+            },
+            {
+              meta: 'مرحلہ 5',
+              title: 'پرائیویسی محفوظ تحقیقاتی ڈیٹابیس',
+              summary: 'کثیر مقامی سیکھ، جائزے اور مستقبل کی federated طریقہ کار کی طرف توسیع۔',
+              detail: 'ڈی-آئیڈینٹیفائیڈ یا federated ڈیٹا طریقے حساس ریکارڈز کی غیر ضروری مرکزیت کے بغیر خدماتی موازنہ، افرادی قوت کی منصوبہ بندی اور عملی شواہد کو سہارا دے سکتے ہیں۔'
+            }
+          ]
+        },
+        alignment: {
+          kicker: 'ہم آہنگی',
+          title: 'عالمی فریم ورک اور کورس مقاصد سے ہم آہنگی',
+          intro: 'یہ تجویز بین الاقوامی ذہنی صحت ترجیحات سے واضح طور پر ہم آہنگ ہے، جبکہ نفاذ کی زمینی حقیقتوں سے جڑی رہتی ہے۔',
+          groups: [
+            {
+              title: 'WHO Comprehensive Mental Health Action Plan 2013-2030',
+              tags: [
+                'قیادت اور گورننس',
+                'مربوط برادری پر مبنی نگہداشت',
+                'فروغ اور تحفظ',
+                'ذہنی صحت معلوماتی نظام',
+                'شواہد اور تحقیق'
+              ]
+            },
+            {
+              title: 'IMHWF 2026 کورس مقاصد',
+              tags: [
+                'ڈیجیٹل ذہنی صحت',
+                'افرادی قوت کی مضبوطی',
+                'بین الشعبہ تعاون',
+                'برادری فالو اپ',
+                'نفاذی قابلِ عملیت',
+                'سیکھنے والے صحتی نظام'
+              ]
+            }
+          ]
+        },
+        closing: {
+          kicker: 'نتیجہ',
+          title: 'ذہنی صحت کی نگہداشت کا مستقبل صرف بہتر علاج نہیں بلکہ بہتر ربط بھی چاہتا ہے۔',
+          copy: 'MindBridge Global ڈیجیٹل تبدیلی کو ایک زیادہ محفوظ، زیادہ ذہین اور زیادہ ہمدرد نظام کے طور پر پیش کرتا ہے، جہاں ٹیکنالوجی پیشہ ور افراد، مریضوں، خاندانوں اور برادریوں کو پورے نگہداشتی سفر میں جوڑے رکھتی ہے۔',
+          cta: 'رابطہ / مزید جانیں'
+        },
+        footer: {
+          kicker: 'حوالہ جات',
+          refs: [
+            {
+              label: 'World Health Organization. Comprehensive Mental Health Action Plan 2013-2030.',
+              url: 'https://www.who.int/publications/i/item/9789240031029'
+            },
+            {
+              label: 'World Health Organization. World Mental Health Report: Transforming mental health for all.',
+              url: 'https://www.who.int/teams/mental-health-and-substance-use/world-mental-health-report'
+            },
+            {
+              label: 'United Nations Sustainable Development Goals: Goals 3 and 17.',
+              url: 'https://sdgs.un.org/goals'
+            },
+            {
+              label: 'IMHWF 2026 Mental Health Workforce Forum کے حوالے سے پس منظر',
+              url: ''
+            }
+          ],
+          org: 'محکمہ ذہنی صحت · سوشل ورک ڈیجیٹل انوویشن · تھائی لینڈ'
+        }
+      }
+    }
+  };
+
+  const state = {
+    language: 'en',
+    activeJourneyStep: 0,
+    activeRoadmapStep: 0,
+    countersPlayed: false
+  };
+
+  let revealObserver = null;
+  let counterObserver = null;
+
+  document.addEventListener('DOMContentLoaded', initializePage);
+  window.addEventListener('resize', debounce(refreshStepperProgress, 100));
+
+  function initializePage() {
+    bindEvents();
+    renderPage();
+  }
+
+  function bindEvents() {
+    document.addEventListener('click', function(event) {
+      const langButton = event.target.closest('[data-lang]');
+      if (langButton) {
+        const nextLanguage = langButton.getAttribute('data-lang');
+        if (nextLanguage && APP_COPY[nextLanguage] && nextLanguage !== state.language) {
+          state.language = nextLanguage;
+          renderPage();
+        }
+        return;
+      }
+
+      const journeyButton = event.target.closest('[data-journey-index]');
+      if (journeyButton) {
+        state.activeJourneyStep = Number(journeyButton.getAttribute('data-journey-index'));
+        renderJourneySection();
+        refreshMotionObservers();
+        return;
+      }
+
+      const roadmapButton = event.target.closest('[data-roadmap-index]');
+      if (roadmapButton) {
+        state.activeRoadmapStep = Number(roadmapButton.getAttribute('data-roadmap-index'));
+        renderRoadmapSection();
+        refreshMotionObservers();
+      }
+    });
+  }
+
+  function renderPage() {
+    const copy = APP_COPY[state.language];
+    const activeLanguage = getLanguageOption(state.language);
+    document.documentElement.lang = activeLanguage.lang;
+    document.documentElement.dir = activeLanguage.dir;
+    document.title = copy.pageTitle;
+
+    renderLanguageToggle();
+    renderHeader(copy);
+    renderHero(copy);
+    renderPresentationSection();
+    renderWhySection(copy);
+    renderMatrixSection(copy);
+    renderCoreSection(copy);
+    renderScaleSection(copy);
+    renderJourneySection();
+    renderEthicsSection(copy);
+    renderImpactSection(copy);
+    renderRoadmapSection();
+    renderAlignmentSection(copy);
+    renderClosingSection(copy);
+    renderFooter(copy);
+    updateLanguageButtons();
+    refreshMotionObservers();
+  }
+
+  function renderHeader(copy) {
+    const presentationCopy = PRESENTATION_COPY[state.language] || PRESENTATION_COPY.en;
+    setText('header-badge', copy.header.badge);
+    setText('brand-title', copy.header.title);
+    setText('brand-context', presentationCopy.headerContext);
+    setHtml('header-badges', copy.header.badges.map(function(item, index) {
+      return createPill(item, index, 'pill-dot');
+    }).join(''));
+  }
+
+  function renderPresentationSection() {
+    const copy = PRESENTATION_COPY[state.language] || PRESENTATION_COPY.en;
+    setText('presentation-kicker', copy.kicker);
+    setText('presentation-title', copy.title);
+    setText('presentation-intro', copy.intro);
+    setText('presentation-topic-label', copy.topicLabel);
+    setText('presentation-topic-title', copy.topic);
+    setText('team-label', copy.teamLabel);
+    setHtml('team-list', PRESENTATION_CONTENT.members.map(function(member) {
+      return [
+        '<article class="team-member reveal">',
+        '  <div class="team-member-name">' + member.name + '</div>',
+        '  <div class="team-member-role">' + member.detail + '</div>',
+        member.meta ? '  <div class="team-member-meta">' + member.meta + '</div>' : '',
+        '</article>'
+      ].join('');
+    }).join(''));
+  }
+
+  function renderLanguageToggle() {
+    setHtml('language-toggle', LANGUAGE_OPTIONS.map(function(language) {
+      return [
+        '<button type="button" class="lang-button" data-lang="' + language.code + '" aria-pressed="false">',
+        language.label,
+        '</button>'
+      ].join('');
+    }).join(''));
+  }
+
+  function renderHero(copy) {
+    setText('hero-badge', copy.hero.badge);
+    setHtml('hero-title', copy.hero.title);
+    setText('hero-subhead', copy.hero.subhead);
+    setText('hero-pill', copy.hero.pill);
+    setText('vision-label', copy.hero.visionLabel);
+    setText('vision-text', copy.hero.visionText);
+    setText('hero-cta', copy.hero.cta);
+    setText('closing-cta', copy.sections.closing.cta);
+    setText('snapshot-label', copy.hero.snapshotLabel);
+    setText('snapshot-live-chip', copy.hero.liveLabel);
+    setText('snapshot-title', copy.hero.snapshotTitle);
+    setText('snapshot-subtitle', copy.hero.snapshotSubtitle);
+    setText('snapshot-signals-label', copy.hero.signalsLabel);
+    setText('snapshot-note', copy.hero.note);
+
+    setHtml('snapshot-grid', copy.hero.stats.map(function(stat, index) {
+      return [
+        '<article class="snapshot-stat reveal" style="--stagger:' + (index + 1) + ';">',
+        '  <span class="stat-value" data-count-target="' + stat.value + '">' + (state.countersPlayed ? stat.value : 0) + '</span>',
+        '  <span class="stat-label">' + stat.label + '</span>',
+        '</article>'
+      ].join('');
+    }).join(''));
+
+    setHtml('snapshot-signals', copy.hero.signals.map(function(item, index) {
+      return [
+        '<div class="signal-item reveal" style="--stagger:' + (index + 1) + ';">',
+        '  <span class="signal-dot"></span>',
+        '  <span>' + item + '</span>',
+        '</div>'
+      ].join('');
+    }).join(''));
+  }
+
+  function renderWhySection(copy) {
+    const section = copy.sections.why;
+    setText('why-kicker', section.kicker);
+    setText('why-title', section.title);
+    setText('why-intro', section.intro);
+    setHtml('why-grid', section.cards.map(function(card, index) {
+      return [
+        '<article class="problem-card reveal" style="--stagger:' + (index + 1) + ';">',
+        '  <div class="section-label">' + padNumber(index + 1) + '</div>',
+        '  <h3>' + card.title + '</h3>',
+        '  <p>' + card.copy + '</p>',
+        '</article>'
+      ].join('');
+    }).join(''));
+  }
+
+  function renderMatrixSection(copy) {
+    const section = copy.sections.matrix;
+    setText('matrix-kicker', section.kicker);
+    setText('matrix-title', section.title);
+    setText('matrix-intro', section.intro);
+    setHtml('matrix-grid', section.items.map(function(item, index) {
+      return [
+        '<article class="comparison-card reveal" style="--stagger:' + (index + 1) + ';">',
+        '  <div class="comparison-theme">' + item.theme + '</div>',
+        '  <div class="comparison-columns">',
+        '    <div class="comparison-cell"><strong>' + section.labels.problem + '</strong><div class="comparison-copy">' + item.problem + '</div></div>',
+        '    <div class="comparison-cell"><strong>' + section.labels.response + '</strong><div class="comparison-copy">' + item.response + '</div></div>',
+        '    <div class="comparison-cell"><strong>' + section.labels.safeguard + '</strong><div class="comparison-copy">' + item.safeguard + '</div></div>',
+        '  </div>',
+        '</article>'
+      ].join('');
+    }).join(''));
+  }
+
+  function renderCoreSection(copy) {
+    const section = copy.sections.core;
+    setText('core-kicker', section.kicker);
+    setText('core-title', section.title);
+    setText('core-intro', section.intro);
+    setHtml('core-grid', section.items.map(function(item, index) {
+      return [
+        '<article class="component-card reveal" style="--stagger:' + (index + 1) + ';">',
+        '  <div class="component-chip">' + item.badge + '</div>',
+        '  <h3>' + item.title + '</h3>',
+        '  <p>' + item.copy + '</p>',
+        '</article>'
+      ].join('');
+    }).join(''));
+  }
+
+  function renderScaleSection(copy) {
+    const section = copy.sections.scale;
+    setText('scale-kicker', section.kicker);
+    setText('scale-title', section.title);
+    setText('scale-intro', section.intro);
+    setText('local-label', section.localLabel);
+    setText('local-title', section.localTitle);
+    setText('local-copy', section.localCopy);
+    setText('bridge-label', section.bridge);
+    setText('global-label', section.globalLabel);
+    setText('global-title', section.globalTitle);
+    setText('global-copy', section.globalCopy);
+    setHtml('local-points', section.localPoints.map(function(item, index) {
+      return '<div class="point-item reveal" style="--stagger:' + (index + 1) + ';">' + item + '</div>';
+    }).join(''));
+    setHtml('global-points', section.globalPoints.map(function(item, index) {
+      return '<div class="point-item reveal" style="--stagger:' + (index + 1) + ';">' + item + '</div>';
+    }).join(''));
+  }
+
+  function renderJourneySection() {
+    const copy = APP_COPY[state.language].sections.journey;
+    setText('journey-kicker', copy.kicker);
+    setText('journey-title', copy.title);
+    setText('journey-intro', copy.intro);
+
+    if (state.activeJourneyStep > copy.steps.length - 1) {
+      state.activeJourneyStep = 0;
+    }
+
+    setHtml('journey-steps', copy.steps.map(function(step, index) {
+      const activeClass = index === state.activeJourneyStep ? ' is-active' : '';
+      return [
+        '<button type="button" class="step-button' + activeClass + '" data-journey-index="' + index + '">',
+        '  <span class="step-dot"></span>',
+        '  <span class="step-copy">',
+        '    <span class="step-index">' + step.meta + '</span>',
+        '    <span class="step-title">' + step.title + '</span>',
+        '    <span class="step-summary">' + step.summary + '</span>',
+        '  </span>',
+        '</button>'
+      ].join('');
+    }).join(''));
+
+    const activeStep = copy.steps[state.activeJourneyStep];
+    setHtml('journey-detail', [
+      '<div class="detail-meta">' + activeStep.meta + '</div>',
+      '<h3>' + activeStep.title + '</h3>',
+      '<p>' + activeStep.detail + '</p>'
+    ].join(''));
+
+    updateStepperProgress('journey-progress', 'journey-steps', state.activeJourneyStep);
+  }
+
+  function renderEthicsSection(copy) {
+    const section = copy.sections.ethics;
+    setText('ethics-kicker', section.kicker);
+    setText('ethics-title', section.title);
+    setText('ethics-intro', section.intro);
+    setText('ethics-banner', section.banner);
+    setHtml('ethics-grid', section.items.map(function(item, index) {
+      return [
+        '<article class="ethics-item reveal" style="--stagger:' + (index + 1) + ';">',
+        '  <h3>' + item.title + '</h3>',
+        '  <p>' + item.copy + '</p>',
+        '</article>'
+      ].join('');
+    }).join(''));
+  }
+
+  function renderImpactSection(copy) {
+    const section = copy.sections.impact;
+    setText('impact-kicker', section.kicker);
+    setText('impact-title', section.title);
+    setText('impact-intro', section.intro);
+    setHtml('impact-grid', section.cards.map(function(card, index) {
+      return [
+        '<article class="impact-card reveal" style="--stagger:' + (index + 1) + ';">',
+        '  <div class="trend-pill">' + card.trend + '</div>',
+        '  <h3>' + card.title + '</h3>',
+        '  <p>' + card.outcome + '</p>',
+        '  <div class="impact-meta">',
+        '    <div><strong>' + section.indicatorLabel + '</strong><p>' + card.indicator + '</p></div>',
+        '    <div><strong>' + section.sourceLabel + '</strong><p>' + card.source + '</p></div>',
+        '  </div>',
+        '</article>'
+      ].join('');
+    }).join(''));
+  }
+
+  function renderRoadmapSection() {
+    const copy = APP_COPY[state.language].sections.roadmap;
+    setText('roadmap-kicker', copy.kicker);
+    setText('roadmap-title', copy.title);
+    setText('roadmap-intro', copy.intro);
+
+    if (state.activeRoadmapStep > copy.steps.length - 1) {
+      state.activeRoadmapStep = 0;
+    }
+
+    setHtml('roadmap-steps', copy.steps.map(function(step, index) {
+      const activeClass = index === state.activeRoadmapStep ? ' is-active' : '';
+      return [
+        '<button type="button" class="step-button' + activeClass + '" data-roadmap-index="' + index + '">',
+        '  <span class="step-dot"></span>',
+        '  <span class="step-copy">',
+        '    <span class="step-index">' + step.meta + '</span>',
+        '    <span class="step-title">' + step.title + '</span>',
+        '    <span class="step-summary">' + step.summary + '</span>',
+        '  </span>',
+        '</button>'
+      ].join('');
+    }).join(''));
+
+    const activeStep = copy.steps[state.activeRoadmapStep];
+    setHtml('roadmap-detail', [
+      '<div class="detail-meta">' + activeStep.meta + '</div>',
+      '<h3>' + activeStep.title + '</h3>',
+      '<p>' + activeStep.detail + '</p>'
+    ].join(''));
+
+    updateStepperProgress('roadmap-progress', 'roadmap-steps', state.activeRoadmapStep);
+  }
+
+  function renderAlignmentSection(copy) {
+    const section = copy.sections.alignment;
+    setText('alignment-kicker', section.kicker);
+    setText('alignment-title', section.title);
+    setText('alignment-intro', section.intro);
+    setHtml('alignment-groups', section.groups.map(function(group, index) {
+      return [
+        '<article class="alignment-group reveal" style="--stagger:' + (index + 1) + ';">',
+        '  <h3>' + group.title + '</h3>',
+        '  <div class="tag-list">',
+        group.tags.map(function(tag) {
+          return '<span class="tag">' + tag + '</span>';
+        }).join(''),
+        '  </div>',
+        '</article>'
+      ].join('');
+    }).join(''));
+  }
+
+  function renderClosingSection(copy) {
+    const section = copy.sections.closing;
+    setText('closing-kicker', section.kicker);
+    setText('closing-title', section.title);
+    setText('closing-copy', section.copy);
+    setText('closing-cta', section.cta);
+  }
+
+  function renderFooter(copy) {
+    const section = copy.sections.footer;
+    setText('references-kicker', section.kicker);
+    setText('org-line', section.org);
+    setHtml('references-list', section.refs.map(function(ref) {
+      if (ref.url) {
+        return '<div class="reference-item"><a href="' + ref.url + '" target="_blank" rel="noopener noreferrer">' + ref.label + '</a></div>';
+      }
+      return '<div class="reference-item">' + ref.label + '</div>';
+    }).join(''));
+  }
+
+  function refreshMotionObservers() {
+    updateLanguageButtons();
+    refreshStepperProgress();
+    refreshRevealObserver();
+    refreshCounterObserver();
+  }
+
+  function refreshRevealObserver() {
+    if (revealObserver) {
+      revealObserver.disconnect();
+    }
+
+    revealObserver = new IntersectionObserver(function(entries) {
+      entries.forEach(function(entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible');
+          revealObserver.unobserve(entry.target);
+        }
+      });
+    }, {
+      threshold: 0.14,
+      rootMargin: '0px 0px -40px 0px'
+    });
+
+    document.querySelectorAll('.reveal').forEach(function(element) {
+      revealObserver.observe(element);
+    });
+  }
+
+  function refreshCounterObserver() {
+    if (counterObserver) {
+      counterObserver.disconnect();
+    }
+
+    if (state.countersPlayed) {
+      return;
+    }
+
+    const grid = document.getElementById('snapshot-grid');
+    if (!grid) {
+      return;
+    }
+
+    counterObserver = new IntersectionObserver(function(entries) {
+      entries.forEach(function(entry) {
+        if (entry.isIntersecting) {
+          playCounters();
+          state.countersPlayed = true;
+          counterObserver.disconnect();
+        }
+      });
+    }, {
+      threshold: 0.4
+    });
+
+    counterObserver.observe(grid);
+  }
+
+  function playCounters() {
+    const counters = document.querySelectorAll('[data-count-target]');
+    counters.forEach(function(counter) {
+      animateCounter(counter, Number(counter.getAttribute('data-count-target')));
+    });
+  }
+
+  function animateCounter(element, target) {
+    const duration = 1400;
+    const start = performance.now();
+
+    function tick(now) {
+      const progress = Math.min((now - start) / duration, 1);
+      const eased = 1 - Math.pow(1 - progress, 3);
+      element.textContent = Math.round(target * eased);
+      if (progress < 1) {
+        window.requestAnimationFrame(tick);
+      } else {
+        element.textContent = target;
+      }
+    }
+
+    window.requestAnimationFrame(tick);
+  }
+
+  function refreshStepperProgress() {
+    updateStepperProgress('journey-progress', 'journey-steps', state.activeJourneyStep);
+    updateStepperProgress('roadmap-progress', 'roadmap-steps', state.activeRoadmapStep);
+  }
+
+  function updateStepperProgress(progressId, stepsId, activeIndex) {
+    const progress = document.getElementById(progressId);
+    const steps = document.getElementById(stepsId);
+
+    if (!progress || !steps || steps.children.length < 2) {
+      return;
+    }
+
+    const percentage = (activeIndex / (steps.children.length - 1)) * 100;
+    if (document.documentElement.dir === 'rtl') {
+      progress.style.left = 'auto';
+      progress.style.right = '10px';
+    } else {
+      progress.style.left = '10px';
+      progress.style.right = 'auto';
+    }
+    progress.style.width = percentage + '%';
+  }
+
+  function updateLanguageButtons() {
+    document.querySelectorAll('.lang-button').forEach(function(button) {
+      const isActive = button.getAttribute('data-lang') === state.language;
+      button.classList.toggle('is-active', isActive);
+      button.setAttribute('aria-pressed', String(isActive));
+    });
+  }
+
+  function getLanguageOption(code) {
+    return LANGUAGE_OPTIONS.find(function(language) {
+      return language.code === code;
+    }) || LANGUAGE_OPTIONS[1];
+  }
+
+  function createPill(label, index, dotClass) {
+    return [
+      '<span class="pill-badge reveal" style="--stagger:' + (index + 1) + ';">',
+      '  <span class="' + dotClass + '"></span>',
+      '  <span>' + label + '</span>',
+      '</span>'
+    ].join('');
+  }
+
+  function setText(id, value) {
+    const element = document.getElementById(id);
+    if (element) {
+      element.textContent = value;
+    }
+  }
+
+  function setHtml(id, value) {
+    const element = document.getElementById(id);
+    if (element) {
+      element.innerHTML = value;
+    }
+  }
+
+  function padNumber(value) {
+    return value < 10 ? '0' + value : String(value);
+  }
+
+  function debounce(fn, delay) {
+    let timeoutId = null;
+    return function() {
+      const args = arguments;
+      clearTimeout(timeoutId);
+      timeoutId = setTimeout(function() {
+        fn.apply(null, args);
+      }, delay);
+    };
+  }
+</script>

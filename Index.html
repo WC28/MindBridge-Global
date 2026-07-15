@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <base target="_top">
+    <?!= include('Styles'); ?>
+    <script>
+      window.__INITIAL_PORTAL__ = <?!= JSON.stringify(initialPortal || '') ?>;
+    </script>
+  </head>
+  <body>
+    <div id="auth-shell" class="auth-shell">
+      <div class="auth-card">
+        <div class="auth-brand">
+          <div class="eyebrow">MindBridge Global</div>
+          <h1 id="auth-app-title">Integrated Mental Health Check-in &amp; Care Coordination Web App</h1>
+          <p id="auth-app-subtitle"></p>
+        </div>
+
+        <div id="auth-banner" class="banner hidden" role="status" aria-live="polite"></div>
+
+        <section class="auth-section">
+          <div class="panel-header">
+            <h2>Access Portals</h2>
+            <p>Select the pathway that matches the current user role.</p>
+          </div>
+          <div id="portal-picker" class="portal-picker"></div>
+        </section>
+
+        <section class="login-panel">
+          <div class="panel-header">
+            <h2 id="login-title">Portal Sign In</h2>
+            <p id="login-subtitle"></p>
+          </div>
+          <form id="login-form" class="login-form"></form>
+        </section>
+      </div>
+    </div>
+
+    <div id="app-shell" class="shell hidden">
+      <aside class="sidebar">
+        <div class="brand-block">
+          <div class="eyebrow">MindBridge Global</div>
+          <h1 id="app-title">Integrated Mental Health Check-in &amp; Care Coordination Web App</h1>
+          <p id="app-subtitle"></p>
+        </div>
+
+        <div id="sidebar-user" class="user-chip hidden"></div>
+
+        <nav id="nav-list" class="nav-list"></nav>
+
+        <div class="sidebar-actions">
+          <button id="refresh-button" class="ghost-button sidebar-button" type="button">Refresh dashboard</button>
+          <button id="seed-button" class="ghost-button sidebar-button" type="button">Seed demo data</button>
+        </div>
+      </aside>
+
+      <main class="main-panel">
+        <header class="topbar">
+          <div>
+            <div class="topbar-label">Integrated AI-Powered Global Mental Health Ecosystem</div>
+            <div id="last-updated" class="topbar-value"></div>
+          </div>
+
+          <div class="topbar-actions">
+            <div id="message-banner" class="banner hidden" role="status" aria-live="polite"></div>
+            <div class="topbar-user-actions">
+              <div id="topbar-user" class="user-chip hidden"></div>
+              <button id="logout-button" class="ghost-button" type="button">Log out</button>
+            </div>
+          </div>
+        </header>
+
+        <section id="page-dashboard" class="page active">
+          <div class="page-header">
+            <div>
+              <h2>Operational Dashboard</h2>
+              <p>Command view across front door entry, shared case work, referral loops, and continuity of care.</p>
+              <p id="sheet-link-wrap" class="sheet-link-wrap hidden">
+                Prototype database:
+                <a id="sheet-link" href="#" target="_blank" rel="noopener noreferrer">Open Google Sheet</a>
+              </p>
+            </div>
+            <div class="callout">
+              <span class="callout-label">One-Service Prototype Note</span>
+              <p id="proposal-note"></p>
+            </div>
+          </div>
+
+          <div id="summary-cards" class="summary-grid"></div>
+
+          <div class="dashboard-grid dashboard-grid-3">
+            <section class="panel">
+              <div class="panel-header">
+                <h3>Workflow Coverage</h3>
+                <p>Cases that have moved through each core team step.</p>
+              </div>
+              <div id="workflow-coverage" class="bars-list"></div>
+            </section>
+
+            <section class="panel">
+              <div class="panel-header">
+                <h3>Arrival Mix</h3>
+                <p>Current intake pattern across scheduled, walk-in, urgent, and referral pathways.</p>
+              </div>
+              <div id="arrival-mix" class="bars-list"></div>
+            </section>
+
+            <section class="panel">
+              <div class="panel-header">
+                <h3>Network Overview</h3>
+                <p>External coordination workload by partner pathway.</p>
+              </div>
+              <div id="network-overview" class="metric-list"></div>
+            </section>
+
+            <section class="panel">
+              <div class="panel-header">
+                <h3>AI Validation</h3>
+                <p>Optional AI-assisted screening compared against local flags and bias watch signals.</p>
+              </div>
+              <div id="ai-monitoring" class="metric-list"></div>
+              <div class="subpanel-header">
+                <h4>Bias Watch</h4>
+              </div>
+              <div id="bias-watch" class="metric-list compact"></div>
+            </section>
+          </div>
+
+          <section class="panel">
+            <div class="panel-header">
+              <h3>Common Risk Factors</h3>
+              <p>Most frequent rule-based concerns across active cases.</p>
+            </div>
+            <div id="risk-factors" class="tag-cloud"></div>
+          </section>
+
+          <section class="panel">
+            <div class="panel-header">
+              <h3>Live Triage Queue</h3>
+              <p>Recent check-ins and requests routed into the coordination queue.</p>
+            </div>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Case</th>
+                    <th>Source</th>
+                    <th>Priority</th>
+                    <th>Risk</th>
+                    <th>Telegram</th>
+                    <th>Queued</th>
+                  </tr>
+                </thead>
+                <tbody id="triage-queue-table"></tbody>
+              </table>
+            </div>
+          </section>
+
+          <section class="panel">
+            <div class="panel-header">
+              <h3>Recent Flagged Cases</h3>
+              <p>Highest-signal cases for rapid multidisciplinary review.</p>
+            </div>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Case</th>
+                    <th>Risk flag</th>
+                    <th>Main concern</th>
+                    <th>Risk factors</th>
+                    <th>Last updated</th>
+                  </tr>
+                </thead>
+                <tbody id="recent-flags-table"></tbody>
+              </table>
+            </div>
+          </section>
+        </section>
+
+        <section id="dynamic-pages"></section>
+      </main>
+    </div>
+
+    <?!= include('JavaScript'); ?>
+  </body>
+</html>

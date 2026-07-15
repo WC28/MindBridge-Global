@@ -1,0 +1,746 @@
+<script>
+  function isCustomPage(pageId) {
+    return ['ecosystem_hub', 'triage_hub', 'case_workspace', 'referral_network'].indexOf(pageId) !== -1;
+  }
+
+  function renderFormPages() {
+    const container = document.getElementById('dynamic-pages');
+    const availablePages = getAvailablePages().filter(function(page) {
+      return page.id !== 'dashboard';
+    });
+
+    container.innerHTML = availablePages.map(function(page) {
+      if (isCustomPage(page.id)) {
+        return renderCustomPage(page);
+      }
+
+      const definition = FORM_DEFINITIONS[page.id];
+      const context = getFormContext(page.id);
+      const showCaseSelector = !!definition.caseSelector && !context.hideCaseSelector;
+
+      return [
+        '<section id="page-',
+        escapeHtml(page.id),
+        '" class="page">',
+        '<div class="form-shell">',
+        '<div class="panel-header">',
+        '<h2>',
+        escapeHtml(page.title),
+        '</h2>',
+        '<p>',
+        escapeHtml(definition.description),
+        '</p>',
+        context.summaryText ? '<div class="portal-summary">' + escapeHtml(context.summaryText) + '</div>' : '',
+        '</div>',
+        '<form data-form-key="',
+        escapeHtml(page.id),
+        '">',
+        showCaseSelector ? renderCaseSelector(page.id) : '',
+        '<div class="form-grid">',
+        definition.fields.map(function(field) {
+          return renderField(page.id, field);
+        }).join(''),
+        '</div>',
+        '<div id="result-',
+        escapeHtml(page.id),
+        '" class="result-box hidden"></div>',
+        '<div class="form-footer">',
+        '<div class="status-pill" id="status-',
+        escapeHtml(page.id),
+        '">Ready</div>',
+        '<div class="button-group">',
+        '<button class="ghost-button" type="reset">Clear</button>',
+        '<button class="primary-button" type="submit">Save</button>',
+        '</div>',
+        '</div>',
+        '</form>',
+        '</div>',
+        '</section>'
+      ].join('');
+    }).join('');
+
+    container.querySelectorAll('form[data-form-key]').forEach(function(form) {
+      form.addEventListener('submit', function(event) {
+        event.preventDefault();
+        submitForm(form);
+      });
+      form.addEventListener('reset', function() {
+        window.setTimeout(function() {
+          clearResultBox(form.getAttribute('data-form-key'));
+          applyFormContext(form);
+          const selector = form.querySelector('.case-selector');
+          if (selector && selector.value) {
+            applyCaseLinkedDefaults(form, selector.value);
+          }
+          const status = document.getElementById('status-' + form.getAttribute('data-form-key'));
+          if (status) {
+            status.textContent = 'Ready';
+          }
+        }, 0);
+      });
+      applyFormContext(form);
+    });
+
+    bindCustomPageInteractions();
+    animateCountersIn(container);
+  }
+
+  function renderCustomPage(page) {
+    switch (page.id) {
+      case 'ecosystem_hub':
+        return renderEcosystemHubPage(page);
+      case 'triage_hub':
+        return renderTriageHubPage(page);
+      case 'case_workspace':
+        return renderCaseWorkspacePage(page);
+      case 'referral_network':
+        return renderReferralNetworkPage(page);
+      default:
+        return '';
+    }
+  }
+
+  function renderEcosystemHubPage(page) {
+    const hub = state.bootstrap.ecosystemHub || {
+      summaryCards: [],
+      journeyRail: [],
+      frontDoorMix: [],
+      spotlight: [],
+      architectureLayers: [],
+      collaborationBackbone: [],
+      phaseFocus: [],
+      phaseStatus: '',
+      ecosystemLayerCount: 0
+    };
+    return [
+      '<section id="page-',
+      escapeHtml(page.id),
+      '" class="page">',
+      '<div class="experience-hero">',
+      '<div class="experience-copy">',
+      '<div class="eyebrow">MindBridge Global Phase 1</div>',
+      '<h2>',
+      escapeHtml(page.title),
+      '</h2>',
+      '<p>One front door, one shared case spine, and one coordinated journey that proves the larger 8-layer ecosystem from access and screening to continuity and research learning.</p>',
+      '</div>',
+      '<div class="hero-status-stack">',
+      '<div class="hero-status-tile"><span>Phase status</span><strong>',
+      escapeHtml(hub.phaseStatus || 'Phase 1 MVP'),
+      '</strong></div>',
+      '<div class="hero-status-tile"><span>Workflow layers aligned</span><strong>',
+      escapeHtml(String(hub.ecosystemLayerCount || 8)),
+      '</strong></div>',
+      '<div class="hero-status-tile"><span>Last refresh</span><strong>',
+      escapeHtml(hub.lastUpdated || 'Now'),
+      '</strong></div>',
+      '</div>',
+      '</div>',
+      renderSummaryCardsHtml(hub.summaryCards),
+      '<div class="dashboard-grid dashboard-grid-3">',
+      '<section class="panel panel-accent panel-teal">',
+      '<div class="panel-header"><h3>Journey Rail</h3><p>How cases are moving across the one-service pathway right now.</p></div>',
+      '<div class="bars-list">',
+      renderBarRowsHtml(hub.journeyRail, 'No journey movement yet.'),
+      '</div>',
+      '</section>',
+      '<section class="panel panel-accent panel-blue">',
+      '<div class="panel-header"><h3>Front Door Mix</h3><p>Which entry pathways are most active in the ecosystem.</p></div>',
+      '<div class="bars-list">',
+      renderBarRowsHtml(hub.frontDoorMix, 'No intake pathways recorded yet.'),
+      '</div>',
+      '</section>',
+      '<section class="panel panel-accent panel-violet">',
+      '<div class="panel-header"><h3>Case Spotlight</h3><p>High-signal cases and handoffs that deserve team attention.</p></div>',
+      '<div class="spotlight-stack">',
+      renderSpotlightItemsHtml(hub.spotlight),
+      '</div>',
+      '</section>',
+      '</div>',
+      '<div class="dashboard-grid dashboard-grid-2">',
+      '<section class="panel panel-accent panel-blue">',
+      '<div class="panel-header"><h3>Integrated 8-Layer Workflow</h3><p>How tonight&#39;s MVP maps to the full global ecosystem concept.</p></div>',
+      renderEcosystemLayerCardsHtml(hub.architectureLayers),
+      '</section>',
+      '<section class="panel panel-accent panel-teal">',
+      '<div class="panel-header"><h3>Global Backbone and Demo Focus</h3><p>The wider collaboration and delivery story that makes the concept presentation-ready.</p></div>',
+      '<div class="metric-list">',
+      renderInsightRowsHtml(hub.collaborationBackbone, 'No collaboration anchors configured yet.'),
+      '</div>',
+      '<div class="subpanel-header"><h4>Phase 1 demo focus</h4></div>',
+      '<div class="spotlight-stack">',
+      renderFocusCardsHtml(hub.phaseFocus),
+      '</div>',
+      '</section>',
+      '</div>',
+      '</section>'
+    ].join('');
+  }
+
+  function renderTriageHubPage(page) {
+    const dashboard = state.bootstrap.dashboard || buildEmptyDashboardState();
+    return [
+      '<section id="page-',
+      escapeHtml(page.id),
+      '" class="page">',
+      '<div class="experience-hero compact">',
+      '<div class="experience-copy">',
+      '<div class="eyebrow">Arrival Routing</div>',
+      '<h2>',
+      escapeHtml(page.title),
+      '</h2>',
+      '<p>Live triage queue for walk-in, urgent, scheduled, and community entry pathways.</p>',
+      '</div>',
+      '<div class="hero-action-row">',
+      '<button class="ghost-button" type="button" data-open-page="Patient_Checkin">Open unified intake</button>',
+      '<button class="ghost-button" type="button" data-open-page="Service_Followup">Open same-day service</button>',
+      '</div>',
+      '</div>',
+      '<div class="dashboard-grid dashboard-grid-3">',
+      '<section class="panel panel-accent panel-red">',
+      '<div class="panel-header"><h3>Queue Pulse</h3><p>Top operational signals from the current triage board.</p></div>',
+      renderSummaryCardsHtml((dashboard.summaryCards || []).slice(0, 4)),
+      '</section>',
+      '<section class="panel panel-accent panel-blue span-2">',
+      '<div class="panel-header"><h3>Live Triage Queue</h3><p>Recent activity routed into the first-response workflow.</p></div>',
+      '<div class="table-wrap"><table><thead><tr><th>Case</th><th>Source</th><th>Priority</th><th>Risk</th><th>Telegram</th><th>Queued</th></tr></thead><tbody>',
+      (dashboard.triageQueue || []).length
+        ? dashboard.triageQueue.map(function(item) {
+            return [
+              '<tr class="', getTriageRowClass(item), '">',
+              '<td><div class="table-case-cell"><strong>', escapeHtml(item.patientCode), '</strong>', renderUrgencySign(item.riskFlag, item.queuePriority), '</div></td>',
+              '<td>', escapeHtml(item.source || '-'), '</td>',
+              '<td>', renderPriority(item.queuePriority), '</td>',
+              '<td>', renderFlag(item.riskFlag), '</td>',
+              '<td>', escapeHtml(item.telegramStatus || ''), '</td>',
+              '<td>', escapeHtml(item.queuedAt || ''), '</td>',
+              '</tr>'
+            ].join('');
+          }).join('')
+        : '<tr><td colspan="6" class="empty-state">No triage queue activity yet.</td></tr>',
+      '</tbody></table></div>',
+      '</section>',
+      '</div>',
+      '<section class="panel">',
+      '<div class="panel-header"><h3>Recent Flagged Cases</h3><p>Cases that are likely to benefit from rapid multidisciplinary attention.</p></div>',
+      '<div class="spotlight-grid">',
+      renderFlaggedCardsHtml(dashboard.recentFlags || []),
+      '</div>',
+      '</section>',
+      '</section>'
+    ].join('');
+  }
+
+  function renderCaseWorkspacePage(page) {
+    const workspace = state.bootstrap.caseWorkspace || { cases: [] };
+    const selectedCase = getSelectedWorkspaceCase();
+    return [
+      '<section id="page-',
+      escapeHtml(page.id),
+      '" class="page">',
+      '<div class="experience-hero">',
+      '<div class="experience-copy">',
+      '<div class="eyebrow">Shared Case Spine</div>',
+      '<h2>',
+      escapeHtml(page.title),
+      '</h2>',
+      '<p>One shared workspace for case context, integrated lenses, planning, referral loops, and continuity actions.</p>',
+      '</div>',
+      '<div class="workspace-switcher">',
+      '<label for="workspace-case-select">Active case</label>',
+      '<select id="workspace-case-select" data-workspace-case-select="true">',
+      workspace.cases.map(function(item) {
+        const selected = selectedCase && item.caseId === selectedCase.caseId ? ' selected' : '';
+        return '<option value="' + escapeHtml(item.caseId) + '"' + selected + '>' + escapeHtml(item.patientCode + ' - ' + item.caseId) + '</option>';
+      }).join(''),
+      '</select>',
+      '</div>',
+      '</div>',
+      selectedCase
+        ? [
+            '<div class="workspace-grid">',
+            '<section class="panel workspace-list-panel">',
+            '<div class="panel-header"><h3>Active Cases</h3><p>Jump between shared case workspaces without losing the one-service view.</p></div>',
+            '<div class="workspace-case-list">',
+            workspace.cases.map(function(item) {
+              return [
+                '<button class="workspace-case-card',
+                item.caseId === selectedCase.caseId ? ' active' : '',
+                '" type="button" data-workspace-case="',
+                escapeHtml(item.caseId),
+                '">',
+                '<div class="workspace-case-top"><strong>',
+                escapeHtml(item.patientCode),
+                '</strong><div class="workspace-status-stack">',
+                renderUrgencySign(item.priorityFlag, item.queuePriority),
+                renderFlag(item.priorityFlag),
+                '</div>',
+                '</div>',
+                '<div class="workspace-case-stage">',
+                escapeHtml(item.currentStage),
+                '</div>',
+                '<div class="workspace-case-meta">',
+                escapeHtml(item.nextAction || ''),
+                '</div>',
+                '</button>'
+              ].join('');
+            }).join(''),
+            '</div>',
+            '</section>',
+            '<section class="workspace-detail">',
+            '<div class="panel panel-accent panel-blue">',
+            '<div class="workspace-detail-header">',
+            '<div><div class="eyebrow">Current case</div><h3>',
+            escapeHtml(selectedCase.patientCode + ' - ' + selectedCase.caseId),
+            '</h3><p>',
+            escapeHtml(selectedCase.latestSummary || ''),
+            '</p></div>',
+            '<div class="workspace-status-stack">',
+            renderUrgencySign(selectedCase.priorityFlag, selectedCase.queuePriority),
+            renderPriority(selectedCase.queuePriority),
+            renderFlag(selectedCase.priorityFlag),
+            '</div>',
+            '</div>',
+            '<div class="workspace-signal-grid">',
+            renderWorkspaceSignalCard('Journey stage', selectedCase.journeyStatus),
+            renderWorkspaceSignalCard('Current lens', selectedCase.currentStage),
+            renderWorkspaceSignalCard('Owner', selectedCase.ownerTeam || 'Care coordination'),
+            renderWorkspaceSignalCard('Next action', selectedCase.nextAction || 'Continue shared review'),
+            renderWorkspaceSignalCard('Latest BPRS', selectedCase.bprsScore || 'Not recorded'),
+            renderWorkspaceSignalCard('Clinical severity', selectedCase.bprsInterpretation || 'Not recorded'),
+            '</div>',
+            '<div class="workspace-chip-row">',
+            renderLensChip('Clinical', selectedCase.clinicalReady),
+            renderLensChip('Psychological', selectedCase.psychologicalReady),
+            renderLensChip('Psychosocial', selectedCase.psychosocialReady),
+            renderLensChip('Care plan', selectedCase.carePlanReady),
+            '</div>',
+            selectedCase.careGoal ? '<div class="workspace-care-goal"><span>Care goal</span><strong>' + escapeHtml(selectedCase.careGoal) + '</strong></div>' : '',
+            '</div>',
+            '<div class="dashboard-grid dashboard-grid-2">',
+            '<section class="panel panel-accent panel-violet">',
+            '<div class="panel-header"><h3>Shared Timeline</h3><p>Everything important that has happened in this case, in one ordered stream.</p></div>',
+            '<div class="timeline-stack">',
+            renderTimelineHtml(selectedCase.timeline || []),
+            '</div>',
+            '</section>',
+            '<section class="panel panel-accent panel-teal">',
+            '<div class="panel-header"><h3>Network & Continuity</h3><p>Where the case sits across partner handoffs and follow-up continuity.</p></div>',
+            '<div class="metric-list">',
+            renderMetricRowHtml('Safe handoff', selectedCase.handoffStatus || 'Not started'),
+            renderMetricRowHtml('Consent boundary', selectedCase.consentStatus || 'Not recorded'),
+            renderMetricRowHtml('Public sector loop', selectedCase.publicStatus || 'Not started'),
+            renderMetricRowHtml('Partner / NGO loop', selectedCase.privateStatus || 'Not started'),
+            renderMetricRowHtml('Follow-up status', selectedCase.followUpStatus || 'Not started'),
+            renderMetricRowHtml('Follow-up owner', selectedCase.followUpOwner || 'Not assigned'),
+            '</div>',
+            '<div class="quick-action-row">',
+            '<button class="ghost-button" type="button" data-open-case-page="Clinical_Review" data-case-id="', escapeHtml(selectedCase.caseId), '">Clinical lens</button>',
+            '<button class="ghost-button" type="button" data-open-case-page="Psychological_Review" data-case-id="', escapeHtml(selectedCase.caseId), '">Psychological lens</button>',
+            '<button class="ghost-button" type="button" data-open-case-page="Psychosocial_Review" data-case-id="', escapeHtml(selectedCase.caseId), '">Psychosocial lens</button>',
+            '<button class="ghost-button" type="button" data-open-case-page="MDT_Care_Plan" data-case-id="', escapeHtml(selectedCase.caseId), '">Shared care plan</button>',
+            '<button class="ghost-button" type="button" data-open-case-page="Minimum_Necessary_Handoff" data-case-id="', escapeHtml(selectedCase.caseId), '">Safe handoff</button>',
+            '<button class="ghost-button" type="button" data-open-case-page="Follow_Up" data-case-id="', escapeHtml(selectedCase.caseId), '">Continuity</button>',
+            '</div>',
+            selectedCase.handoffSummary
+              ? '<div class="workspace-care-goal"><span>Minimum necessary handoff summary</span><p>' + escapeHtml(selectedCase.handoffSummary) + '</p></div>'
+              : '<div class="portal-summary">No safe handoff summary recorded yet. Complete Safe Handoff Summary before external coordination.</div>',
+            selectedCase.crisisSafetySummary
+              ? '<div class="workspace-care-goal"><span>Crisis / safety summary</span><p>' + escapeHtml(selectedCase.crisisSafetySummary) + '</p></div>'
+              : '',
+            selectedCase.doNotShare
+              ? '<div class="portal-summary">Do not share: ' + escapeHtml(selectedCase.doNotShare) + '</div>'
+              : '',
+            '</section>',
+            '</div>',
+            '</section>',
+            '</div>'
+          ].join('')
+        : '<section class="panel"><div class="empty-state">No shared cases yet. Start from Unified Intake, Same-Day Service, or Community Entry.</div></section>',
+      '</section>'
+    ].join('');
+  }
+
+  function renderReferralNetworkPage(page) {
+    const network = state.bootstrap.referralNetwork || { summaryCards: [], lanes: [], openLoops: [] };
+    return [
+      '<section id="page-',
+      escapeHtml(page.id),
+      '" class="page">',
+      '<div class="experience-hero">',
+      '<div class="experience-copy">',
+      '<div class="eyebrow">Closed-Loop Coordination</div>',
+      '<h2>',
+      escapeHtml(page.title),
+      '</h2>',
+      '<p>Track public sector, partner, and follow-up loops until actions are accepted, delivered, and closed.</p>',
+      '</div>',
+      '<div class="hero-status-stack">',
+      '<div class="hero-status-tile"><span>Open loops</span><strong>',
+      escapeHtml(String((network.openLoops || []).length)),
+      '</strong></div>',
+      '<div class="hero-status-tile"><span>Last refresh</span><strong>',
+      escapeHtml(network.lastUpdated || 'Now'),
+      '</strong></div>',
+      '</div>',
+      '</div>',
+      renderSummaryCardsHtml(network.summaryCards),
+      '<div class="dashboard-grid dashboard-grid-3">',
+      '<section class="panel panel-accent panel-blue">',
+      '<div class="panel-header"><h3>Lane Balance</h3><p>Open workload by public, partner, and continuity lane.</p></div>',
+      '<div class="metric-list">',
+      (network.lanes || []).length
+        ? network.lanes.map(function(item) {
+            return renderMetricRowHtml(item.label, String(item.value));
+          }).join('')
+        : '<div class="empty-state">No network activity yet.</div>',
+      '</div>',
+      '</section>',
+      '<section class="panel panel-accent panel-violet span-2">',
+      '<div class="panel-header"><h3>Open Loop Board</h3><p>Each coordination item should move to accepted, delivered, and closed.</p></div>',
+      '<div class="loop-card-grid">',
+      renderReferralLoopCardsHtml(network.openLoops || []),
+      '</div>',
+      '</section>',
+      '</div>',
+      '</section>'
+    ].join('');
+  }
+
+  function bindCustomPageInteractions() {
+    document.querySelectorAll('[data-workspace-case]').forEach(function(button) {
+      button.onclick = function() {
+        state.selectedWorkspaceCaseId = button.getAttribute('data-workspace-case');
+        renderFormPages();
+        refreshPageVisibility();
+      };
+    });
+
+    const caseSelect = document.getElementById('workspace-case-select');
+    if (caseSelect) {
+      caseSelect.onchange = function() {
+        state.selectedWorkspaceCaseId = caseSelect.value;
+        renderFormPages();
+        refreshPageVisibility();
+      };
+    }
+
+    document.querySelectorAll('[data-open-case-page]').forEach(function(button) {
+      button.onclick = function() {
+        openWorkflowPage(button.getAttribute('data-open-case-page'), button.getAttribute('data-case-id'));
+      };
+    });
+
+    document.querySelectorAll('[data-open-page]').forEach(function(button) {
+      button.onclick = function() {
+        openWorkflowPage(button.getAttribute('data-open-page'));
+      };
+    });
+  }
+
+  function getSelectedWorkspaceCase() {
+    const cases = (state.bootstrap.caseWorkspace && state.bootstrap.caseWorkspace.cases) || [];
+    if (!cases.length) {
+      state.selectedWorkspaceCaseId = '';
+      return null;
+    }
+    const selected = cases.find(function(item) {
+      return item.caseId === state.selectedWorkspaceCaseId;
+    });
+    if (selected) {
+      return selected;
+    }
+    state.selectedWorkspaceCaseId = cases[0].caseId;
+    return cases[0];
+  }
+
+  function openWorkflowPage(pageId, caseId) {
+    state.activePage = pageId;
+    renderNavigation();
+    refreshPageVisibility();
+    if (!caseId) {
+      return;
+    }
+    const targetForm = document.querySelector('form[data-form-key="' + pageId + '"]');
+    if (!targetForm) {
+      return;
+    }
+    const selector = targetForm.querySelector('.case-selector');
+    if (selector) {
+      selector.value = caseId;
+      applyCaseLinkedDefaults(targetForm, caseId);
+    }
+    const hiddenCaseField = targetForm.elements.case_id;
+    if (hiddenCaseField && hiddenCaseField.tagName !== 'SELECT') {
+      hiddenCaseField.value = caseId;
+    }
+  }
+
+  function renderSummaryCardsHtml(cards) {
+    if (!cards || !cards.length) {
+      return '<div class="empty-state">No summary signals available yet.</div>';
+    }
+    return [
+      '<div class="summary-grid">',
+      cards.map(function(card) {
+        return [
+          '<article class="summary-card tone-',
+          escapeHtml(card.tone || 'teal'),
+          '">',
+          '<div class="summary-card-label">',
+          escapeHtml(card.label),
+          '</div>',
+          '<div class="summary-card-value" data-counter-value="',
+          escapeHtml(String(card.value)),
+          '">',
+          escapeHtml(String(card.value)),
+          '</div>',
+          '</article>'
+        ].join('');
+      }).join(''),
+      '</div>'
+    ].join('');
+  }
+
+  function renderBarRowsHtml(items, emptyText) {
+    if (!items || !items.length) {
+      return '<div class="empty-state">' + escapeHtml(emptyText) + '</div>';
+    }
+    const maxValue = Math.max.apply(null, items.map(function(item) {
+      return item.value;
+    }).concat([1]));
+    return items.map(function(item) {
+      const width = Math.max(8, Math.round((item.value / maxValue) * 100));
+      return [
+        '<div class="bar-row">',
+        '<div class="bar-meta"><span>',
+        escapeHtml(item.label),
+        '</span><strong>',
+        escapeHtml(String(item.value)),
+        '</strong></div>',
+        '<div class="bar-track"><div class="bar-fill" style="width:',
+        width,
+        '%"></div></div>',
+        '</div>'
+      ].join('');
+    }).join('');
+  }
+
+  function renderSpotlightItemsHtml(items) {
+    if (!items || !items.length) {
+      return '<div class="empty-state">No spotlight cases yet.</div>';
+    }
+    return items.map(function(item) {
+      return [
+        '<article class="spotlight-card">',
+        '<div class="spotlight-top"><strong>',
+        escapeHtml(item.patientCode || item.caseId),
+        '</strong>',
+        renderFlag(item.priorityFlag),
+        '</div>',
+        '<div class="spotlight-stage">',
+        escapeHtml(item.stage || item.journeyStatus || ''),
+        '</div>',
+        '<div class="spotlight-text">',
+        escapeHtml(item.latestSummary || item.nextAction || ''),
+        '</div>',
+        '<div class="spotlight-meta">',
+        escapeHtml(item.ownerTeam || ''),
+        '</div>',
+        '</article>'
+      ].join('');
+    }).join('');
+  }
+
+  function renderEcosystemLayerCardsHtml(items) {
+    if (!items || !items.length) {
+      return '<div class="empty-state">No ecosystem layer map available yet.</div>';
+    }
+    return [
+      '<div class="spotlight-grid ecosystem-layer-grid">',
+      items.map(function(item) {
+        return [
+          '<article class="spotlight-card ecosystem-layer-card">',
+          '<div class="spotlight-top"><strong>',
+          escapeHtml(item.step + '. ' + item.title),
+          '</strong>',
+          item.state ? '<span class="mini-chip">' + escapeHtml(item.state) + '</span>' : '',
+          '</div>',
+          '<div class="spotlight-text">',
+          escapeHtml(item.copy || ''),
+          '</div>',
+          '</article>'
+        ].join('');
+      }).join(''),
+      '</div>'
+    ].join('');
+  }
+
+  function renderInsightRowsHtml(items, emptyText) {
+    if (!items || !items.length) {
+      return '<div class="empty-state">' + escapeHtml(emptyText) + '</div>';
+    }
+    return items.map(function(item) {
+      return [
+        '<div class="metric-row metric-row-stack">',
+        '<strong>',
+        escapeHtml(item.label || ''),
+        '</strong>',
+        '<div class="metric-note">',
+        escapeHtml(item.value || ''),
+        '</div>',
+        '</div>'
+      ].join('');
+    }).join('');
+  }
+
+  function renderFocusCardsHtml(items) {
+    if (!items || !items.length) {
+      return '<div class="empty-state">No phase focus notes yet.</div>';
+    }
+    return items.map(function(item) {
+      return [
+        '<article class="spotlight-card">',
+        '<div class="spotlight-top"><strong>',
+        escapeHtml(item.title || ''),
+        '</strong></div>',
+        '<div class="spotlight-text">',
+        escapeHtml(item.copy || ''),
+        '</div>',
+        '</article>'
+      ].join('');
+    }).join('');
+  }
+
+  function renderFlaggedCardsHtml(items) {
+    if (!items || !items.length) {
+      return '<div class="empty-state">No flagged cases yet.</div>';
+    }
+    return items.map(function(item) {
+      return [
+        '<article class="spotlight-card">',
+        '<div class="spotlight-top"><strong>',
+        escapeHtml(item.patientCode || item.caseId),
+        '</strong>',
+        '<div class="workspace-status-stack">',
+        renderUrgencySign(item.riskFlag, item.queuePriority),
+        renderFlag(item.riskFlag),
+        '</div>',
+        '</div>',
+        '<div class="spotlight-stage">',
+        escapeHtml(item.lastUpdated || ''),
+        '</div>',
+        '<div class="spotlight-text">',
+        escapeHtml(item.mainConcern || ''),
+        '</div>',
+        '<div class="spotlight-meta">',
+        escapeHtml(item.riskReasons || ''),
+        '</div>',
+        '</article>'
+      ].join('');
+    }).join('');
+  }
+
+  function renderWorkspaceSignalCard(label, value) {
+    return [
+      '<div class="workspace-signal-card">',
+      '<span>',
+      escapeHtml(label),
+      '</span>',
+      '<strong>',
+      escapeHtml(value || '-'),
+      '</strong>',
+      '</div>'
+    ].join('');
+  }
+
+  function renderLensChip(label, isReady) {
+    return '<span class="lens-chip' + (isReady ? ' ready' : '') + '">' + escapeHtml(label) + '</span>';
+  }
+
+  function renderTimelineHtml(items) {
+    if (!items || !items.length) {
+      return '<div class="empty-state">No shared timeline events yet.</div>';
+    }
+    return items.map(function(item) {
+      return [
+        '<article class="timeline-item">',
+        '<div class="timeline-dot"></div>',
+        '<div class="timeline-content">',
+        '<div class="timeline-meta"><span>',
+        escapeHtml(item.eventAt || ''),
+        '</span><span>',
+        escapeHtml(item.actor || item.stage || ''),
+        '</span></div>',
+        '<div class="timeline-title-row"><strong>',
+        escapeHtml(item.eventType || ''),
+        '</strong>',
+        item.queuePriority ? renderPriority(item.queuePriority) : renderFlag(item.riskFlag),
+        '</div>',
+        '<div class="timeline-text">',
+        escapeHtml(item.summary || ''),
+        '</div>',
+        '</div>',
+        '</article>'
+      ].join('');
+    }).join('');
+  }
+
+  function renderMetricRowHtml(label, value) {
+    return [
+      '<div class="metric-row">',
+      '<span>',
+      escapeHtml(label),
+      '</span>',
+      '<strong>',
+      escapeHtml(value || '-'),
+      '</strong>',
+      '</div>'
+    ].join('');
+  }
+
+  function renderReferralLoopCardsHtml(items) {
+    if (!items || !items.length) {
+      return '<div class="empty-state">No open coordination loops right now.</div>';
+    }
+    return items.map(function(item) {
+      var targetPage = item.lane === 'Public Sector'
+        ? 'Public_Coordination'
+        : item.lane === 'Partner / NGO'
+          ? 'Private_Coordination'
+          : 'Follow_Up';
+      return [
+        '<article class="loop-card">',
+        '<div class="loop-card-top"><strong>',
+        escapeHtml(item.patientCode || item.caseId),
+        '</strong><span class="mini-chip">',
+        escapeHtml(item.lane),
+        '</span></div>',
+        '<div class="loop-card-status-row">',
+        '<span class="loop-status">',
+        escapeHtml(item.status || 'Open'),
+        '</span>',
+        item.urgency ? '<span class="mini-chip">' + escapeHtml(item.urgency) + '</span>' : '',
+        item.handoffStatus ? '<span class="mini-chip">Handoff: ' + escapeHtml(item.handoffStatus) + '</span>' : '',
+        '</div>',
+        '<div class="loop-card-partner">',
+        escapeHtml(item.partner || ''),
+        '</div>',
+        '<div class="loop-card-text">',
+        escapeHtml(item.nextAction || ''),
+        '</div>',
+        '<div class="loop-card-footer">',
+        '<span>',
+        escapeHtml(item.updatedAt || ''),
+        '</span>',
+        '<button class="ghost-button" type="button" data-open-case-page="',
+        escapeHtml(targetPage),
+        '" data-case-id="',
+        escapeHtml(item.caseId),
+        '">Open loop</button>',
+        '</div>',
+        '</article>'
+      ].join('');
+    }).join('');
+  }
+</script>

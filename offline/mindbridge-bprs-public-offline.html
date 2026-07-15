@@ -1,0 +1,2674 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <base target="_top">
+    <meta charset="utf-8">
+    <meta name="color-scheme" content="light only">
+    <title>MindBridge BPRS Access</title>
+    <style>
+  :root {
+    --bg: #f7f1e7;
+    --panel: rgba(255, 252, 247, 0.88);
+    --panel-strong: #fffdf9;
+    --text: #163038;
+    --muted: #5a7076;
+    --border: rgba(22, 48, 56, 0.1);
+    --accent: #0e8e8a;
+    --accent-strong: #146e8b;
+    --accent-soft: rgba(14, 142, 138, 0.1);
+    --sand: #f0e1c8;
+    --critical-bg: #ffe6ea;
+    --critical-text: #a52d51;
+    --urgent-bg: #fff0d4;
+    --urgent-text: #9b6206;
+    --watch-bg: #fff7cf;
+    --watch-text: #7b6614;
+    --stable-bg: #e6f6ef;
+    --stable-text: #1b7c60;
+    --info-bg: #e8f4ff;
+    --info-text: #1d5d90;
+    --shadow: 0 24px 64px rgba(39, 54, 63, 0.1);
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+
+  html,
+  body {
+    margin: 0;
+    min-height: 100%;
+    background:
+      radial-gradient(circle at top left, rgba(20, 110, 139, 0.12), transparent 32%),
+      radial-gradient(circle at bottom right, rgba(14, 142, 138, 0.16), transparent 28%),
+      linear-gradient(180deg, #faf5ec 0%, #f4ede0 100%);
+    color: var(--text);
+    font-family: 'Avenir Next', 'Segoe UI', sans-serif;
+  }
+
+  body {
+    position: relative;
+    padding: 32px 24px 48px;
+  }
+
+  .ambient-orb {
+    position: fixed;
+    border-radius: 999px;
+    filter: blur(14px);
+    opacity: 0.55;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .ambient-orb-a {
+    width: 240px;
+    height: 240px;
+    background: rgba(14, 142, 138, 0.18);
+    top: 18px;
+    right: 6%;
+  }
+
+  .ambient-orb-b {
+    width: 180px;
+    height: 180px;
+    background: rgba(196, 122, 59, 0.18);
+    bottom: 40px;
+    left: 4%;
+  }
+
+  .hero-shell,
+  .layout-shell {
+    position: relative;
+    z-index: 1;
+  }
+
+  .hero-shell {
+    display: grid;
+    grid-template-columns: minmax(0, 1.5fr) minmax(280px, 360px);
+    gap: 20px;
+    align-items: stretch;
+    margin: 0 auto 24px;
+    max-width: 1380px;
+  }
+
+  .hero-copy,
+  .hero-panel,
+  .panel {
+    border: 1px solid var(--border);
+    background: var(--panel);
+    box-shadow: var(--shadow);
+    backdrop-filter: blur(14px);
+  }
+
+  .hero-copy,
+  .hero-panel {
+    border-radius: 28px;
+    padding: 28px;
+  }
+
+  .eyebrow,
+  .selector-label,
+  .subsection-label,
+  .hero-panel-label {
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--muted);
+  }
+
+  h1,
+  h2,
+  h3 {
+    margin: 0;
+    font-family: 'Iowan Old Style', 'Georgia', serif;
+    letter-spacing: -0.02em;
+  }
+
+  h1 {
+    font-size: clamp(42px, 5vw, 66px);
+    line-height: 0.98;
+    margin-top: 10px;
+  }
+
+  h2 {
+    font-size: 28px;
+    margin-bottom: 8px;
+  }
+
+  p {
+    margin: 0;
+    color: var(--muted);
+    line-height: 1.65;
+  }
+
+  .hero-note {
+    margin-top: 18px;
+    padding: 16px 18px;
+    border-radius: 18px;
+    background: linear-gradient(135deg, rgba(14, 142, 138, 0.12), rgba(20, 110, 139, 0.08));
+    border: 1px solid rgba(14, 142, 138, 0.14);
+    line-height: 1.6;
+  }
+
+  .hero-score {
+    font-size: 80px;
+    font-weight: 800;
+    line-height: 1;
+    margin-top: 10px;
+  }
+
+  .hero-band,
+  .urgency-chip {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 14px;
+    border-radius: 999px;
+    border: 1px solid transparent;
+    font-size: 13px;
+    font-weight: 800;
+    letter-spacing: 0.01em;
+    text-transform: uppercase;
+  }
+
+  .hero-next-step {
+    margin-top: 18px;
+    padding-top: 18px;
+    border-top: 1px solid var(--border);
+    line-height: 1.6;
+    color: var(--text);
+  }
+
+  .layout-shell {
+    display: grid;
+    grid-template-columns: minmax(0, 1.25fr) minmax(320px, 420px);
+    gap: 20px;
+    margin: 0 auto;
+    max-width: 1380px;
+    align-items: start;
+  }
+
+  .form-column,
+  .summary-column,
+  .form-stack,
+  .groups-stack {
+    display: grid;
+    gap: 18px;
+  }
+
+  .panel {
+    border-radius: 24px;
+    padding: 24px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-rainbow::before,
+  .hero-lilac::before,
+  .panel-tone-sunset::before,
+  .panel-tone-rose::before,
+  .panel-tone-sky::before,
+  .panel-tone-mint::before,
+  .panel-tone-lemon::before {
+    content: '';
+    position: absolute;
+    inset: 0 0 auto 0;
+    height: 7px;
+    border-radius: 28px 28px 0 0;
+  }
+
+  .hero-rainbow::before,
+  .panel-tone-sunset::before {
+    background: linear-gradient(90deg, #ff8c5a, #ffc36b, #ff8fc5);
+  }
+
+  .hero-lilac::before,
+  .panel-tone-rose::before {
+    background: linear-gradient(90deg, #ff7c88, #ff9cc8, #b28cff);
+  }
+
+  .panel-tone-sky::before {
+    background: linear-gradient(90deg, #5d8dff, #53d1ff, #7ef0c8);
+  }
+
+  .panel-tone-mint::before {
+    background: linear-gradient(90deg, #55d8c1, #7de091, #c3ef74);
+  }
+
+  .panel-tone-lemon::before {
+    background: linear-gradient(90deg, #b9e94b, #ffe37d, #7be0f7);
+  }
+
+  .panel-intro {
+    background:
+      linear-gradient(180deg, rgba(255, 252, 247, 0.96), rgba(255, 248, 236, 0.94)),
+      var(--panel);
+  }
+
+  .panel-header {
+    display: grid;
+    gap: 6px;
+    margin-bottom: 18px;
+  }
+
+  .selector-block {
+    display: grid;
+    gap: 10px;
+  }
+
+  .workflow-strip {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+    gap: 10px;
+    margin-bottom: 6px;
+  }
+
+  .workflow-step {
+    border-radius: 18px;
+    border: 1px solid rgba(22, 48, 56, 0.08);
+    background: rgba(255, 255, 255, 0.82);
+    padding: 14px;
+    display: grid;
+    gap: 8px;
+  }
+
+  .workflow-step strong {
+    font-size: 14px;
+  }
+
+  .workflow-step span {
+    color: var(--muted);
+    font-size: 12px;
+    line-height: 1.5;
+  }
+
+  .selector-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 10px;
+  }
+
+  .selector-row {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  .selector-card,
+  .language-pill {
+    appearance: none;
+    border: 1px solid var(--border);
+    background: #fffaf2;
+    color: var(--text);
+    border-radius: 18px;
+    padding: 14px 16px;
+    font: inherit;
+    text-align: left;
+    cursor: pointer;
+    transition: transform 140ms ease, border-color 140ms ease, box-shadow 140ms ease, background 140ms ease;
+  }
+
+  .selector-card:hover,
+  .language-pill:hover,
+  .primary-button:hover,
+  .ghost-button:hover {
+    transform: translateY(-1px);
+  }
+
+  .selector-card.active,
+  .language-pill.active {
+    border-color: rgba(14, 142, 138, 0.42);
+    background: linear-gradient(135deg, rgba(14, 142, 138, 0.12), rgba(20, 110, 139, 0.08));
+    box-shadow: 0 12px 24px rgba(20, 110, 139, 0.1);
+  }
+
+  .selector-card strong,
+  .language-pill strong {
+    display: block;
+    margin-bottom: 4px;
+  }
+
+  .selector-card small,
+  .language-pill small {
+    color: var(--muted);
+    line-height: 1.45;
+  }
+
+  .form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px;
+  }
+
+  .field {
+    display: grid;
+    gap: 8px;
+  }
+
+  .field.span-2 {
+    grid-column: span 2;
+  }
+
+  label {
+    font-size: 14px;
+    font-weight: 700;
+  }
+
+  input[type='text'],
+  textarea {
+    width: 100%;
+    border-radius: 16px;
+    border: 1px solid rgba(22, 48, 56, 0.12);
+    background: rgba(255, 255, 255, 0.86);
+    padding: 14px 16px;
+    color: var(--text);
+    font: inherit;
+  }
+
+  textarea {
+    min-height: 112px;
+    resize: vertical;
+  }
+
+  input:focus,
+  textarea:focus {
+    outline: 2px solid rgba(14, 142, 138, 0.18);
+    border-color: rgba(14, 142, 138, 0.4);
+  }
+
+  .field-checkbox {
+    align-self: stretch;
+  }
+
+  .checkbox-card {
+    display: grid;
+    grid-template-columns: 20px minmax(0, 1fr);
+    gap: 12px;
+    padding: 14px 16px;
+    border-radius: 18px;
+    border: 1px solid rgba(22, 48, 56, 0.12);
+    background: rgba(255, 255, 255, 0.82);
+    cursor: pointer;
+  }
+
+  .checkbox-card small {
+    display: block;
+    margin-top: 4px;
+    line-height: 1.5;
+    color: var(--muted);
+  }
+
+  .scale-legend {
+    display: grid;
+    grid-template-columns: repeat(7, minmax(0, 1fr));
+    gap: 8px;
+    margin-bottom: 18px;
+  }
+
+  .scale-pill {
+    border-radius: 16px;
+    border: 1px solid var(--border);
+    background: #fffaf2;
+    padding: 10px 8px;
+    text-align: center;
+  }
+
+  .scale-pill strong {
+    display: block;
+    font-size: 14px;
+  }
+
+  .scale-pill span {
+    display: block;
+    margin-top: 2px;
+    font-size: 11px;
+    color: var(--muted);
+  }
+
+  .group-card {
+    border-radius: 22px;
+    background: rgba(255, 253, 248, 0.94);
+    border: 1px solid rgba(22, 48, 56, 0.08);
+    padding: 18px;
+    display: grid;
+    gap: 14px;
+  }
+
+  .group-heading {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    align-items: end;
+    border-bottom: 1px solid rgba(22, 48, 56, 0.08);
+    padding-bottom: 12px;
+  }
+
+  .group-heading p {
+    max-width: 620px;
+  }
+
+  .item-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+  }
+
+  .item-card {
+    border-radius: 18px;
+    background: #fffdf9;
+    border: 1px solid rgba(22, 48, 56, 0.08);
+    padding: 14px;
+    display: grid;
+    gap: 12px;
+  }
+
+  .item-meta {
+    display: grid;
+    gap: 4px;
+  }
+
+  .item-number {
+    font-size: 12px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .item-title {
+    font-size: 18px;
+    font-weight: 800;
+  }
+
+  .item-prompt {
+    color: var(--text);
+    line-height: 1.55;
+  }
+
+  .item-definition {
+    color: var(--muted);
+    font-size: 13px;
+    line-height: 1.55;
+  }
+
+  .score-row {
+    display: grid;
+    grid-template-columns: repeat(7, minmax(0, 1fr));
+    gap: 6px;
+  }
+
+  .score-option input {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .score-option span {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 14px;
+    border: 1px solid rgba(22, 48, 56, 0.12);
+    background: #fffaf2;
+    min-height: 44px;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: transform 120ms ease, border-color 120ms ease, background 120ms ease;
+  }
+
+  .score-option input:checked + span {
+    background: linear-gradient(135deg, rgba(14, 142, 138, 0.18), rgba(20, 110, 139, 0.1));
+    border-color: rgba(14, 142, 138, 0.4);
+    color: var(--text);
+  }
+
+  .summary-column {
+    position: sticky;
+    top: 20px;
+  }
+
+  .summary-panel {
+    display: grid;
+    gap: 18px;
+  }
+
+  .summary-metric-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+  }
+
+  .summary-metric {
+    border-radius: 18px;
+    padding: 16px;
+    border: 1px solid var(--border);
+    background: rgba(255, 255, 255, 0.82);
+    display: grid;
+    gap: 6px;
+  }
+
+  .summary-metric span {
+    font-size: 12px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .summary-metric strong {
+    font-size: 28px;
+  }
+
+  .interpretation-copy,
+  .next-step-copy {
+    line-height: 1.65;
+  }
+
+  .signal-stack,
+  .bands-stack {
+    display: grid;
+    gap: 10px;
+  }
+
+  .signal-chip,
+  .band-card {
+    border-radius: 16px;
+    border: 1px solid var(--border);
+    background: rgba(255, 255, 255, 0.82);
+    padding: 12px 14px;
+  }
+
+  .route-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+  }
+
+  .route-card {
+    border-radius: 18px;
+    padding: 14px;
+    border: 1px solid var(--border);
+    background: rgba(255, 255, 255, 0.82);
+    display: grid;
+    gap: 6px;
+  }
+
+  .route-card span {
+    font-size: 12px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .route-card strong {
+    font-size: 18px;
+    line-height: 1.45;
+  }
+
+  .route-card small {
+    color: var(--muted);
+    line-height: 1.55;
+  }
+
+  .route-card-wide {
+    grid-column: span 2;
+  }
+
+  .workflow-summary-copy {
+    line-height: 1.65;
+    color: var(--text);
+  }
+
+  .alert-status-card {
+    border-radius: 18px;
+    padding: 16px;
+    border: 1px solid var(--border);
+    background: rgba(255, 255, 255, 0.82);
+    display: grid;
+    gap: 8px;
+  }
+
+  .alert-status-label {
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    font-size: 12px;
+    font-weight: 800;
+    color: currentColor;
+    opacity: 0.78;
+  }
+
+  .alert-status-card strong {
+    font-size: 18px;
+    line-height: 1.4;
+  }
+
+  .alert-status-copy,
+  .result-note {
+    line-height: 1.65;
+  }
+
+  .summary-actions {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+  }
+
+  .staff-link-card {
+    border-radius: 18px;
+    border: 1px solid rgba(22, 48, 56, 0.1);
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.9), rgba(245, 255, 248, 0.84));
+    padding: 16px;
+    display: grid;
+    gap: 10px;
+  }
+
+  .dashboard-link-button,
+  .ghost-link-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 48px;
+    padding: 12px 16px;
+    border-radius: 18px;
+    text-decoration: none;
+    font-weight: 800;
+    transition: transform 140ms ease, box-shadow 140ms ease, border-color 140ms ease;
+  }
+
+  .dashboard-link-button:hover,
+  .ghost-link-button:hover {
+    transform: translateY(-1px);
+  }
+
+  .dashboard-link-button {
+    border: 2px solid rgba(93, 141, 255, 0.35);
+    color: #3150d5;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.98), rgba(236, 245, 255, 0.92));
+    box-shadow: 0 12px 24px rgba(93, 141, 255, 0.12);
+  }
+
+  .ghost-link-button {
+    border: 1px solid rgba(22, 48, 56, 0.12);
+    color: var(--text);
+    background: rgba(255, 255, 255, 0.82);
+  }
+
+  .staff-link-copy {
+    color: var(--muted);
+    line-height: 1.6;
+  }
+
+  .primary-button,
+  .ghost-button {
+    appearance: none;
+    border-radius: 16px;
+    padding: 14px 16px;
+    font: inherit;
+    font-weight: 800;
+    cursor: pointer;
+    transition: transform 140ms ease, box-shadow 140ms ease, border-color 140ms ease;
+  }
+
+  .primary-button {
+    border: 1px solid rgba(14, 142, 138, 0.2);
+    background: linear-gradient(135deg, #0e8e8a, #146e8b);
+    color: #fffdf9;
+    box-shadow: 0 16px 28px rgba(20, 110, 139, 0.18);
+  }
+
+  .ghost-button {
+    border: 1px solid rgba(22, 48, 56, 0.12);
+    background: rgba(255, 255, 255, 0.82);
+    color: var(--text);
+  }
+
+  .result-box {
+    border-radius: 20px;
+    border: 1px solid rgba(14, 142, 138, 0.18);
+    background: linear-gradient(180deg, rgba(14, 142, 138, 0.1), rgba(20, 110, 139, 0.06));
+    padding: 18px;
+    display: grid;
+    gap: 10px;
+  }
+
+  .result-box.hidden,
+  .banner.hidden,
+  .hidden {
+    display: none;
+  }
+
+  .result-box strong {
+    font-size: 18px;
+  }
+
+  .result-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .mini-chip {
+    border-radius: 999px;
+    padding: 6px 10px;
+    border: 1px solid rgba(22, 48, 56, 0.12);
+    background: rgba(255, 255, 255, 0.84);
+    font-size: 13px;
+  }
+
+  .banner {
+    border-radius: 18px;
+    padding: 14px 16px;
+    border: 1px solid rgba(14, 142, 138, 0.18);
+    background: rgba(255, 255, 255, 0.88);
+    box-shadow: var(--shadow);
+  }
+
+  .banner.error {
+    border-color: rgba(165, 45, 81, 0.26);
+    background: rgba(255, 238, 242, 0.96);
+    color: #842545;
+  }
+
+  .note-list {
+    margin: 0;
+    padding-left: 18px;
+    display: grid;
+    gap: 10px;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+
+  .empty-line {
+    color: var(--muted);
+  }
+
+  .urgency-stable {
+    background: var(--stable-bg);
+    color: var(--stable-text);
+    border-color: #b8e8d3;
+  }
+
+  .urgency-watch {
+    background: var(--watch-bg);
+    color: var(--watch-text);
+    border-color: #e8d98b;
+  }
+
+  .urgency-urgent {
+    background: var(--urgent-bg);
+    color: var(--urgent-text);
+    border-color: #ebcc90;
+  }
+
+  .urgency-critical {
+    background: var(--critical-bg);
+    color: var(--critical-text);
+    border-color: #efbcc9;
+  }
+
+  .alert-state-idle {
+    background: var(--stable-bg);
+    color: var(--stable-text);
+    border-color: #b8e8d3;
+  }
+
+  .alert-state-preview,
+  .alert-state-disabled {
+    background: var(--urgent-bg);
+    color: var(--urgent-text);
+    border-color: #ebcc90;
+  }
+
+  .alert-state-sent {
+    background: var(--info-bg);
+    color: var(--info-text);
+    border-color: #bdd5ec;
+  }
+
+  .alert-state-failed {
+    background: var(--critical-bg);
+    color: var(--critical-text);
+    border-color: #efbcc9;
+  }
+
+  .dashboard-body {
+    background:
+      linear-gradient(120deg, rgba(255, 236, 240, 0.52), transparent 35%),
+      linear-gradient(240deg, rgba(204, 255, 232, 0.45), transparent 40%),
+      linear-gradient(180deg, #fffdf7 0%, #f7fff7 50%, #f7fbff 100%);
+  }
+
+  .dashboard-hero {
+    display: grid;
+    grid-template-columns: minmax(0, 1.5fr) minmax(260px, 340px);
+    gap: 20px;
+    max-width: 1380px;
+    margin: 0 auto 20px;
+    align-items: center;
+  }
+
+  .dashboard-hero-copy,
+  .dashboard-hero-actions {
+    display: grid;
+    gap: 12px;
+  }
+
+  .dashboard-subtitle,
+  .dashboard-generated-at {
+    color: var(--muted);
+    line-height: 1.6;
+  }
+
+  .dashboard-shell {
+    display: grid;
+    gap: 20px;
+    max-width: 1380px;
+    margin: 0 auto;
+  }
+
+  .dashboard-stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 12px;
+  }
+
+  .dashboard-stat-card {
+    border-radius: 20px;
+    padding: 18px;
+    border: 1px solid rgba(22, 48, 56, 0.08);
+    background: rgba(255, 255, 255, 0.86);
+    display: grid;
+    gap: 8px;
+  }
+
+  .dashboard-stat-card span {
+    font-size: 12px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .dashboard-stat-card strong {
+    font-size: 34px;
+    line-height: 1;
+  }
+
+  .dashboard-stat-mint {
+    box-shadow: inset 0 4px 0 rgba(85, 216, 193, 0.9);
+  }
+
+  .dashboard-stat-sky {
+    box-shadow: inset 0 4px 0 rgba(83, 209, 255, 0.9);
+  }
+
+  .dashboard-stat-sunset {
+    box-shadow: inset 0 4px 0 rgba(255, 140, 90, 0.9);
+  }
+
+  .dashboard-stat-rose,
+  .dashboard-stat-urgent {
+    box-shadow: inset 0 4px 0 rgba(255, 124, 136, 0.9);
+  }
+
+  .dashboard-stat-watch {
+    box-shadow: inset 0 4px 0 rgba(255, 203, 98, 0.9);
+  }
+
+  .dashboard-stat-stable {
+    box-shadow: inset 0 4px 0 rgba(123, 224, 171, 0.9);
+  }
+
+  .dashboard-stat-info {
+    box-shadow: inset 0 4px 0 rgba(93, 141, 255, 0.9);
+  }
+
+  .dashboard-board {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(240px, 1fr));
+    gap: 14px;
+    overflow-x: auto;
+    padding-bottom: 4px;
+  }
+
+  .dashboard-column {
+    border-radius: 22px;
+    background: rgba(255, 255, 255, 0.78);
+    border: 1px solid rgba(22, 48, 56, 0.08);
+    padding: 16px;
+    display: grid;
+    gap: 14px;
+    min-height: 100%;
+  }
+
+  .dashboard-column-head {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    align-items: start;
+  }
+
+  .dashboard-column-head strong {
+    display: block;
+    font-size: 18px;
+    margin-bottom: 4px;
+  }
+
+  .dashboard-column-head p {
+    font-size: 13px;
+    line-height: 1.55;
+  }
+
+  .dashboard-column-count {
+    border-radius: 999px;
+    min-width: 36px;
+    min-height: 36px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    background: rgba(255, 255, 255, 0.88);
+    border: 1px solid rgba(22, 48, 56, 0.08);
+  }
+
+  .dashboard-column-critical {
+    box-shadow: inset 0 4px 0 rgba(255, 124, 136, 0.9);
+  }
+
+  .dashboard-column-urgent {
+    box-shadow: inset 0 4px 0 rgba(255, 140, 90, 0.9);
+  }
+
+  .dashboard-column-watch {
+    box-shadow: inset 0 4px 0 rgba(255, 203, 98, 0.9);
+  }
+
+  .dashboard-column-stable {
+    box-shadow: inset 0 4px 0 rgba(123, 224, 171, 0.9);
+  }
+
+  .dashboard-case-stack,
+  .dashboard-recent-grid {
+    display: grid;
+    gap: 12px;
+  }
+
+  .dashboard-case-card,
+  .dashboard-recent-card {
+    border-radius: 18px;
+    border: 1px solid rgba(22, 48, 56, 0.08);
+    background: rgba(255, 255, 255, 0.92);
+    padding: 14px;
+    display: grid;
+    gap: 10px;
+  }
+
+  .dashboard-case-top,
+  .dashboard-recent-top {
+    display: flex;
+    justify-content: space-between;
+    gap: 8px;
+    align-items: center;
+  }
+
+  .dashboard-case-top strong,
+  .dashboard-recent-top strong {
+    font-size: 16px;
+  }
+
+  .dashboard-case-meta,
+  .dashboard-case-flags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .dashboard-case-copy,
+  .dashboard-case-note,
+  .dashboard-recent-line,
+  .dashboard-case-time {
+    line-height: 1.55;
+    color: var(--muted);
+  }
+
+  .dashboard-case-note strong {
+    color: var(--text);
+  }
+
+  .dashboard-action-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .stage-button {
+    appearance: none;
+    border-radius: 999px;
+    border: 1px solid rgba(93, 141, 255, 0.28);
+    background: rgba(244, 248, 255, 0.98);
+    color: #3150d5;
+    font: inherit;
+    font-size: 13px;
+    font-weight: 700;
+    padding: 8px 12px;
+    cursor: pointer;
+  }
+
+  .dashboard-empty {
+    border-radius: 16px;
+    padding: 14px;
+    border: 1px dashed rgba(22, 48, 56, 0.14);
+    color: var(--muted);
+    background: rgba(255, 255, 255, 0.6);
+  }
+
+  @media (max-width: 1180px) {
+    .layout-shell,
+    .hero-shell,
+    .dashboard-hero {
+      grid-template-columns: 1fr;
+    }
+
+    .summary-column {
+      position: static;
+    }
+
+    .dashboard-stats-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (max-width: 860px) {
+    body {
+      padding: 20px 14px 36px;
+    }
+
+    .form-grid,
+    .item-grid,
+    .summary-actions,
+    .summary-metric-grid,
+    .scale-legend,
+    .workflow-strip,
+    .route-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .field.span-2 {
+      grid-column: span 1;
+    }
+
+    .route-card-wide {
+      grid-column: span 1;
+    }
+
+    .score-row {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+
+    .hero-copy,
+    .hero-panel,
+    .panel {
+      padding: 18px;
+      border-radius: 22px;
+    }
+
+    .dashboard-stats-grid,
+    .dashboard-board {
+      grid-template-columns: 1fr;
+    }
+
+    .dashboard-hero-actions {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
+
+  </head>
+  <body>
+    <!-- Built from mindbridge-bprs-public-webapp Apps Script sources for static and offline presentation use. -->
+    <div class="ambient-orb ambient-orb-a"></div>
+    <div class="ambient-orb ambient-orb-b"></div>
+
+    <header class="hero-shell">
+      <div class="hero-copy hero-rainbow">
+        <div class="eyebrow">AI Workflow Public Access</div>
+        <h1 id="app-title">MindBridge BPRS Access</h1>
+        <p id="app-subtitle">A separate public-facing BPRS 18-item check-in for patients, families, caregivers, and staff.</p>
+        <div class="hero-note">
+          <strong>Presentation framing:</strong>
+          This page is intentionally separate from the staff portal so the audience sees one simple AI-assisted workflow: access, AI intake, BPRS scoring, AI screening, AI triage, right-care routing, and psychiatrist warning when a new submission scores above 40.
+        </div>
+      </div>
+
+      <aside class="hero-panel hero-lilac">
+        <div class="hero-panel-label">Live Score Preview</div>
+        <div id="hero-score" class="hero-score">18</div>
+        <div id="hero-band" class="hero-band urgency-stable">Minimal to mild symptoms</div>
+        <div id="hero-next-step" class="hero-next-step">
+          Complete all 18 items to generate a shareable summary for clinical discussion.
+        </div>
+      </aside>
+    </header>
+
+    <main class="layout-shell">
+      <section class="form-column">
+        <div id="banner" class="banner hidden" role="status" aria-live="polite"></div>
+
+        <section class="panel panel-intro panel-tone-sunset">
+          <div class="panel-header">
+            <h2>Workflow entry</h2>
+            <p>Start the front-door workflow by identifying who is completing the check-in, where the patient is right now, and which language should guide the AI-assisted conversation and triage flow.</p>
+          </div>
+
+          <div id="workflow-strip" class="workflow-strip"></div>
+
+          <div class="selector-block">
+            <label class="selector-label">Role</label>
+            <div id="role-selector" class="selector-grid"></div>
+          </div>
+
+          <div class="selector-block">
+            <label class="selector-label">Care setting</label>
+            <div id="context-selector" class="selector-grid"></div>
+          </div>
+
+          <div class="selector-block">
+            <label class="selector-label">Language</label>
+            <div id="language-selector" class="selector-row"></div>
+          </div>
+        </section>
+
+        <form id="bprs-form" class="form-stack">
+          <section class="panel panel-tone-rose">
+            <div class="panel-header">
+              <h2>Step 2: AI intake, safety, and basic details</h2>
+              <p>Use minimal information for privacy, flag immediate risk first, and capture the short story that the AI screening flow uses for triage context.</p>
+            </div>
+
+            <div class="form-grid">
+              <div class="field">
+                <label for="respondent-name">Respondent name or alias</label>
+                <input id="respondent-name" name="respondentName" type="text" placeholder="Patient, caregiver, or staff alias">
+              </div>
+              <div class="field">
+                <label for="patient-code">Patient code (optional)</label>
+                <input id="patient-code" name="patientCode" type="text" placeholder="e.g. MB-001">
+              </div>
+              <div class="field">
+                <label for="caregiver-name">Caregiver / family name (optional)</label>
+                <input id="caregiver-name" name="caregiverName" type="text" placeholder="Optional support person">
+              </div>
+              <div class="field field-checkbox">
+                <label class="checkbox-card">
+                  <input id="immediate-safety" name="immediateSafety" type="checkbox">
+                  <span>
+                    <strong>Immediate safety concern now</strong>
+                    <small>Check this if there is immediate concern about self-harm, violence, or inability to stay safe.</small>
+                  </span>
+                </label>
+              </div>
+              <div class="field span-2">
+                <label for="notes">Free-text story or notes</label>
+                <textarea id="notes" name="notes" placeholder="Describe what is happening right now, what changed recently, and what kind of help is needed."></textarea>
+              </div>
+            </div>
+          </section>
+
+          <section class="panel panel-tone-sky">
+            <div class="panel-header">
+              <h2>Step 3: BPRS 18-item AI screening input</h2>
+              <p>Complete all 18 symptom domains in order. The workflow then turns the ratings into AI-assisted screening, severity interpretation, urgency, and the routed next step.</p>
+            </div>
+
+            <div class="scale-legend" id="scale-legend"></div>
+            <div id="groups-container" class="groups-stack"></div>
+          </section>
+        </form>
+      </section>
+
+      <aside class="summary-column">
+        <section class="panel summary-panel panel-tone-mint">
+          <div class="panel-header">
+            <h2>Workflow outcome</h2>
+            <p>Focus only on workflow: AI screening, AI triage, symptom burden, urgency, route destination, and the next care action.</p>
+          </div>
+
+          <div class="summary-metric-grid">
+            <div class="summary-metric">
+              <span>Completed items</span>
+              <strong id="completed-items">0 / 18</strong>
+            </div>
+            <div class="summary-metric">
+              <span>Total score</span>
+              <strong id="total-score">18</strong>
+            </div>
+          </div>
+
+          <div id="urgency-badge" class="urgency-chip urgency-stable">Stable support pathway</div>
+          <div id="interpretation-text" class="interpretation-copy">Minimal to mild symptoms</div>
+          <div id="next-step-text" class="next-step-copy">Complete all 18 items and review the generated next step with the care team.</div>
+
+          <div class="route-grid">
+            <div class="route-card">
+              <span>Route to</span>
+              <strong id="route-destination">Community support or routine clinic</strong>
+            </div>
+            <div class="route-card">
+              <span>Timing</span>
+              <strong id="route-timing">Routine follow-up</strong>
+            </div>
+            <div class="route-card route-card-wide">
+              <span>Suggested team</span>
+              <strong id="route-team">Patient, family, caregiver, or community support link</strong>
+            </div>
+            <div class="route-card route-card-wide">
+              <span>Current workflow stage</span>
+              <strong id="workflow-stage-label">Community monitoring</strong>
+              <small id="workflow-stage-copy">Low-risk cases stay visible for community or family follow-up and self-help support.</small>
+            </div>
+          </div>
+
+          <div id="psychiatrist-alert-card" class="alert-status-card alert-state-idle">
+            <div class="alert-status-label">Psychiatrist alert</div>
+            <strong id="psychiatrist-alert-title">Not triggered</strong>
+            <div id="psychiatrist-alert-copy" class="alert-status-copy">A psychiatrist warning is prepared only when the total score is above 40 or immediate safety is marked.</div>
+          </div>
+
+          <div class="subsection">
+            <div class="subsection-label">AI screening summary</div>
+            <div id="ai-screening-summary" class="workflow-summary-copy">Finish the rating flow to generate the AI screening interpretation.</div>
+          </div>
+
+          <div class="subsection">
+            <div class="subsection-label">AI triage recommendation</div>
+            <div id="ai-triage-summary" class="workflow-summary-copy">Finish the rating flow to generate the AI triage recommendation.</div>
+          </div>
+
+          <div class="subsection">
+            <div class="subsection-label">Workflow summary</div>
+            <div id="workflow-summary" class="workflow-summary-copy">Finish the rating flow to generate the route summary.</div>
+          </div>
+
+          <div id="staff-dashboard-card" class="staff-link-card hidden">
+            <div class="subsection-label">Staff dashboard</div>
+            <a id="staff-dashboard-link" class="dashboard-link-button" href="#" target="_blank" rel="noopener">Open psychiatrist / MDT status board</a>
+            <div class="staff-link-copy">Track new alerts, psychiatrist review, MDT coordination, and community follow-up in one board.</div>
+          </div>
+
+          <div class="subsection">
+            <div class="subsection-label">Strongest current signals</div>
+            <div id="top-signals" class="signal-stack">
+              <div class="empty-line">No high-signal items yet.</div>
+            </div>
+          </div>
+
+          <div class="subsection">
+            <div class="subsection-label">Severity bands</div>
+            <div id="interpretation-bands" class="bands-stack"></div>
+          </div>
+
+          <div class="summary-actions">
+            <button id="submit-button" class="primary-button" type="button">Save / Generate summary</button>
+            <button id="copy-button" class="ghost-button" type="button">Copy summary</button>
+            <button id="print-button" class="ghost-button" type="button">Print</button>
+            <button id="reset-button" class="ghost-button" type="button">Reset</button>
+          </div>
+
+          <div id="result-box" class="result-box hidden"></div>
+        </section>
+
+        <section class="panel safety-panel panel-tone-lemon">
+          <div class="panel-header">
+            <h2>Important note</h2>
+            <p>The official BPRS is a clinician-rated psychiatric symptom scale. In this public-facing prototype, the same 18 symptom domains are used as a guided pre-assessment inside an AI-assisted workflow to support conversation and triage discussion. It does not replace clinical judgment, diagnosis, or emergency assessment.</p>
+          </div>
+          <ul class="note-list">
+            <li>Use this separately from the staff portal to show a simple access point for the audience.</li>
+            <li>If immediate safety risk is present, use local emergency services or the nearest emergency department.</li>
+            <li>The AI workflow in this prototype uses structured triage logic and scoring summaries for presentation.</li>
+            <li>If the score is above 40, the saved workflow can warn the psychiatrist team through Telegram.</li>
+          </ul>
+        </section>
+      </aside>
+    </main>
+
+    <script>
+  const PSYCHIATRIST_ALERT_THRESHOLD = 40;
+
+  const LOCAL_BOOTSTRAP = {
+    appTitle: 'MindBridge BPRS Access',
+    subtitle: 'A separate public-facing BPRS 18-item check-in for patients, families, caregivers, and staff',
+    spreadsheetUrl: '',
+    dashboardUrl: '',
+    unifiedIntakeUrl: '',
+    workflowPhases: [
+      '1. Access and identify who is completing the check-in',
+      '2. AI intake captures context, language, and immediate safety concern',
+      '3. Complete all 18 BPRS symptom ratings',
+      '4. AI screening interprets symptom burden and top signals',
+      '5. AI triage matches the right care pathway and timing',
+      '6. Continue to Unified Intake before psychiatrist warning if score is above 40 or safety is flagged',
+      '7. Continue to follow-up and community support'
+    ],
+    interpretationBands: [
+      '18-30: Minimal to mild symptoms',
+      '31-40: Mild to moderate clinical significance',
+      '41-60: Moderate to severe psychopathology',
+      'Above 60: Very severe psychiatric symptom burden'
+    ],
+    scale: [
+      { value: 1, labelEn: 'Not present', labelTh: 'ไม่มีอาการ', labelZh: '无症状', labelHi: 'लक्षण नहीं', labelUr: 'علامت موجود نہیں' },
+      { value: 2, labelEn: 'Very mild', labelTh: 'เล็กน้อยมาก', labelZh: '非常轻微', labelHi: 'बहुत हल्का', labelUr: 'بہت ہلکی' },
+      { value: 3, labelEn: 'Mild', labelTh: 'เล็กน้อย', labelZh: '轻度', labelHi: 'हल्का', labelUr: 'ہلکی' },
+      { value: 4, labelEn: 'Moderate', labelTh: 'ปานกลาง', labelZh: '中度', labelHi: 'मध्यम', labelUr: 'درمیانی' },
+      { value: 5, labelEn: 'Moderately severe', labelTh: 'ค่อนข้างรุนแรง', labelZh: '中重度', labelHi: 'मध्यम से गंभीर', labelUr: 'درمیانے سے شدید' },
+      { value: 6, labelEn: 'Severe', labelTh: 'รุนแรง', labelZh: '严重', labelHi: 'गंभीर', labelUr: 'شدید' },
+      { value: 7, labelEn: 'Extremely severe', labelTh: 'รุนแรงมากที่สุด', labelZh: '极重度', labelHi: 'अत्यंत गंभीर', labelUr: 'انتہائی شدید' }
+    ],
+    items: [
+      {
+        id: 'somatic_concern',
+        number: 1,
+        title: 'Somatic Concern',
+        promptEn: 'How much is the person focused on physical health problems or bodily discomfort right now?',
+        promptTh: 'ตอนนี้บุคคลนั้นกังวลกับปัญหาสุขภาพกายหรืออาการทางร่างกายมากแค่ไหน?',
+        promptZh: '此刻这个人对身体健康问题或身体不适的关注有多强？',
+        promptHi: 'इस समय व्यक्ति शारीरिक स्वास्थ्य समस्याओं या शारीरिक असुविधा पर कितना ध्यान दे रहा है?',
+        promptUr: 'اس وقت یہ شخص جسمانی صحت کے مسائل یا جسمانی تکلیف پر کتنا زیادہ توجہ دے رہا ہے؟',
+        definition: 'Degree of concern over present bodily health, whether the complaint has a realistic basis or not.',
+        group: 'Body and activation'
+      },
+      {
+        id: 'anxiety',
+        number: 2,
+        title: 'Anxiety',
+        promptEn: 'How much worry, fear, or over-concern is present about now or the future?',
+        promptTh: 'มีความกังวล ความกลัว หรือความห่วงมากเกินไปเกี่ยวกับตอนนี้หรืออนาคตแค่ไหน?',
+        promptZh: '对现在或未来的担忧、害怕或过度忧虑有多明显？',
+        promptHi: 'वर्तमान या भविष्य को लेकर चिंता, डर या अत्यधिक फिक्र कितनी है?',
+        promptUr: 'موجودہ وقت یا مستقبل کے بارے میں فکر، خوف یا ضرورت سے زیادہ تشویش کتنی ہے؟',
+        definition: 'Rate on the basis of the person’s own report of worry, fear, or over-concern.',
+        group: 'Body and activation'
+      },
+      {
+        id: 'emotional_withdrawal',
+        number: 3,
+        title: 'Emotional Withdrawal',
+        promptEn: 'How emotionally distant, disconnected, or hard to engage does the person feel right now?',
+        promptTh: 'ตอนนี้บุคคลนั้นดูห่างเหินทางอารมณ์ ตัดขาด หรือเข้าถึงได้ยากแค่ไหน?',
+        promptZh: '此刻这个人在情感上有多疏离、脱节或难以沟通？',
+        promptHi: 'इस समय व्यक्ति भावनात्मक रूप से कितना दूर, अलग-थलग या जुड़ने में कठिन लग रहा है?',
+        promptUr: 'اس وقت یہ شخص جذباتی طور پر کتنا دور، الگ تھلگ یا رابطہ کرنے میں مشکل محسوس ہو رہا ہے؟',
+        definition: 'Deficiency in relating emotionally to the interviewer or other people in the situation.',
+        group: 'Mood and connection'
+      },
+      {
+        id: 'conceptual_disorganization',
+        number: 4,
+        title: 'Conceptual Disorganization',
+        promptEn: 'How confused, disconnected, or disorganized does the person’s thinking seem?',
+        promptTh: 'ความคิดของบุคคลนั้นดูสับสน ไม่ต่อเนื่อง หรือไม่เป็นระเบียบมากแค่ไหน?',
+        promptZh: '这个人的思维看起来有多混乱、断裂或缺乏条理？',
+        promptHi: 'व्यक्ति की सोच कितनी भ्रमित, टूटी हुई या असंगठित लगती है?',
+        promptUr: 'اس شخص کی سوچ کتنی الجھی ہوئی، منقطع یا غیر منظم محسوس ہوتی ہے؟',
+        definition: 'Degree to which thought processes are confused, disconnected, or disorganized.',
+        group: 'Thinking and perception'
+      },
+      {
+        id: 'guilt_feelings',
+        number: 5,
+        title: 'Guilt Feelings',
+        promptEn: 'How much guilt, remorse, or self-blame is the person carrying?',
+        promptTh: 'บุคคลนั้นมีความรู้สึกผิด เสียใจ หรือโทษตนเองมากแค่ไหน?',
+        promptZh: '这个人有多强的内疚、悔恨或自责感？',
+        promptHi: 'व्यक्ति के भीतर अपराधबोध, पछतावा या आत्म-दोष कितना है?',
+        promptUr: 'اس شخص میں احساسِ جرم، ندامت یا خود کو موردِ الزام ٹھہرانا کتنا زیادہ ہے؟',
+        definition: 'Over-concern or remorse for past behavior, based on subjective experience.',
+        group: 'Mood and connection'
+      },
+      {
+        id: 'tension',
+        number: 6,
+        title: 'Tension',
+        promptEn: 'How physically tense, restless, or visibly keyed up is the person?',
+        promptTh: 'บุคคลนั้นดูตึงเครียด กระสับกระส่าย หรือเกร็งทางกายมากแค่ไหน?',
+        promptZh: '这个人在身体上有多紧张、坐立不安或明显绷紧？',
+        promptHi: 'व्यक्ति शारीरिक रूप से कितना तनावग्रस्त, बेचैन या स्पष्ट रूप से चढ़ा हुआ लगता है?',
+        promptUr: 'یہ شخص جسمانی طور پر کتنا تناؤ زدہ، بے چین یا واضح طور پر کھنچا ہوا محسوس ہوتا ہے؟',
+        definition: 'Physical and motor manifestations of nervousness or heightened activation.',
+        group: 'Body and activation'
+      },
+      {
+        id: 'mannerisms_posturing',
+        number: 7,
+        title: 'Mannerisms and Posturing',
+        promptEn: 'How unusual or unnatural are the person’s movements or postures?',
+        promptTh: 'การเคลื่อนไหวหรือท่าทางของบุคคลนั้นดูแปลกหรือไม่เป็นธรรมชาติมากแค่ไหน?',
+        promptZh: '这个人的动作或姿势有多异常或不自然？',
+        promptHi: 'व्यक्ति की हरकतें या मुद्राएँ कितनी असामान्य या अप्राकृतिक हैं?',
+        promptUr: 'اس شخص کی حرکات یا انداز کتنے غیر معمولی یا غیر فطری ہیں؟',
+        definition: 'Unusual or unnatural motor behavior beyond simple increased activity.',
+        group: 'Behavior and engagement'
+      },
+      {
+        id: 'grandiosity',
+        number: 8,
+        title: 'Grandiosity',
+        promptEn: 'How exaggerated are the person’s ideas about personal power, importance, or special ability?',
+        promptTh: 'บุคคลนั้นมีความคิดว่าตนเองมีอำนาจ ความสำคัญ หรือความสามารถพิเศษเกินจริงมากแค่ไหน?',
+        promptZh: '这个人对自己权力、重要性或特殊能力的看法有多夸大？',
+        promptHi: 'व्यक्ति के अपने प्रभाव, महत्व या विशेष क्षमता के विचार कितने बढ़े-चढ़े हैं?',
+        promptUr: 'اس شخص کے اپنے اختیار، اہمیت یا خاص صلاحیت کے بارے میں خیالات کتنے بڑھا چڑھا کر ہیں؟',
+        definition: 'Exaggerated self-opinion or conviction of unusual abilities or powers.',
+        group: 'Thinking and perception'
+      },
+      {
+        id: 'depressive_mood',
+        number: 9,
+        title: 'Depressive Mood',
+        promptEn: 'How sad, despondent, or low in mood is the person right now?',
+        promptTh: 'ตอนนี้บุคคลนั้นมีความเศร้า หดหู่ หรืออารมณ์ตกมากแค่ไหน?',
+        promptZh: '此刻这个人有多悲伤、沮丧或情绪低落？',
+        promptHi: 'इस समय व्यक्ति कितना उदास, निराश या मन से दबा हुआ है?',
+        promptUr: 'اس وقت یہ شخص کتنا اداس، مایوس یا پست مزاج ہے؟',
+        definition: 'Despondency and sadness in mood.',
+        group: 'Mood and connection'
+      },
+      {
+        id: 'hostility',
+        number: 10,
+        title: 'Hostility',
+        promptEn: 'How much anger, contempt, or aggressive feeling toward other people is present?',
+        promptTh: 'มีความโกรธ ดูหมิ่น หรือความรู้สึกก้าวร้าวต่อผู้อื่นมากแค่ไหน?',
+        promptZh: '对他人的愤怒、轻蔑或攻击性感受有多明显？',
+        promptHi: 'दूसरों के प्रति गुस्सा, तिरस्कार या आक्रामक भावना कितनी मौजूद है?',
+        promptUr: 'دوسروں کے لیے غصہ، حقارت یا جارحانہ احساس کتنا موجود ہے؟',
+        definition: 'Animosity, contempt, belligerence, or disdain toward others outside the interview situation.',
+        group: 'Mood and connection'
+      },
+      {
+        id: 'suspiciousness',
+        number: 11,
+        title: 'Suspiciousness',
+        promptEn: 'How strongly does the person feel that others may want to harm, judge, or discriminate against them?',
+        promptTh: 'บุคคลนั้นรู้สึกว่าคนอื่นอาจต้องการทำร้าย ตัดสิน หรือเลือกปฏิบัติต่อเขามากแค่ไหน?',
+        promptZh: '这个人有多强烈地觉得别人可能想伤害、评判或歧视自己？',
+        promptHi: 'व्यक्ति को कितनी तीव्रता से लगता है कि दूसरे लोग उसे नुकसान पहुँचाना, जज करना या भेदभाव करना चाहते हैं?',
+        promptUr: 'اس شخص کو کتنی شدت سے محسوس ہوتا ہے کہ دوسرے لوگ اسے نقصان پہنچانا، پرکھنا یا امتیاز برتنا چاہتے ہیں؟',
+        definition: 'Suspicion that others have malicious or discriminatory intent toward the person.',
+        group: 'Thinking and perception'
+      },
+      {
+        id: 'hallucinatory_behavior',
+        number: 12,
+        title: 'Hallucinatory Behavior',
+        promptEn: 'How much is the person hearing, seeing, or sensing things that others do not seem to experience?',
+        promptTh: 'บุคคลนั้นได้ยิน เห็น หรือรับรู้สิ่งที่คนอื่นไม่รับรู้มากแค่ไหน?',
+        promptZh: '这个人听到、看到或感觉到别人似乎没有经历的事物有多明显？',
+        promptHi: 'व्यक्ति को ऐसी आवाज़ें, दृश्य या एहसास कितने हो रहे हैं जिन्हें दूसरे लोग अनुभव नहीं कर रहे?',
+        promptUr: 'اس شخص کو ایسی آوازیں، مناظر یا احساسات کتنے ہو رہے ہیں جو دوسرے لوگ محسوس نہیں کر رہے؟',
+        definition: 'Perceptions without normal external stimulus correspondence, reported within the last week.',
+        group: 'Thinking and perception'
+      },
+      {
+        id: 'motor_retardation',
+        number: 13,
+        title: 'Motor Retardation',
+        promptEn: 'How slowed down in movement, speech, or physical energy does the person appear?',
+        promptTh: 'บุคคลนั้นดูเชื่องช้าในการเคลื่อนไหว การพูด หรือพลังงานทางกายมากแค่ไหน?',
+        promptZh: '这个人在动作、说话或体力方面看起来有多迟缓？',
+        promptHi: 'व्यक्ति चाल, बोलचाल या शारीरिक ऊर्जा में कितना धीमा दिखाई देता है?',
+        promptUr: 'یہ شخص حرکت، گفتگو یا جسمانی توانائی میں کتنا سست دکھائی دیتا ہے؟',
+        definition: 'Reduction in energy level evidenced in slowed movements.',
+        group: 'Body and activation'
+      },
+      {
+        id: 'uncooperativeness',
+        number: 14,
+        title: 'Uncooperativeness',
+        promptEn: 'How resistant, unfriendly, or unwilling to cooperate does the person seem?',
+        promptTh: 'บุคคลนั้นดูต่อต้าน ไม่เป็นมิตร หรือไม่พร้อมให้ความร่วมมือมากแค่ไหน?',
+        promptZh: '这个人看起来有多抗拒、不友善或不愿合作？',
+        promptHi: 'व्यक्ति कितना विरोधी, असहयोगी या सहयोग देने के लिए अनिच्छुक लगता है?',
+        promptUr: 'یہ شخص کتنا مزاحم، غیر دوستانہ یا تعاون کرنے سے گریزاں محسوس ہوتا ہے؟',
+        definition: 'Resistance, resentment, or lack of readiness to cooperate with the interviewer or helper.',
+        group: 'Behavior and engagement'
+      },
+      {
+        id: 'unusual_thought_content',
+        number: 15,
+        title: 'Unusual Thought Content',
+        promptEn: 'How strange, bizarre, or highly unusual are the person’s thoughts?',
+        promptTh: 'ความคิดของบุคคลนั้นดูแปลก ประหลาด หรือผิดปกติมากแค่ไหน?',
+        promptZh: '这个人的想法有多奇怪、离奇或非常异常？',
+        promptHi: 'व्यक्ति के विचार कितने अजीब, विचित्र या बहुत असामान्य हैं?',
+        promptUr: 'اس شخص کے خیالات کتنے عجیب، غیر معمولی یا حد سے زیادہ انوکھے ہیں؟',
+        definition: 'Unusual, odd, strange, or bizarre thought content.',
+        group: 'Thinking and perception'
+      },
+      {
+        id: 'blunted_affect',
+        number: 16,
+        title: 'Blunted Affect',
+        promptEn: 'How reduced or flattened is the person’s emotional expression or involvement?',
+        promptTh: 'การแสดงออกทางอารมณ์หรือความมีส่วนร่วมของบุคคลนั้นลดลงหรือแบนราบมากแค่ไหน?',
+        promptZh: '这个人的情绪表达或投入程度有多减弱或平淡？',
+        promptHi: 'व्यक्ति की भावनात्मक अभिव्यक्ति या संलग्नता कितनी कम या सपाट हो गई है?',
+        promptUr: 'اس شخص کے جذباتی اظہار یا شمولیت میں کتنی کمی یا سپاٹ پن ہے؟',
+        definition: 'Reduced emotional tone and apparent lack of normal feeling or involvement.',
+        group: 'Mood and connection'
+      },
+      {
+        id: 'excitement',
+        number: 17,
+        title: 'Excitement',
+        promptEn: 'How agitated, highly reactive, or emotionally over-activated does the person seem?',
+        promptTh: 'บุคคลนั้นดูตื่นตัว กระวนกระวาย หรือมีปฏิกิริยาทางอารมณ์สูงมากแค่ไหน?',
+        promptZh: '这个人看起来有多激动、反应过强或情绪过度亢奋？',
+        promptHi: 'व्यक्ति कितना उत्तेजित, अत्यधिक प्रतिक्रियाशील या भावनात्मक रूप से ज़्यादा सक्रिय लगता है?',
+        promptUr: 'یہ شخص کتنا مشتعل، بہت زیادہ ردِعمل دینے والا یا جذباتی طور پر حد سے زیادہ متحرک محسوس ہوتا ہے؟',
+        definition: 'Heightened emotional tone, agitation, or increased reactivity.',
+        group: 'Body and activation'
+      },
+      {
+        id: 'disorientation',
+        number: 18,
+        title: 'Disorientation',
+        promptEn: 'How confused is the person about who they are, where they are, or what time it is?',
+        promptTh: 'บุคคลนั้นสับสนเกี่ยวกับตัวเอง สถานที่ หรือเวลา มากแค่ไหน?',
+        promptZh: '这个人对自己是谁、身在何处或当前时间有多混乱？',
+        promptHi: 'व्यक्ति इस बारे में कितना भ्रमित है कि वह कौन है, कहाँ है या अभी कौन सा समय है?',
+        promptUr: 'یہ شخص اس بارے میں کتنا الجھا ہوا ہے کہ وہ کون ہے، کہاں ہے یا ابھی کون سا وقت ہے؟',
+        definition: 'Confusion or lack of proper association for person, place, or time.',
+        group: 'Thinking and perception'
+      }
+    ]
+  };
+
+  const GROUP_COPY = {
+    'Body and activation': {
+      titleEn: 'Body and activation',
+      titleTh: 'ร่างกายและการตื่นตัว',
+      titleZh: '身体与激活',
+      titleHi: 'शरीर और सक्रियता',
+      titleUr: 'جسم اور فعالیت',
+      descriptionEn: 'Physical stress, bodily concern, agitation, slowing, and nervous system activation.',
+      descriptionTh: 'ความเครียดทางกาย ความกังวลเรื่องร่างกาย ความกระสับกระส่าย ความเชื่องช้า และการตื่นตัวของระบบประสาท',
+      descriptionZh: '身体压力、身体担忧、激越、迟缓以及神经系统激活。',
+      descriptionHi: 'शारीरिक तनाव, शरीर संबंधी चिंता, बेचैनी, सुस्ती और तंत्रिका तंत्र की सक्रियता।',
+      descriptionUr: 'جسمانی تناؤ، جسمانی فکر، بے چینی، سستی اور اعصابی نظام کی فعالیت۔'
+    },
+    'Mood and connection': {
+      titleEn: 'Mood and connection',
+      titleTh: 'อารมณ์และความเชื่อมโยง',
+      titleZh: '情绪与连结',
+      titleHi: 'मनोदशा और जुड़ाव',
+      titleUr: 'مزاج اور تعلق',
+      descriptionEn: 'Sadness, guilt, anger, emotional distance, and visible emotional tone.',
+      descriptionTh: 'ความเศร้า ความรู้สึกผิด ความโกรธ ความห่างเหินทางอารมณ์ และโทนทางอารมณ์ที่เห็นได้',
+      descriptionZh: '悲伤、内疚、愤怒、情感疏离以及可观察到的情绪状态。',
+      descriptionHi: 'उदासी, अपराधबोध, गुस्सा, भावनात्मक दूरी और दिखाई देने वाला भावनात्मक स्वर।',
+      descriptionUr: 'اداسی، احساسِ جرم، غصہ، جذباتی دوری اور نمایاں جذباتی کیفیت۔'
+    },
+    'Thinking and perception': {
+      titleEn: 'Thinking and perception',
+      titleTh: 'ความคิดและการรับรู้',
+      titleZh: '思维与感知',
+      titleHi: 'सोच और धारणा',
+      titleUr: 'سوچ اور ادراک',
+      descriptionEn: 'Confusion, unusual beliefs, suspiciousness, hallucinations, and orientation.',
+      descriptionTh: 'ความสับสน ความคิดผิดปกติ ความหวาดระแวง การหลอน และการรับรู้เวลา-สถานที่-บุคคล',
+      descriptionZh: '混乱、不寻常信念、多疑、幻觉以及定向能力。',
+      descriptionHi: 'भ्रम, असामान्य विश्वास, संदेह, मतिभ्रम और समय-स्थान-व्यक्ति की समझ।',
+      descriptionUr: 'الجھاؤ، غیر معمولی عقائد، شک، وہم اور وقت، جگہ، شخصیت کی شناخت۔'
+    },
+    'Behavior and engagement': {
+      titleEn: 'Behavior and engagement',
+      titleTh: 'พฤติกรรมและความร่วมมือ',
+      titleZh: '行为与参与',
+      titleHi: 'व्यवहार और सहभागिता',
+      titleUr: 'رویہ اور شمولیت',
+      descriptionEn: 'Observable unusual movements, resistance, and willingness to engage.',
+      descriptionTh: 'การเคลื่อนไหวที่ผิดปกติ การต่อต้าน และความพร้อมในการมีส่วนร่วม',
+      descriptionZh: '可观察到的异常动作、抗拒行为以及参与意愿。',
+      descriptionHi: 'देखी जा सकने वाली असामान्य हरकतें, प्रतिरोध और जुड़ने की इच्छा।',
+      descriptionUr: 'قابلِ مشاہدہ غیر معمولی حرکات، مزاحمت اور شامل ہونے کی آمادگی۔'
+    }
+  };
+
+  const ROLE_OPTIONS = [
+    {
+      id: 'patient',
+      titleEn: 'Patient',
+      titleTh: 'ผู้ป่วย',
+      titleZh: '患者',
+      titleHi: 'रोगी',
+      titleUr: 'مریض',
+      bodyEn: 'Self check-in for symptoms, mood, and current experience.',
+      bodyTh: 'ผู้ป่วยประเมินอาการ อารมณ์ และสิ่งที่กำลังเกิดขึ้นด้วยตนเอง',
+      bodyZh: '患者自行填写当前症状、情绪和正在发生的体验。',
+      bodyHi: 'रोगी स्वयं अपने लक्षण, मनोदशा और वर्तमान अनुभव दर्ज करता है।',
+      bodyUr: 'مریض اپنی علامات، کیفیت اور موجودہ تجربہ خود درج کرتا ہے۔'
+    },
+    {
+      id: 'family',
+      titleEn: 'Family',
+      titleTh: 'ครอบครัว',
+      titleZh: '家属',
+      titleHi: 'परिवार',
+      titleUr: 'خاندان',
+      bodyEn: 'A family member gives their perspective to support the visit.',
+      bodyTh: 'สมาชิกครอบครัวให้ข้อมูลมุมมองเพื่อช่วยการเข้ารับบริการ',
+      bodyZh: '家属提供自己的观察与观点，以支持本次就诊。',
+      bodyHi: 'परिवार का सदस्य अपनी दृष्टि से जानकारी देकर मुलाकात में सहायता करता है।',
+      bodyUr: 'خاندان کا فرد اپنی رائے اور مشاہدہ دے کر اس وِزٹ میں مدد کرتا ہے۔'
+    },
+    {
+      id: 'caregiver',
+      titleEn: 'Caregiver',
+      titleTh: 'ผู้ดูแล',
+      titleZh: '照护者',
+      titleHi: 'देखभालकर्ता',
+      titleUr: 'نگہداشت کرنے والا',
+      bodyEn: 'A caregiver completes the check-in when the patient needs support.',
+      bodyTh: 'ผู้ดูแลช่วยกรอกเมื่อผู้ป่วยต้องการการสนับสนุน',
+      bodyZh: '当患者需要协助时，由照护者代为完成填写。',
+      bodyHi: 'जब रोगी को सहायता की आवश्यकता हो, तब देखभालकर्ता यह चेक-इन पूरा करता है।',
+      bodyUr: 'جب مریض کو مدد کی ضرورت ہو تو نگہداشت کرنے والا یہ چیک اِن مکمل کرتا ہے۔'
+    },
+    {
+      id: 'staff',
+      titleEn: 'Staff',
+      titleTh: 'บุคลากร',
+      titleZh: '工作人员',
+      titleHi: 'स्टाफ',
+      titleUr: 'عملہ',
+      bodyEn: 'Hospital staff can use the same public page as a front-door intake surface.',
+      bodyTh: 'บุคลากรโรงพยาบาลสามารถใช้หน้านี้เป็นพื้นผิว front-door สำหรับ intake ได้เช่นกัน',
+      bodyZh: '医院工作人员也可以把此公开页面作为前门分流入口使用。',
+      bodyHi: 'अस्पताल का स्टाफ भी इसी सार्वजनिक पेज को फ्रंट-डोर इंटेक सतह की तरह उपयोग कर सकता है।',
+      bodyUr: 'ہسپتال کا عملہ بھی اسی عوامی صفحے کو فرنٹ ڈور اِن ٹیک سطح کے طور پر استعمال کر سکتا ہے۔'
+    }
+  ];
+
+  const CONTEXT_OPTIONS = [
+    {
+      id: 'hospital_alone',
+      titleEn: 'At hospital alone',
+      titleTh: 'มาที่โรงพยาบาลคนเดียว',
+      titleZh: '独自到医院',
+      titleHi: 'अस्पताल में अकेले',
+      titleUr: 'ہسپتال میں اکیلے',
+      bodyEn: 'Useful when a patient arrives without family support.',
+      bodyTh: 'เหมาะเมื่อผู้ป่วยมาคนเดียวโดยไม่มีครอบครัวมาด้วย',
+      bodyZh: '适用于患者没有家属陪同、独自到院时。',
+      bodyHi: 'जब रोगी बिना परिवार के सहारे अकेले अस्पताल पहुँचे, तब उपयोगी।',
+      bodyUr: 'اس وقت مفید جب مریض بغیر خاندانی مدد کے اکیلا ہسپتال آئے۔'
+    },
+    {
+      id: 'hospital_supported',
+      titleEn: 'At hospital with support',
+      titleTh: 'มาที่โรงพยาบาลพร้อมผู้ดูแล',
+      titleZh: '到医院时有人陪同',
+      titleHi: 'अस्पताल में सहारे के साथ',
+      titleUr: 'ہسپتال میں مدد کے ساتھ',
+      bodyEn: 'Use when family or caregiver is present during intake.',
+      bodyTh: 'ใช้เมื่อครอบครัวหรือผู้ดูแลอยู่ด้วยระหว่าง intake',
+      bodyZh: '适用于入院接诊时有家属或照护者陪同。',
+      bodyHi: 'जब इंटेक के दौरान परिवार या देखभालकर्ता मौजूद हो, तब उपयोग करें।',
+      bodyUr: 'جب اِن ٹیک کے دوران خاندان یا نگہداشت کرنے والا موجود ہو تو استعمال کریں۔'
+    },
+    {
+      id: 'at_home',
+      titleEn: 'At home',
+      titleTh: 'อยู่ที่บ้าน',
+      titleZh: '在家中',
+      titleHi: 'घर पर',
+      titleUr: 'گھر پر',
+      bodyEn: 'Designed for home access before an appointment or after discharge.',
+      bodyTh: 'ออกแบบให้เข้าถึงจากบ้านได้ก่อนนัดหรือหลังจำหน่าย',
+      bodyZh: '适合在预约前或出院后于家中填写。',
+      bodyHi: 'अपॉइंटमेंट से पहले या डिस्चार्ज के बाद घर से उपयोग के लिए बनाया गया है।',
+      bodyUr: 'اپائنٹمنٹ سے پہلے یا ڈسچارج کے بعد گھر سے استعمال کے لیے بنایا گیا ہے۔'
+    },
+    {
+      id: 'community_follow_up',
+      titleEn: 'Community follow-up',
+      titleTh: 'ติดตามในชุมชน',
+      titleZh: '社区随访',
+      titleHi: 'समुदाय फॉलो-अप',
+      titleUr: 'کمیونٹی فالو اَپ',
+      bodyEn: 'For community support teams, volunteers, or outreach follow-up.',
+      bodyTh: 'สำหรับทีมชุมชน อสม. อาสาสมัคร หรือการติดตามเชิงรุก',
+      bodyZh: '适用于社区支持团队、志愿者或外展随访。',
+      bodyHi: 'समुदाय सहायता टीमों, स्वयंसेवकों या आउटरीच फॉलो-अप के लिए।',
+      bodyUr: 'کمیونٹی سپورٹ ٹیموں، رضاکاروں یا آؤٹ ریچ فالو اَپ کے لیے۔'
+    }
+  ];
+
+  const LANGUAGE_OPTIONS = [
+    { id: 'en', titleEn: 'English', titleTh: 'English' },
+    { id: 'th', titleEn: 'Thai', titleTh: 'ไทย', titleZh: '泰语', titleHi: 'थाई', titleUr: 'تھائی' },
+    { id: 'zh', titleEn: 'Chinese', titleTh: 'จีน', titleZh: '中文', titleHi: 'चीनी', titleUr: 'چینی' },
+    { id: 'hi', titleEn: 'Hindi', titleTh: 'ฮินดี', titleZh: '印地语', titleHi: 'हिन्दी', titleUr: 'ہندی' },
+    { id: 'ur', titleEn: 'Urdu', titleTh: 'อูรดู', titleZh: '乌尔都语', titleHi: 'उर्दू', titleUr: 'اردو' }
+  ];
+
+  const state = {
+    bootstrap: LOCAL_BOOTSTRAP,
+    language: 'en',
+    respondentRole: 'patient',
+    completionContext: 'at_home'
+  };
+
+  function initializePortal() {
+    bindGlobalActions();
+    renderStaticShell();
+    hydrateBootstrap();
+  }
+
+  function hydrateBootstrap() {
+    if (!isAppsScriptRuntime()) {
+      renderApp();
+      return;
+    }
+
+    runServer('getPublicBootstrap', [], function(payload) {
+      state.bootstrap = mergeBootstrap(payload);
+      renderApp();
+    }, function() {
+      state.bootstrap = LOCAL_BOOTSTRAP;
+      renderApp();
+      showBanner('Loaded local presentation mode because the live bootstrap was unavailable.');
+    });
+  }
+
+  function mergeBootstrap(payload) {
+    if (!payload) {
+      return LOCAL_BOOTSTRAP;
+    }
+    return {
+      appTitle: payload.appTitle || LOCAL_BOOTSTRAP.appTitle,
+      subtitle: payload.subtitle || LOCAL_BOOTSTRAP.subtitle,
+      spreadsheetUrl: payload.spreadsheetUrl || '',
+      dashboardUrl: payload.dashboardUrl || '',
+      unifiedIntakeUrl: payload.unifiedIntakeUrl || '',
+      workflowPhases: payload.workflowPhases || LOCAL_BOOTSTRAP.workflowPhases,
+      interpretationBands: payload.interpretationBands || LOCAL_BOOTSTRAP.interpretationBands,
+      scale: LOCAL_BOOTSTRAP.scale.map(function(localScale) {
+        const serverScale = (payload.scale || []).find(function(item) {
+          return Number(item.value) === Number(localScale.value);
+        }) || {};
+        return Object.assign({}, localScale, serverScale);
+      }),
+      items: LOCAL_BOOTSTRAP.items.map(function(localItem) {
+        const serverItem = (payload.items || []).find(function(item) {
+          return item.id === localItem.id;
+        }) || {};
+        return Object.assign({}, localItem, {
+          title: serverItem.title || localItem.title,
+          number: serverItem.number || localItem.number
+        });
+      })
+    };
+  }
+
+  function renderStaticShell() {
+    document.getElementById('app-title').textContent = LOCAL_BOOTSTRAP.appTitle;
+    document.getElementById('app-subtitle').textContent = LOCAL_BOOTSTRAP.subtitle;
+  }
+
+  function renderApp() {
+    document.getElementById('app-title').textContent = state.bootstrap.appTitle;
+    document.getElementById('app-subtitle').textContent = state.bootstrap.subtitle;
+    renderWorkflowStrip();
+    renderSelectors();
+    renderScaleLegend();
+    renderGroups();
+    renderInterpretationBands();
+    renderStaffDashboardLink();
+    syncSummary();
+  }
+
+  function renderStaffDashboardLink() {
+    const card = document.getElementById('staff-dashboard-card');
+    const link = document.getElementById('staff-dashboard-link');
+    if (!card || !link) {
+      return;
+    }
+    if (state.bootstrap.dashboardUrl) {
+      link.href = state.bootstrap.dashboardUrl;
+      card.classList.remove('hidden');
+      return;
+    }
+    card.classList.add('hidden');
+  }
+
+  function renderWorkflowStrip() {
+    document.getElementById('workflow-strip').innerHTML = state.bootstrap.workflowPhases.map(function(text) {
+      return [
+        '<div class="workflow-step"><strong>',
+        escapeHtml(String(text)),
+        '</strong><span>',
+        escapeHtml('Workflow step'),
+        '</span></div>'
+      ].join('');
+    }).join('');
+  }
+
+  function renderSelectors() {
+    renderSelectorGroup('role-selector', ROLE_OPTIONS, state.respondentRole, function(nextValue) {
+      state.respondentRole = nextValue;
+      renderSelectors();
+      syncSummary();
+    });
+
+    renderSelectorGroup('context-selector', CONTEXT_OPTIONS, state.completionContext, function(nextValue) {
+      state.completionContext = nextValue;
+      renderSelectors();
+      syncSummary();
+    });
+
+    const target = document.getElementById('language-selector');
+    target.innerHTML = LANGUAGE_OPTIONS.map(function(option) {
+      return [
+        '<button class="language-pill',
+        option.id === state.language ? ' active' : '',
+        '" type="button" data-language="',
+        escapeHtml(option.id),
+        '"><strong>',
+        escapeHtml(getLocalizedText(option, 'title')),
+        '</strong></button>'
+      ].join('');
+    }).join('');
+
+    target.querySelectorAll('[data-language]').forEach(function(button) {
+      button.addEventListener('click', function() {
+        state.language = button.getAttribute('data-language');
+        renderApp();
+      });
+    });
+  }
+
+  function renderSelectorGroup(targetId, options, selectedId, onSelect) {
+    const target = document.getElementById(targetId);
+    target.innerHTML = options.map(function(option) {
+      return [
+        '<button class="selector-card',
+        option.id === selectedId ? ' active' : '',
+        '" type="button" data-option-id="',
+        escapeHtml(option.id),
+        '"><strong>',
+        escapeHtml(getLocalizedText(option, 'title')),
+        '</strong><small>',
+        escapeHtml(getLocalizedText(option, 'body')),
+        '</small></button>'
+      ].join('');
+    }).join('');
+
+    target.querySelectorAll('[data-option-id]').forEach(function(button) {
+      button.addEventListener('click', function() {
+        onSelect(button.getAttribute('data-option-id'));
+      });
+    });
+  }
+
+  function renderScaleLegend() {
+    document.getElementById('scale-legend').innerHTML = state.bootstrap.scale.map(function(item) {
+      return [
+        '<div class="scale-pill"><strong>',
+        escapeHtml(String(item.value)),
+        '</strong><span>',
+        escapeHtml(getLocalizedText(item, 'label')),
+        '</span></div>'
+      ].join('');
+    }).join('');
+  }
+
+  function renderGroups() {
+    const groups = {};
+    state.bootstrap.items.forEach(function(item) {
+      groups[item.group] = groups[item.group] || [];
+      groups[item.group].push(item);
+    });
+
+    const target = document.getElementById('groups-container');
+    target.innerHTML = Object.keys(groups).map(function(groupKey) {
+      const copy = GROUP_COPY[groupKey];
+      return [
+        '<section class="group-card">',
+        '<div class="group-heading">',
+        '<div><h3>',
+        escapeHtml(getLocalizedText(copy, 'title')),
+        '</h3><p>',
+        escapeHtml(getLocalizedText(copy, 'description')),
+        '</p></div>',
+        '</div>',
+        '<div class="item-grid">',
+        groups[groupKey].map(renderItemCard).join(''),
+        '</div>',
+        '</section>'
+      ].join('');
+    }).join('');
+
+    bindScoreInputs();
+  }
+
+  function renderItemCard(item) {
+    return [
+      '<article class="item-card">',
+      '<div class="item-meta">',
+      '<div class="item-number">Item ',
+      escapeHtml(String(item.number)),
+      '</div>',
+      '<div class="item-title">',
+      escapeHtml(item.title),
+      '</div>',
+      '<div class="item-prompt">',
+      escapeHtml(getLocalizedText(item, 'prompt')),
+      '</div>',
+      '<div class="item-definition">',
+      escapeHtml(item.definition),
+      '</div>',
+      '</div>',
+      '<div class="score-row">',
+      state.bootstrap.scale.map(function(scaleItem) {
+        return [
+          '<label class="score-option">',
+          '<input type="radio" name="',
+          escapeHtml(item.id),
+          '" value="',
+          escapeHtml(String(scaleItem.value)),
+          '">',
+          '<span>',
+          escapeHtml(String(scaleItem.value)),
+          '</span>',
+          '</label>'
+        ].join('');
+      }).join(''),
+      '</div>',
+      '</article>'
+    ].join('');
+  }
+
+  function bindScoreInputs() {
+    document.querySelectorAll('.score-option input').forEach(function(input) {
+      input.addEventListener('change', syncSummary);
+    });
+    document.getElementById('immediate-safety').addEventListener('change', syncSummary);
+    document.getElementById('notes').addEventListener('input', syncSummary);
+  }
+
+  function renderInterpretationBands() {
+    document.getElementById('interpretation-bands').innerHTML = state.bootstrap.interpretationBands.map(function(text) {
+      return '<div class="band-card">' + escapeHtml(text) + '</div>';
+    }).join('');
+  }
+
+  function getResponses() {
+    const responses = {};
+    state.bootstrap.items.forEach(function(item) {
+      const selected = document.querySelector('input[name="' + item.id + '"]:checked');
+      responses[item.id] = selected ? Number(selected.value) : 0;
+    });
+    return responses;
+  }
+
+  function computeLocalScoring() {
+    const responses = getResponses();
+    const completed = Object.keys(responses).filter(function(key) {
+      return responses[key] >= 1;
+    }).length;
+    const baseScore = state.bootstrap.items.length;
+    const totalScore = completed
+      ? state.bootstrap.items.reduce(function(sum, item) {
+          return sum + (responses[item.id] || 1);
+        }, 0)
+      : baseScore;
+    const immediateSafety = document.getElementById('immediate-safety').checked;
+
+    let interpretation = 'Minimal to mild symptoms';
+    if (totalScore > 60) {
+      interpretation = 'Very severe psychiatric symptom burden';
+    } else if (totalScore > 40) {
+      interpretation = 'Moderate to severe psychopathology';
+    } else if (totalScore > 30) {
+      interpretation = 'Mild to moderate clinical significance';
+    }
+
+    const highConcernIds = [
+      'hallucinatory_behavior',
+      'unusual_thought_content',
+      'disorientation',
+      'hostility',
+      'excitement',
+      'conceptual_disorganization'
+    ];
+    const hasCriticalItem = highConcernIds.some(function(id) {
+      return responses[id] >= 6;
+    });
+    const hasUrgentItem = highConcernIds.some(function(id) {
+      return responses[id] >= 5;
+    });
+    const psychosisLoad = sumSelectedResponses_(responses, [
+      'suspiciousness',
+      'hallucinatory_behavior',
+      'unusual_thought_content',
+      'disorientation',
+      'conceptual_disorganization',
+      'grandiosity'
+    ]);
+    const moodDistressLoad = sumSelectedResponses_(responses, [
+      'anxiety',
+      'depressive_mood',
+      'guilt_feelings',
+      'tension',
+      'emotional_withdrawal',
+      'blunted_affect'
+    ]);
+    const activationLoad = sumSelectedResponses_(responses, [
+      'hostility',
+      'excitement',
+      'mannerisms_posturing',
+      'motor_retardation',
+      'uncooperativeness'
+    ]);
+
+    let urgencyLabel = 'Stable support pathway';
+    let urgencyTone = 'stable';
+    let routeDestination = 'Community support or routine clinic';
+    let routeTiming = 'Routine follow-up';
+    let routeTeam = 'Patient, family, caregiver, or community support link';
+    let aiScreeningSummary = '';
+    let aiTriageSummary = '';
+    let workflowStageKey = 'community';
+    let workflowStageLabel = 'Community monitoring';
+    let workflowStageDescription = 'Low-risk cases stay visible for community or family follow-up and self-help support.';
+    let mdtRecommended = false;
+    let communityRecommended = true;
+    let appointmentRecommended = false;
+    let nextStep = 'Complete the full form and share the summary during a clinical conversation or follow-up check-in.';
+    let workflowSummary = 'Front door access completed. Continue with routine follow-up, psychoeducation, and community support if needed.';
+    const dominantConcern = buildDominantConcernLabel_(psychosisLoad, moodDistressLoad, activationLoad);
+
+    if (immediateSafety) {
+      urgencyLabel = 'Emergency attention now';
+      urgencyTone = 'critical';
+      routeDestination = 'Emergency services';
+      routeTiming = 'Now';
+      routeTeam = 'Emergency team and psychiatric crisis response';
+      workflowStageKey = 'emergency';
+      workflowStageLabel = 'Emergency now';
+      workflowStageDescription = 'Immediate safety concern. Alert psychiatrist, activate emergency routing, and prepare MDT support after stabilization.';
+      mdtRecommended = true;
+      communityRecommended = false;
+      appointmentRecommended = true;
+      aiScreeningSummary = 'AI-assisted screening detected an immediate safety concern from intake and symptom review, with the strongest pattern in ' + dominantConcern + '.';
+      aiTriageSummary = 'AI-assisted triage recommends immediate emergency routing and psychiatric crisis response without waiting for a routine appointment.';
+      nextStep = 'Do not wait. Use local emergency services or go to the nearest emergency department now.';
+      workflowSummary = 'Front door access detected immediate safety concern. Escalate directly to emergency services and psychiatric crisis response.';
+    } else if (totalScore > 60 || hasCriticalItem) {
+      urgencyLabel = 'Immediate clinical review';
+      urgencyTone = 'critical';
+      routeDestination = psychosisLoad >= moodDistressLoad ? 'Psychiatrist / emergency psychiatric review' : 'Psychiatrist and high-priority psychological review';
+      routeTiming = 'Immediate same-day review';
+      routeTeam = 'Psychiatrist, nurse, and crisis-capable mental health team';
+      workflowStageKey = 'psychiatrist';
+      workflowStageLabel = 'Psychiatrist review';
+      workflowStageDescription = 'Very high-risk case. Notify psychiatrist now, arrange same-day review, and allow psychiatrist to pull in MDT support.';
+      mdtRecommended = true;
+      communityRecommended = false;
+      appointmentRecommended = true;
+      aiScreeningSummary = 'AI-assisted screening detected very high symptom burden or critical psychiatric signals, with the strongest pattern in ' + dominantConcern + '.';
+      aiTriageSummary = 'AI-assisted triage recommends immediate same-day specialist review with crisis-capable psychiatric support.';
+      nextStep = 'Escalate for urgent same-day mental health review and direct safety assessment.';
+      workflowSummary = 'Front door assessment shows very high symptom burden or critical symptom signals. Move directly to urgent mental health review and same-day safety assessment.';
+    } else if (totalScore > 40 || hasUrgentItem) {
+      urgencyLabel = 'Priority same-day review';
+      urgencyTone = 'urgent';
+      routeDestination = psychosisLoad + activationLoad >= moodDistressLoad
+        ? 'Psychiatrist'
+        : 'Psychologist or psychiatrist';
+      routeTiming = 'Priority review today';
+      routeTeam = 'Mental health intake team with multidisciplinary backup';
+      workflowStageKey = 'psychiatrist';
+      workflowStageLabel = 'Psychiatrist review';
+      workflowStageDescription = 'New high-priority case. Notify psychiatrist, arrange early appointment, and keep MDT backup ready.';
+      mdtRecommended = true;
+      communityRecommended = true;
+      appointmentRecommended = true;
+      aiScreeningSummary = 'AI-assisted screening detected moderate to severe psychopathology or urgent psychiatric signals, with the strongest pattern in ' + dominantConcern + '.';
+      aiTriageSummary = 'AI-assisted triage recommends priority same-day mental health review and psychiatrist notification if needed.';
+      nextStep = 'Arrange prompt psychiatric or psychological review as soon as safely possible.';
+      workflowSummary = 'Front door assessment shows moderate to severe psychopathology or urgent symptom signals. Route to priority same-day specialist review.';
+    } else if (totalScore >= 31) {
+      urgencyLabel = 'Watch closely and follow up';
+      urgencyTone = 'watch';
+      routeDestination = moodDistressLoad >= psychosisLoad ? 'Psychologist / primary mental health clinic' : 'GP or psychiatrist for follow-up review';
+      routeTiming = 'Within 24 to 72 hours';
+      routeTeam = 'Outpatient mental health team, GP, or structured follow-up service';
+      workflowStageKey = 'mdt';
+      workflowStageLabel = 'MDT coordination';
+      workflowStageDescription = 'Moderate-risk case. Arrange follow-up, allow psychiatrist or psychologist to consult MDT, and consider community monitoring.';
+      mdtRecommended = true;
+      communityRecommended = true;
+      appointmentRecommended = true;
+      aiScreeningSummary = 'AI-assisted screening detected clinically significant symptoms, with the strongest pattern in ' + dominantConcern + '.';
+      aiTriageSummary = 'AI-assisted triage recommends structured follow-up within 24 to 72 hours with the most appropriate mental health service.';
+      nextStep = 'Share with the care team and arrange follow-up with the appropriate professional service.';
+      workflowSummary = 'Front door assessment shows clinically significant symptoms. Route to structured follow-up and the most appropriate professional team.';
+    } else {
+      aiScreeningSummary = 'AI-assisted screening detected lower symptom burden overall, while the most noticeable pattern remains in ' + dominantConcern + '.';
+      aiTriageSummary = 'AI-assisted triage recommends routine follow-up, psychoeducation, and community support unless symptoms escalate.';
+    }
+
+    const topSignals = state.bootstrap.items
+      .map(function(item) {
+        return {
+          title: item.title,
+          value: responses[item.id]
+        };
+      })
+      .sort(function(left, right) {
+        return right.value - left.value;
+      })
+      .slice(0, 3)
+      .filter(function(item) {
+        return item.value >= 4;
+      });
+
+    return {
+      completed: completed,
+      totalScore: totalScore,
+      interpretation: interpretation,
+      urgencyLabel: urgencyLabel,
+      urgencyTone: urgencyTone,
+      routeDestination: routeDestination,
+      routeTiming: routeTiming,
+      routeTeam: routeTeam,
+      aiScreeningSummary: aiScreeningSummary,
+      aiTriageSummary: aiTriageSummary,
+      workflowStageKey: workflowStageKey,
+      workflowStageLabel: workflowStageLabel,
+      workflowStageDescription: workflowStageDescription,
+      mdtRecommended: mdtRecommended,
+      communityRecommended: communityRecommended,
+      appointmentRecommended: appointmentRecommended,
+      nextStep: nextStep,
+      workflowSummary: workflowSummary,
+      notificationPreview: buildNotificationPreview_(totalScore, immediateSafety),
+      topSignals: topSignals,
+      responses: responses
+    };
+  }
+
+  function syncSummary() {
+    const summary = computeLocalScoring();
+    document.getElementById('completed-items').textContent = summary.completed + ' / 18';
+    document.getElementById('total-score').textContent = String(summary.totalScore);
+    document.getElementById('hero-score').textContent = String(summary.totalScore);
+    document.getElementById('interpretation-text').textContent = summary.interpretation;
+    document.getElementById('hero-band').textContent = summary.interpretation;
+    document.getElementById('next-step-text').textContent = summary.nextStep;
+    document.getElementById('hero-next-step').textContent = summary.nextStep;
+    document.getElementById('route-destination').textContent = summary.routeDestination;
+    document.getElementById('route-timing').textContent = summary.routeTiming;
+    document.getElementById('route-team').textContent = summary.routeTeam;
+    document.getElementById('workflow-stage-label').textContent = summary.workflowStageLabel;
+    document.getElementById('workflow-stage-copy').textContent = summary.workflowStageDescription;
+    document.getElementById('ai-screening-summary').textContent = summary.aiScreeningSummary;
+    document.getElementById('ai-triage-summary').textContent = summary.aiTriageSummary;
+    document.getElementById('workflow-summary').textContent = summary.workflowSummary;
+    applyPsychiatristAlertCard(summary.notificationPreview);
+
+    const urgencyBadge = document.getElementById('urgency-badge');
+    const heroBand = document.getElementById('hero-band');
+    urgencyBadge.className = 'urgency-chip urgency-' + summary.urgencyTone;
+    urgencyBadge.textContent = summary.urgencyLabel;
+    heroBand.className = 'hero-band urgency-' + summary.urgencyTone;
+
+    document.getElementById('top-signals').innerHTML = summary.topSignals.length
+      ? summary.topSignals.map(function(item) {
+          return '<div class="signal-chip">' + escapeHtml(item.title + ' (' + item.value + '/7)') + '</div>';
+        }).join('')
+      : '<div class="empty-line">No high-signal items yet.</div>';
+  }
+
+  function buildNotificationPreview_(totalScore, immediateSafety) {
+    const triggered = totalScore > PSYCHIATRIST_ALERT_THRESHOLD || immediateSafety;
+    if (!triggered) {
+      return {
+        triggered: false,
+        title: 'Not triggered',
+        tone: 'alert-state-idle',
+        copy: 'A psychiatrist warning is prepared only when the total score is above ' + PSYCHIATRIST_ALERT_THRESHOLD + ' or immediate safety is marked.'
+      };
+    }
+
+    if (state.bootstrap.unifiedIntakeUrl) {
+      return {
+        triggered: true,
+        title: 'Continue to Unified Intake',
+        tone: 'alert-state-preview',
+        copy: immediateSafety
+          ? 'Immediate safety is marked. Continue to Unified Intake, review the imported fields, and save there so the staff triage queue and psychiatrist workflow can be triggered.'
+          : 'This score is above ' + PSYCHIATRIST_ALERT_THRESHOLD + '. Continue to Unified Intake and save there before the staff Telegram alert is sent.'
+      };
+    }
+
+    return {
+      triggered: true,
+      title: 'Will warn psychiatrist on save',
+      tone: 'alert-state-preview',
+      copy: immediateSafety
+        ? 'Immediate safety is marked, so saving this form should warn the psychiatrist or crisis team right away.'
+        : 'This new submission is above ' + PSYCHIATRIST_ALERT_THRESHOLD + ', so saving the form should warn the psychiatrist team through Telegram.'
+    };
+  }
+
+  function describeServerNotification_(result) {
+    const status = String(result && result.notificationStatus ? result.notificationStatus : '');
+    const response = String(result && result.notificationResponse ? result.notificationResponse : '').trim();
+
+    if (!result || !result.notificationTriggered) {
+      return {
+        title: 'Not triggered',
+        tone: 'alert-state-idle',
+        copy: response || 'No psychiatrist alert was needed for this submission.'
+      };
+    }
+
+    if (status === 'Sent') {
+      return {
+        title: 'Psychiatrist warned',
+        tone: 'alert-state-sent',
+        copy: response || 'Telegram alert sent to the psychiatrist team.'
+      };
+    }
+
+    if (status === 'Unified Intake pending') {
+      return {
+        title: 'Awaiting Unified Intake save',
+        tone: 'alert-state-preview',
+        copy: response || 'This high-priority screening must be reviewed and saved through Unified Intake before Telegram alert delivery.'
+      };
+    }
+
+    if (status === 'Disabled' || status === 'Config missing') {
+      return {
+        title: 'Alert ready but not delivered',
+        tone: 'alert-state-disabled',
+        copy: response || 'The submission crossed the alert threshold, but Telegram delivery is not configured yet.'
+      };
+    }
+
+    return {
+      title: 'Alert delivery problem',
+      tone: 'alert-state-failed',
+      copy: response || 'The psychiatrist alert should have been sent, but delivery failed.'
+    };
+  }
+
+  function applyPsychiatristAlertCard(view) {
+    const card = document.getElementById('psychiatrist-alert-card');
+    const title = document.getElementById('psychiatrist-alert-title');
+    const copy = document.getElementById('psychiatrist-alert-copy');
+
+    card.className = 'alert-status-card ' + view.tone;
+    title.textContent = view.title;
+    copy.textContent = view.copy;
+  }
+
+  function bindGlobalActions() {
+    document.getElementById('submit-button').addEventListener('click', submitAssessment);
+    document.getElementById('copy-button').addEventListener('click', copySummary);
+    document.getElementById('print-button').addEventListener('click', function() {
+      window.print();
+    });
+    document.getElementById('reset-button').addEventListener('click', resetForm);
+  }
+
+  function submitAssessment() {
+    const payload = buildPayload();
+    const localSummary = computeLocalScoring();
+
+    if (localSummary.completed !== 18) {
+      showBanner('Please complete all 18 BPRS items before generating the summary.', true);
+      return;
+    }
+
+    showBanner(isAppsScriptRuntime() ? 'Saving BPRS assessment...' : 'Generating presentation summary...');
+
+    if (!isAppsScriptRuntime()) {
+      renderResult({
+        saved: false,
+        submissionMode: 'local_demo',
+        referenceCode: 'LOCAL-DEMO',
+        totalScore: localSummary.totalScore,
+        interpretation: localSummary.interpretation,
+        urgencyLabel: localSummary.urgencyLabel,
+        urgencyTone: localSummary.urgencyTone,
+        routeDestination: localSummary.routeDestination,
+        routeTiming: localSummary.routeTiming,
+        routeTeam: localSummary.routeTeam,
+        aiScreeningSummary: localSummary.aiScreeningSummary,
+        aiTriageSummary: localSummary.aiTriageSummary,
+        workflowStageKey: localSummary.workflowStageKey,
+        workflowStageLabel: localSummary.workflowStageLabel,
+        workflowStageDescription: localSummary.workflowStageDescription,
+        mdtRecommended: localSummary.mdtRecommended,
+        communityRecommended: localSummary.communityRecommended,
+        appointmentRecommended: localSummary.appointmentRecommended,
+        nextStep: localSummary.nextStep,
+        workflowSummary: localSummary.workflowSummary,
+        notificationStatus: localSummary.notificationPreview.triggered ? 'Preview only' : 'Not triggered',
+        notificationResponse: localSummary.notificationPreview.copy,
+        notificationTriggered: localSummary.notificationPreview.triggered,
+        topSignals: localSummary.topSignals.map(function(item) {
+          return item.title + ' (' + item.value + '/7)';
+        }),
+        summaryText: buildShareSummary(localSummary)
+      });
+      showBanner('Presentation summary generated. This static mode does not save to Google Sheets.');
+      return;
+    }
+
+    runServer('saveAssessment', [payload], function(result) {
+      renderResult(result);
+      showBanner(state.bootstrap.unifiedIntakeUrl
+        ? 'Assessment saved. Continue to Unified Intake to complete the shared triage flow.'
+        : 'Assessment saved and summary generated.');
+    }, function(error) {
+      showBanner(error.message || 'Unable to save the assessment.', true);
+    });
+  }
+
+  function buildPayload() {
+    return {
+      respondentRole: state.respondentRole,
+      completionContext: state.completionContext,
+      preferredLanguage: state.language,
+      respondentName: document.getElementById('respondent-name').value,
+      patientCode: document.getElementById('patient-code').value,
+      caregiverName: document.getElementById('caregiver-name').value,
+      immediateSafety: document.getElementById('immediate-safety').checked,
+      notes: document.getElementById('notes').value,
+      responses: getResponses()
+    };
+  }
+
+  function sumSelectedResponses_(responses, ids) {
+    return ids.reduce(function(sum, id) {
+      return sum + Number(responses[id] || 0);
+    }, 0);
+  }
+
+  function buildDominantConcernLabel_(psychosisLoad, moodDistressLoad, activationLoad) {
+    if (psychosisLoad >= moodDistressLoad && psychosisLoad >= activationLoad) {
+      return 'thinking and perception symptoms';
+    }
+    if (moodDistressLoad >= psychosisLoad && moodDistressLoad >= activationLoad) {
+      return 'mood and emotional distress symptoms';
+    }
+    return 'behavioral activation or slowing symptoms';
+  }
+
+  function renderResult(result) {
+    const notificationView = result.submissionMode === 'apps_script'
+      ? describeServerNotification_(result)
+      : {
+          title: result.notificationTriggered ? 'Will warn psychiatrist on save' : 'Not triggered',
+          tone: result.notificationTriggered ? 'alert-state-preview' : 'alert-state-idle',
+          copy: result.notificationResponse || 'Local presentation mode does not send Telegram alerts.'
+        };
+
+    applyPsychiatristAlertCard(notificationView);
+
+    const unifiedIntakeHref = buildUnifiedIntakeHref_(result);
+    const box = document.getElementById('result-box');
+    box.innerHTML = [
+      '<strong>',
+      escapeHtml(result.referenceCode || 'BPRS summary ready'),
+      '</strong>',
+      '<div class="result-meta">',
+      '<span class="mini-chip">Score: ',
+      escapeHtml(String(result.totalScore)),
+      '</span>',
+      '<span class="mini-chip">Interpretation: ',
+      escapeHtml(result.interpretation),
+      '</span>',
+      '<span class="mini-chip">Urgency: ',
+      escapeHtml(result.urgencyLabel),
+      '</span>',
+      result.workflowStageLabel ? '<span class="mini-chip">Stage: ' + escapeHtml(result.workflowStageLabel) + '</span>' : '',
+      result.routeDestination ? '<span class="mini-chip">Route: ' + escapeHtml(result.routeDestination) + '</span>' : '',
+      result.routeTiming ? '<span class="mini-chip">Timing: ' + escapeHtml(result.routeTiming) + '</span>' : '',
+      '<span class="mini-chip ' + escapeHtml(notificationView.tone) + '">Psychiatrist alert: ' + escapeHtml(notificationView.title) + '</span>',
+      result.submissionMode === 'apps_script' ? '<span class="mini-chip">Saved to Google Sheet</span>' : '<span class="mini-chip">Local presentation mode</span>',
+      '</div>',
+      '<div>',
+      escapeHtml(result.nextStep || ''),
+      '</div>',
+      result.routeTeam
+        ? '<div><strong>Suggested team:</strong> ' + escapeHtml(result.routeTeam) + '</div>'
+        : '',
+      result.workflowStageDescription
+        ? '<div><strong>Workflow stage:</strong> ' + escapeHtml(result.workflowStageDescription) + '</div>'
+        : '',
+      result.aiScreeningSummary
+        ? '<div><strong>AI screening:</strong> ' + escapeHtml(result.aiScreeningSummary) + '</div>'
+        : '',
+      result.aiTriageSummary
+        ? '<div><strong>AI triage:</strong> ' + escapeHtml(result.aiTriageSummary) + '</div>'
+        : '',
+      result.workflowSummary
+        ? '<div>' + escapeHtml(result.workflowSummary) + '</div>'
+        : '',
+      notificationView.copy
+        ? '<div class="result-note"><strong>Alert status:</strong> ' + escapeHtml(notificationView.copy) + '</div>'
+        : '',
+      result.topSignals && result.topSignals.length
+        ? '<div><strong>Top signals:</strong> ' + escapeHtml(result.topSignals.join(', ')) + '</div>'
+        : '',
+      result.summaryText
+        ? '<div>' + escapeHtml(result.summaryText) + '</div>'
+        : '',
+      unifiedIntakeHref
+        ? '<div class="staff-link-card"><div class="subsection-label">Next step in shared workflow</div><a id="unified-intake-link" class="dashboard-link-button" href="' + escapeHtml(unifiedIntakeHref) + '">Continue to Unified Intake</a><div class="staff-link-copy">Open the connected Unified Intake form with BPRS score, language, risk context, and summary prefilled before staff review and Telegram alert routing.</div></div>'
+        : '',
+      result.spreadsheetUrl
+        ? '<div><a href="' + escapeHtml(result.spreadsheetUrl) + '" target="_blank" rel="noopener">Open Google Sheet</a></div>'
+        : '',
+      result.dashboardUrl
+        ? '<div><a href="' + escapeHtml(result.dashboardUrl) + '" target="_blank" rel="noopener">Open psychiatrist / MDT dashboard</a></div>'
+        : ''
+    ].join('');
+    box.classList.remove('hidden');
+
+    const unifiedLink = document.getElementById('unified-intake-link');
+    if (unifiedLink) {
+      unifiedLink.addEventListener('click', function() {
+        persistUnifiedIntakeHandoff_(buildUnifiedIntakeHandoff_(result));
+      });
+    }
+  }
+
+  function copySummary() {
+    const summary = buildShareSummary(computeLocalScoring());
+    navigator.clipboard.writeText(summary).then(function() {
+      showBanner('Summary copied to clipboard.');
+    }, function() {
+      showBanner('Unable to copy automatically. You can still copy the result from the summary panel.', true);
+    });
+  }
+
+  function buildShareSummary(summary) {
+    const lines = [
+      'MindBridge BPRS Access',
+      'Role: ' + state.respondentRole,
+      'Setting: ' + state.completionContext,
+      'BPRS total score: ' + summary.totalScore,
+      'Interpretation: ' + summary.interpretation,
+      'Urgency: ' + summary.urgencyLabel,
+      'Workflow stage: ' + summary.workflowStageLabel,
+      'AI screening: ' + summary.aiScreeningSummary,
+      'AI triage: ' + summary.aiTriageSummary,
+      'Route: ' + summary.routeDestination,
+      'Timing: ' + summary.routeTiming,
+      'Suggested team: ' + summary.routeTeam,
+      'Next step: ' + summary.nextStep
+    ];
+
+    if (summary.topSignals.length) {
+      lines.push('Top signals: ' + summary.topSignals.map(function(item) {
+        return item.title + ' (' + item.value + '/7)';
+      }).join(', '));
+    }
+
+    lines.push('This result should support, not replace, clinical judgment.');
+    return lines.join('\n');
+  }
+
+  function buildUnifiedIntakeHandoff_(result) {
+    const payload = buildPayload();
+    const summary = computeLocalScoring();
+    const topSignals = (result.topSignals || summary.topSignals || []).map(function(item) {
+      if (typeof item === 'string') {
+        return item;
+      }
+      return item.title + ' (' + item.value + '/7)';
+    });
+
+    return {
+      source: 'mindbridge_bprs',
+      referenceCode: result.referenceCode || '',
+      respondentRole: state.respondentRole,
+      completionContext: state.completionContext,
+      preferredLanguage: state.language,
+      respondentName: payload.respondentName || '',
+      patientCode: payload.patientCode || '',
+      caregiverName: payload.caregiverName || '',
+      immediateSafety: payload.immediateSafety ? 'Yes' : 'No',
+      totalScore: Number(result.totalScore || summary.totalScore || 0),
+      interpretation: result.interpretation || summary.interpretation || '',
+      urgencyLabel: result.urgencyLabel || summary.urgencyLabel || '',
+      urgencyTone: result.urgencyTone || summary.urgencyTone || '',
+      workflowStageKey: result.workflowStageKey || summary.workflowStageKey || '',
+      workflowStageLabel: result.workflowStageLabel || summary.workflowStageLabel || '',
+      routeDestination: result.routeDestination || summary.routeDestination || '',
+      routeTiming: result.routeTiming || summary.routeTiming || '',
+      routeTeam: result.routeTeam || summary.routeTeam || '',
+      topSignals: topSignals.slice(0, 3),
+      notes: truncateText_(payload.notes || '', 280),
+      aiScreeningSummary: truncateText_(result.aiScreeningSummary || summary.aiScreeningSummary || '', 180),
+      aiTriageSummary: truncateText_(result.aiTriageSummary || summary.aiTriageSummary || '', 180),
+      workflowSummary: truncateText_(result.workflowSummary || summary.workflowSummary || '', 180),
+      summaryText: truncateText_(result.summaryText || buildShareSummary(summary), 320),
+      submittedAt: new Date().toISOString()
+    };
+  }
+
+  function buildUnifiedIntakeHref_(result) {
+    const baseUrl = result.unifiedIntakeUrl || state.bootstrap.unifiedIntakeUrl;
+    if (!baseUrl) {
+      return '';
+    }
+
+    const handoff = buildUnifiedIntakeHandoff_(result);
+    const encoded = encodeBase64Url_(JSON.stringify(handoff));
+    const url = new URL(baseUrl, window.location.href);
+    url.searchParams.set('portal', 'screening');
+    url.searchParams.set('handoff', '1');
+    url.searchParams.set('handoffPayload', encoded);
+    return url.toString();
+  }
+
+  function persistUnifiedIntakeHandoff_(handoff) {
+    try {
+      window.localStorage.setItem('mindbridge-unified-intake-handoff-v1', JSON.stringify(handoff || {}));
+    } catch (error) {}
+  }
+
+  function encodeBase64Url_(text) {
+    const encoded = window.btoa(encodeURIComponent(String(text || '')).replace(/%([0-9A-F]{2})/g, function(match, hex) {
+      return String.fromCharCode(parseInt(hex, 16));
+    }));
+    return encoded.replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/g, '');
+  }
+
+  function truncateText_(value, maxLength) {
+    const text = String(value === undefined || value === null ? '' : value).trim();
+    if (!maxLength || text.length <= maxLength) {
+      return text;
+    }
+    return text.slice(0, Math.max(0, maxLength - 3)) + '...';
+  }
+
+  function resetForm() {
+    document.getElementById('bprs-form').reset();
+    document.getElementById('result-box').classList.add('hidden');
+    document.getElementById('result-box').innerHTML = '';
+    syncSummary();
+    showBanner('Form reset.');
+  }
+
+  function getLocalizedText(option, prefix) {
+    const suffix = getLanguageSuffix_();
+    return option[prefix + suffix] || option[prefix + 'En'] || option[prefix] || '';
+  }
+
+  function getLanguageSuffix_() {
+    if (state.language === 'th') {
+      return 'Th';
+    }
+    if (state.language === 'zh') {
+      return 'Zh';
+    }
+    if (state.language === 'hi') {
+      return 'Hi';
+    }
+    if (state.language === 'ur') {
+      return 'Ur';
+    }
+    return 'En';
+  }
+
+  function isAppsScriptRuntime() {
+    return typeof google !== 'undefined' &&
+      google.script &&
+      google.script.run;
+  }
+
+  function runServer(functionName, args, onSuccess, onFailure) {
+    if (!isAppsScriptRuntime()) {
+      onFailure(new Error('Apps Script runtime is not available.'));
+      return;
+    }
+    const runner = google.script.run
+      .withSuccessHandler(onSuccess)
+      .withFailureHandler(function(error) {
+        onFailure(error || new Error('Unknown server error.'));
+      });
+    runner[functionName](...(args || []));
+  }
+
+  function showBanner(message, isError) {
+    const banner = document.getElementById('banner');
+    banner.textContent = message;
+    banner.classList.remove('hidden');
+    banner.classList.toggle('error', !!isError);
+  }
+
+  function escapeHtml(value) {
+    return String(value === undefined || value === null ? '' : value)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
+  }
+
+  document.addEventListener('DOMContentLoaded', initializePortal);
+</script>
+
+  </body>
+</html>

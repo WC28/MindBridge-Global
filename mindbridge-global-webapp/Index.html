@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <base target="_top">
+    <meta charset="utf-8">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@600;700;800&family=Noto+Sans+SC:wght@400;500;700;800&family=Noto+Sans+Thai:wght@400;500;700;800&family=Noto+Sans+Devanagari:wght@400;500;700;800&family=Noto+Nastaliq+Urdu:wght@400;500;700&display=swap" rel="stylesheet">
+    <?!= include('Stylesheet'); ?>
+  </head>
+  <body>
+    <div class="page-shell">
+      <header class="topbar glass-panel reveal">
+        <div class="brand-lockup">
+          <div class="brand-seal" aria-hidden="true">
+            <?!= include('DepartmentSeal'); ?>
+          </div>
+          <div class="brand-copy">
+            <div class="pill-badge">
+              <span class="pill-dot"></span>
+              <span id="header-badge"></span>
+            </div>
+            <div class="brand-title" id="brand-title"></div>
+            <div class="brand-context" id="brand-context"></div>
+          </div>
+        </div>
+
+        <div class="header-actions">
+          <div id="header-badges" class="badge-row"></div>
+          <div id="language-toggle" class="language-toggle" role="group" aria-label="Language toggle"></div>
+        </div>
+      </header>
+
+      <main class="content-flow">
+        <section class="hero reveal">
+          <div class="hero-grid">
+            <div class="hero-copy">
+              <div class="pill-badge hero-badge">
+                <span class="pill-dot"></span>
+                <span id="hero-badge"></span>
+              </div>
+              <h1 id="hero-title"></h1>
+              <p class="hero-subhead" id="hero-subhead"></p>
+
+              <div class="hero-actions-row">
+                <a id="hero-cta" class="cta-button" href="mailto:contact@example.com?subject=MindBridge%20Global%20Proposal"></a>
+                <div class="pill-badge muted-pill">
+                  <span class="pill-dot violet-dot"></span>
+                  <span id="hero-pill"></span>
+                </div>
+              </div>
+
+              <div class="vision-card glass-panel">
+                <div class="section-label" id="vision-label"></div>
+                <p id="vision-text"></p>
+              </div>
+            </div>
+
+            <aside class="snapshot-panel glass-panel">
+              <div class="section-label" id="snapshot-label"></div>
+              <div class="snapshot-title-row">
+                <h2 id="snapshot-title"></h2>
+                <div class="mini-chip" id="snapshot-live-chip"></div>
+              </div>
+              <p class="snapshot-subtitle" id="snapshot-subtitle"></p>
+
+              <div id="snapshot-grid" class="snapshot-grid"></div>
+
+              <div class="snapshot-divider"></div>
+
+              <div class="section-label" id="snapshot-signals-label"></div>
+              <div id="snapshot-signals" class="signal-list"></div>
+
+              <p class="snapshot-note" id="snapshot-note"></p>
+            </aside>
+          </div>
+        </section>
+
+        <section class="presentation-section reveal">
+          <div class="presentation-grid">
+            <article class="presentation-card glass-panel">
+              <div class="presentation-card-top">
+                <div class="presentation-seal" aria-hidden="true">
+                  <?!= include('DepartmentSeal'); ?>
+                </div>
+                <div class="presentation-copy">
+                  <div class="section-label" id="presentation-kicker"></div>
+                  <h2 id="presentation-title"></h2>
+                  <p id="presentation-intro"></p>
+                </div>
+              </div>
+
+              <div class="topic-stack">
+                <div class="section-label" id="presentation-topic-label"></div>
+                <p class="topic-title" id="presentation-topic-title"></p>
+              </div>
+            </article>
+
+            <article class="team-card glass-panel">
+              <div class="section-label" id="team-label"></div>
+              <div id="team-list" class="team-list"></div>
+            </article>
+          </div>
+        </section>
+
+        <section class="content-section reveal">
+          <div class="section-heading">
+            <div class="section-marker-row">
+              <div class="icon-medallion small"><span>01</span></div>
+              <div class="section-label" id="why-kicker"></div>
+            </div>
+            <h2 id="why-title"></h2>
+            <p id="why-intro"></p>
+          </div>
+          <div id="why-grid" class="problem-grid"></div>
+        </section>
+
+        <section class="content-section reveal">
+          <div class="section-heading">
+            <div class="section-marker-row">
+              <div class="icon-medallion small"><span>02</span></div>
+              <div class="section-label" id="matrix-kicker"></div>
+            </div>
+            <h2 id="matrix-title"></h2>
+            <p id="matrix-intro"></p>
+          </div>
+          <div id="matrix-grid" class="comparison-grid"></div>
+        </section>
+
+        <section class="content-section reveal">
+          <div class="section-heading">
+            <div class="section-marker-row">
+              <div class="icon-medallion small"><span>03</span></div>
+              <div class="section-label" id="core-kicker"></div>
+            </div>
+            <h2 id="core-title"></h2>
+            <p id="core-intro"></p>
+          </div>
+          <div id="core-grid" class="component-grid"></div>
+        </section>
+
+        <section class="content-section reveal">
+          <div class="section-heading">
+            <div class="section-marker-row">
+              <div class="icon-medallion small"><span>04</span></div>
+              <div class="section-label" id="scale-kicker"></div>
+            </div>
+            <h2 id="scale-title"></h2>
+            <p id="scale-intro"></p>
+          </div>
+
+          <div class="split-panel">
+            <article class="split-card glass-panel">
+              <div class="section-label" id="local-label"></div>
+              <h3 id="local-title"></h3>
+              <p id="local-copy"></p>
+              <div id="local-points" class="point-list"></div>
+            </article>
+
+            <div class="bridge-line">
+              <div class="bridge-core"></div>
+              <div class="bridge-tag" id="bridge-label"></div>
+            </div>
+
+            <article class="split-card glass-panel">
+              <div class="section-label" id="global-label"></div>
+              <h3 id="global-title"></h3>
+              <p id="global-copy"></p>
+              <div id="global-points" class="point-list"></div>
+            </article>
+          </div>
+        </section>
+
+        <section class="content-section reveal">
+          <div class="section-heading">
+            <div class="section-marker-row">
+              <div class="icon-medallion small"><span>05</span></div>
+              <div class="section-label" id="journey-kicker"></div>
+            </div>
+            <h2 id="journey-title"></h2>
+            <p id="journey-intro"></p>
+          </div>
+
+          <div class="stepper-card glass-panel">
+            <div class="stepper-track">
+              <div class="stepper-progress" id="journey-progress"></div>
+              <div id="journey-steps" class="stepper-steps"></div>
+            </div>
+            <div id="journey-detail" class="step-detail"></div>
+          </div>
+        </section>
+
+        <section class="content-section reveal">
+          <div class="section-heading">
+            <div class="section-marker-row">
+              <div class="icon-medallion small"><span>06</span></div>
+              <div class="section-label" id="ethics-kicker"></div>
+            </div>
+            <h2 id="ethics-title"></h2>
+            <p id="ethics-intro"></p>
+          </div>
+
+          <div id="ethics-grid" class="ethics-grid"></div>
+          <div class="callout-banner glass-panel" id="ethics-banner"></div>
+        </section>
+
+        <section class="content-section reveal">
+          <div class="section-heading">
+            <div class="section-marker-row">
+              <div class="icon-medallion small"><span>07</span></div>
+              <div class="section-label" id="impact-kicker"></div>
+            </div>
+            <h2 id="impact-title"></h2>
+            <p id="impact-intro"></p>
+          </div>
+          <div id="impact-grid" class="impact-grid"></div>
+        </section>
+
+        <section class="content-section reveal">
+          <div class="section-heading">
+            <div class="section-marker-row">
+              <div class="icon-medallion small"><span>08</span></div>
+              <div class="section-label" id="roadmap-kicker"></div>
+            </div>
+            <h2 id="roadmap-title"></h2>
+            <p id="roadmap-intro"></p>
+          </div>
+
+          <div class="stepper-card glass-panel">
+            <div class="stepper-track roadmap-track">
+              <div class="stepper-progress" id="roadmap-progress"></div>
+              <div id="roadmap-steps" class="stepper-steps roadmap-steps"></div>
+            </div>
+            <div id="roadmap-detail" class="step-detail"></div>
+          </div>
+        </section>
+
+        <section class="content-section reveal">
+          <div class="section-heading">
+            <div class="section-marker-row">
+              <div class="icon-medallion small"><span>09</span></div>
+              <div class="section-label" id="alignment-kicker"></div>
+            </div>
+            <h2 id="alignment-title"></h2>
+            <p id="alignment-intro"></p>
+          </div>
+          <div id="alignment-groups" class="alignment-grid"></div>
+        </section>
+
+        <section class="closing-section reveal">
+          <div class="closing-band glass-panel">
+            <div class="section-label" id="closing-kicker"></div>
+            <h2 id="closing-title"></h2>
+            <p id="closing-copy"></p>
+            <a id="closing-cta" class="cta-button" href="mailto:contact@example.com?subject=MindBridge%20Global%20Proposal"></a>
+          </div>
+        </section>
+      </main>
+
+      <footer class="footer glass-panel reveal">
+        <div class="footer-copy">
+          <div class="section-label" id="references-kicker"></div>
+          <div id="references-list" class="references-list"></div>
+        </div>
+        <div class="footer-org" id="org-line"></div>
+      </footer>
+    </div>
+
+    <?!= include('JavaScript'); ?>
+  </body>
+</html>
