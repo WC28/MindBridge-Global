@@ -1,9 +1,9 @@
 # MindBridge Global
 #IMHWF 2026 GROUP MEMBERS
-Ms. Sadia Hashmi | Pakistan 
-Miss Witthirasa Chaemphichanyotin  | Thailand 
-Dr. Madhu Vamsi Ganduri | India 
-Dr. Yuchen Li | China
+Ms. Sadia Hashmi | Pakistan |
+Miss Witthirasa Chaemphichanyotin  | Thailand |
+Dr. Madhu Vamsi Ganduri | India |
+Dr. Yuchen Li | China |
 
 
 
