@@ -1,4 +1,11 @@
 # MindBridge Global
+#IMHWF 2026 GROUP MEMBERS
+Ms. Sadia Hashmi | Pakistan 
+Miss Witthirasa Chaemphichanyotin  | Thailand 
+Dr. Madhu Vamsi Ganduri | India 
+Dr. Yuchen Li | China
+
+
 
 Phase 1 prototype for a multidisciplinary mental health coordination workflow using Google Apps Script, Google Sheets, and a lightweight web dashboard.
 
